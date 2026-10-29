@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageConfiguration xmlns="http://www.siemens.com/automation/Openness/AddIn/Publisher/V20">
+  <Author>Paulo Carrasco</Author>
+  <Description>Exporta e importa bloques, UDTs y tablas de variables en XML (SimaticML) desde el árbol del proyecto</Description>
+  <AddInVersion>1.1.0</AddInVersion>
+  <Product>
+    <Name>Exportar e importar XML</Name>
+    <Id>ExportarXml</Id>
+    <Version>1.1.0</Version>
+  </Product>
+  <FeatureAssembly>
+    <AssemblyInfo>
+      <Assembly>bin\Release\ExportarXml.dll</Assembly>
+    </AssemblyInfo>
+  </FeatureAssembly>
+  <RequiredPermissions>
+    <TIAPermissions>
+      <TIA.ReadWrite />
+    </TIAPermissions>
+    <SecurityPermissions>
+      <System.Security.Permissions.FileIOPermission />
+      <System.Security.Permissions.FileDialogPermission />
+      <System.Security.Permissions.UIPermission />
+    </SecurityPermissions>
+  </RequiredPermissions>
+</PackageConfiguration>

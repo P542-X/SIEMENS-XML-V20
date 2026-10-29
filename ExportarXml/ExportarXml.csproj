@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>ExportarXml</AssemblyName>
+    <RootNamespace>ExportarXml</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <!-- Carpeta donde está Siemens.Engineering.AddIn.dll de TIA Portal V20 -->
+    <TiaAddInApi>C:\Program Files\Siemens\Automation\Portal V20\PublicAPI\V20.AddIn</TiaAddInApi>
+    <!-- Compilar sin NuGet, contra el .NET Framework 4.8 de Windows -->
+    <AutomaticallyUseReferenceAssemblyPackages>false</AutomaticallyUseReferenceAssemblyPackages>
+    <FrameworkPathOverride>C:\Windows\Microsoft.NET\Framework64\v4.0.30319</FrameworkPathOverride>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Siemens.Engineering.AddIn">
+      <HintPath>$(TiaAddInApi)\Siemens.Engineering.AddIn.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+</Project>

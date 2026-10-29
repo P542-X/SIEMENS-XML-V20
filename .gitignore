@@ -1,0 +1,15 @@
+# Compilación
+bin/
+obj/
+*.addin
+publisher.log
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Exportaciones de prueba
+Export_XML/
+Import_XML/
