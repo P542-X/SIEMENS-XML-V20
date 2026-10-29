@@ -18,6 +18,7 @@
       <HintPath>$(TiaAddInApi)\Siemens.Engineering.AddIn.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 
