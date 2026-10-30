@@ -23,27 +23,45 @@ namespace ExportarXml
     /// - Antes de importar un XML lo comprueba con Validador: si incumple una regla conocida
     ///   no se importa; los avisos de los XSD de TIA solo se apuntan en el resumen.
     /// - Las fuentes se añaden a "Fuentes externas", se generan los bloques y se borra la fuente.
-    /// - Orden: UDT > tablas > FB/FC > OB/DB global > DB de instancia, con varias
-    ///   pasadas por si unos dependen de otros.
+    ///   GenerateBlocksFromSource NO sobrescribe un bloque existente (deja el código viejo), así que
+    ///   al sobrescribir se borran antes los objetos que declara la fuente.
+    /// - Los documentos SIMATIC SD (.s7dcl KOP, .s7dcf FUP, .s7dcs SCL, .s7dbd DB; con su .s7res)
+    ///   se importan con ImportFromDocuments. En SD las instrucciones van por nombre y TIA pone
+    ///   la versión, así que sirven para cualquier instrucción sin tener que copiar su XML.
+    /// - Orden: primero XML y documentos SD, después fuentes externas; dentro de cada grupo
+    ///   UDT > tablas > FB/FC > OB/DB global > DB de instancia, con varias pasadas por si unos
+    ///   dependen de otros. Así, si la misma cosa viene en un XML y en una fuente (fuentes de
+    ///   respaldo), manda el XML y la fuente solo crea lo que falte.
     /// - Si el objeto ya existe, pregunta si sobrescribir o saltar; al sobrescribir
     ///   lo deja en la carpeta donde ya estaba.
+    /// - Todo va dentro de una transacción de TIA: Ctrl+Z deshace la importación entera en un paso.
+    ///   Lo que no se deje importar dentro de la transacción se reintenta fuera (y se indica).
     /// - Al final compila el software del PLC y deja un resumen.
     /// </summary>
     internal static class Importador
     {
         private const string Titulo = "Importar XML";
 
-        private enum Tipo { Udt, TablaVariables, Bloque, Fuente }
+        private enum Tipo { Udt, TablaVariables, Bloque, Fuente, Documento }
 
         /// <summary>Extensiones de fuente externa que TIA sabe convertir en bloques.</summary>
         public static readonly string[] ExtensionesFuente = { ".scl", ".udt", ".db", ".awl" };
 
-        /// <summary>Todo lo que se puede importar: XML + fuentes.</summary>
-        public static readonly string[] ExtensionesImportables = { ".xml", ".scl", ".udt", ".db", ".awl" };
+        /// <summary>Documentos SIMATIC SD de bloque (V20). El .s7res de textos va al lado y no se elige.</summary>
+        public static readonly string[] ExtensionesDocumento = { ".s7dcl", ".s7dcf", ".s7dcs", ".s7dbd" };
+
+        /// <summary>Todo lo que se puede importar: XML + fuentes + documentos SD.</summary>
+        public static readonly string[] ExtensionesImportables =
+            { ".xml", ".scl", ".udt", ".db", ".awl", ".s7dcl", ".s7dcf", ".s7dcs", ".s7dbd" };
 
         private static bool EsFuente(string ruta)
         {
             return ExtensionesFuente.Contains(Path.GetExtension(ruta).ToLowerInvariant());
+        }
+
+        private static bool EsDocumento(string ruta)
+        {
+            return ExtensionesDocumento.Contains(Path.GetExtension(ruta).ToLowerInvariant());
         }
 
         private sealed class Elemento
@@ -58,6 +76,8 @@ namespace ExportarXml
             public List<string> Objetos = new List<string>();
             /// <summary>Solo XML: avisos de los XSD de TIA (no bloquean la importación).</summary>
             public List<string> Avisos = new List<string>();
+            /// <summary>Lo que se ha hecho además de importar (copias de seguridad, borrados...).</summary>
+            public List<string> Notas = new List<string>();
         }
 
         // ---------- Destino de la importación ----------
@@ -118,6 +138,8 @@ namespace ExportarXml
                 return;
             }
 
+            _carpetaCopia = CarpetaCopia(tia);
+
             StringBuilder log = new StringBuilder();
             log.AppendLine(Validador.EstadoEsquemas());
             log.AppendLine();
@@ -147,7 +169,7 @@ namespace ExportarXml
             bool sobrescribir = false;
             if (existentes.Count > 0)
             {
-                string ejemplos = string.Join(", ", existentes.Take(6).Select(e => e.Tipo == Tipo.Fuente
+                string ejemplos = string.Join(", ", existentes.Take(6).Select(e => e.Tipo == Tipo.Fuente || e.Tipo == Tipo.Documento
                                                   ? e.Fichero.Name + " (" + string.Join(", ", e.Objetos.Where(o => ExisteObjeto(plc, o))) + ")"
                                                   : e.Nombre))
                                   + (existentes.Count > 6 ? ", ..." : "");
@@ -171,46 +193,66 @@ namespace ExportarXml
 
             List<Elemento> pendientes = elementos
                 .Where(e => sobrescribir || !e.Existe)
-                .OrderBy(e => e.Prioridad)
+                .OrderBy(e => e.Tipo == Tipo.Fuente ? 1 : 0)
+                .ThenBy(e => e.Prioridad)
                 .ThenBy(e => e.Nombre)
                 .ToList();
+
+            // Objetos creados en esta importación: no se vuelven a importar ni se borran desde
+            // otro fichero de la misma selección (p. ej. un XML y su fuente de respaldo)
+            HashSet<string> creados = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            int omitidos = 0;
 
             int importados = 0;
             string compilacion = "no realizada";
 
+            Project proyecto = tia.Projects.FirstOrDefault();
+            bool deshacible = false;
+            int fueraTransaccion = 0;
+
             using (ExclusiveAccess ea = tia.ExclusiveAccess("Importando XML..."))
             {
-                // Varias pasadas: si algo falla por depender de otro objeto, se reintenta
-                bool progreso = true;
-                while (pendientes.Count > 0 && progreso && !ea.IsCancellationRequested)
+                // 1) Dentro de una transacción: todo lo importado aquí se deshace de una vez con Ctrl+Z
+                //    ("Deshacer: Importar XML" en TIA). Si TIA no deja abrir la transacción, se sigue sin ella.
+                Transaction transaccion = null;
+                try
                 {
-                    progreso = false;
-                    foreach (Elemento e in pendientes.ToList())
+                    if (proyecto != null) transaccion = ea.Transaction(proyecto, "Importar XML (" + elementos.Count + " ficheros)");
+                }
+                catch (Exception ex)
+                {
+                    log.AppendLine("Aviso: no se pudo abrir la transacción; esta importación no se podrá deshacer con Ctrl+Z (" + ex.Message + ")");
+                }
+
+                if (transaccion != null)
+                {
+                    using (transaccion)
                     {
-                        if (ea.IsCancellationRequested) break;
-                        ea.Text = "Importando " + e.Nombre + "...";
-                        try
-                        {
-                            Importar(plc, destino, e, sobrescribir);
-                            pendientes.Remove(e);
-                            importados++;
-                            progreso = true;
-                            log.AppendLine("OK       " + e.Nombre + "  <-  " + e.Fichero.FullName);
-                            foreach (string a in e.Avisos) log.AppendLine("         aviso XSD: " + a);
-                        }
-                        catch (Exception ex)
-                        {
-                            e.UltimoError = ex.Message;
-                        }
+                        Pasadas(plc, destino, pendientes, sobrescribir, creados, ea, log, "", ref importados, ref omitidos);
+                        transaccion.CommitOnDispose(); // se confirma lo importado, haya errores o no
                     }
+                    deshacible = true;
+                }
+
+                // 2) Lo que no haya entrado (o todo, si no hubo transacción) se reintenta fuera de ella:
+                //    algunas operaciones de Openness no se admiten dentro de una transacción.
+                if (pendientes.Count > 0 && !ea.IsCancellationRequested)
+                {
+                    int antes = importados;
+                    Pasadas(plc, destino, pendientes, sobrescribir, creados, ea, log,
+                            transaccion != null ? "  (fuera de la transacción: no se deshace con Ctrl+Z)" : "",
+                            ref importados, ref omitidos);
+                    if (transaccion != null) fueraTransaccion = importados - antes;
                 }
 
                 foreach (Elemento e in pendientes)
                 {
                     log.AppendLine("ERROR    " + e.Nombre + " -> " + (e.UltimoError ?? "cancelado"));
+                    foreach (string n in e.Notas) log.AppendLine("         " + n);
                     foreach (string a in e.Avisos) log.AppendLine("         aviso XSD: " + a);
                 }
 
+                // La compilación va fuera de la transacción (no se admite dentro)
                 if (importados > 0 && !ea.IsCancellationRequested)
                 {
                     ea.Text = "Compilando " + plc.Name + "...";
@@ -218,10 +260,16 @@ namespace ExportarXml
                 }
             }
 
+            string deshacer = !deshacible ? "Deshacer: no disponible (ver resumen)"
+                            : fueraTransaccion > 0 ? "Deshacer: Ctrl+Z deshace la importación salvo " + fueraTransaccion + " objeto(s) importado(s) fuera de la transacción"
+                            : "Deshacer: Ctrl+Z en TIA deshace toda la importación";
+
             string resumen =
                 "Importados: " + importados + "   Saltados: " + saltados +
+                (omitidos > 0 ? "   Omitidos (repetidos): " + omitidos : "") +
                 "   Errores: " + pendientes.Count + "   No válidos: " + ignorados + Environment.NewLine +
-                "Compilación: " + compilacion;
+                "Compilación: " + compilacion + Environment.NewLine +
+                deshacer;
 
             string rutaResumen = GuardarResumen(tia, resumen, log);
 
@@ -232,11 +280,59 @@ namespace ExportarXml
                 pendientes.Count > 0 || compilacion.StartsWith("Error"));
         }
 
+        /// <summary>
+        /// Varias pasadas sobre los pendientes: si algo falla por depender de otro objeto,
+        /// se reintenta mientras alguna pasada consiga importar algo.
+        /// </summary>
+        private static void Pasadas(PlcSoftware plc, IEngineeringObject destino, List<Elemento> pendientes,
+                                    bool sobrescribir, HashSet<string> creados, ExclusiveAccess ea,
+                                    StringBuilder log, string sufijo, ref int importados, ref int omitidos)
+        {
+            bool progreso = true;
+            while (pendientes.Count > 0 && progreso && !ea.IsCancellationRequested)
+            {
+                progreso = false;
+                foreach (Elemento e in pendientes.ToList())
+                {
+                    if (ea.IsCancellationRequested) break;
+                    ea.Text = "Importando " + e.Nombre + "...";
+
+                    // Ya lo ha creado otro fichero de esta misma importación
+                    if (e.Tipo != Tipo.Fuente && creados.Contains(NombreObjeto(e)))
+                    {
+                        pendientes.Remove(e);
+                        omitidos++;
+                        progreso = true;
+                        log.AppendLine("OMITIDO  " + e.Nombre + " (ya creado en esta importación desde otro fichero)  <-  " + e.Fichero.FullName);
+                        continue;
+                    }
+
+                    try
+                    {
+                        Importar(plc, destino, e, sobrescribir, creados);
+                        if (e.Tipo == Tipo.Fuente) foreach (string o in e.Objetos) creados.Add(o);
+                        else creados.Add(NombreObjeto(e));
+                        pendientes.Remove(e);
+                        importados++;
+                        progreso = true;
+                        log.AppendLine("OK       " + e.Nombre + "  <-  " + e.Fichero.FullName + sufijo);
+                        foreach (string n in e.Notas) log.AppendLine("         " + n);
+                        foreach (string a in e.Avisos) log.AppendLine("         aviso XSD: " + a);
+                    }
+                    catch (Exception ex)
+                    {
+                        e.UltimoError = ex.Message;
+                    }
+                }
+            }
+        }
+
         // ---------- Lectura y clasificación del XML ----------
 
         private static Elemento Leer(string ruta, StringBuilder log)
         {
-            if (EsFuente(ruta)) return LeerFuente(ruta, log);
+            if (EsFuente(ruta)) return LeerFuente(ruta, log, Tipo.Fuente);
+            if (EsDocumento(ruta)) return LeerFuente(ruta, log, Tipo.Documento);
 
             try
             {
@@ -297,7 +393,7 @@ namespace ExportarXml
             @"^[ \t]*(TYPE|FUNCTION_BLOCK|FUNCTION|DATA_BLOCK|ORGANIZATION_BLOCK)[ \t]+(?:""([^""]+)""|([A-Za-z_][\w]*))",
             RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
-        private static Elemento LeerFuente(string ruta, StringBuilder log)
+        private static Elemento LeerFuente(string ruta, StringBuilder log, Tipo tipo)
         {
             try
             {
@@ -305,7 +401,12 @@ namespace ExportarXml
                 List<Match> cabeceras = Cabecera.Matches(texto).Cast<Match>().ToList();
                 if (cabeceras.Count == 0)
                 {
-                    log.AppendLine("IGNORADO " + ruta + " (fuente sin TYPE / FUNCTION / FUNCTION_BLOCK / DATA_BLOCK / ORGANIZATION_BLOCK)");
+                    log.AppendLine("IGNORADO " + ruta + " (sin TYPE / FUNCTION / FUNCTION_BLOCK / DATA_BLOCK / ORGANIZATION_BLOCK)");
+                    return null;
+                }
+                if (tipo == Tipo.Documento && cabeceras.Count > 1)
+                {
+                    log.AppendLine("IGNORADO " + ruta + " (un documento SIMATIC SD tiene que contener un solo bloque)");
                     return null;
                 }
 
@@ -314,7 +415,7 @@ namespace ExportarXml
                 {
                     Fichero = new FileInfo(ruta),
                     Nombre = Path.GetFileName(ruta),
-                    Tipo = Tipo.Fuente,
+                    Tipo = tipo,
                     Objetos = cabeceras.Select(c => c.Groups[2].Success ? c.Groups[2].Value : c.Groups[3].Value).ToList()
                 };
 
@@ -341,7 +442,8 @@ namespace ExportarXml
                 case Tipo.Bloque:         return BuscarBloque(plc.BlockGroup, e.Nombre) != null;
                 case Tipo.Udt:            return BuscarTipo(plc.TypeGroup, e.Nombre) != null;
                 case Tipo.TablaVariables: return BuscarTabla(plc.TagTableGroup, e.Nombre) != null;
-                case Tipo.Fuente:         return e.Objetos.Any(o => ExisteObjeto(plc, o));
+                case Tipo.Fuente:
+                case Tipo.Documento:      return e.Objetos.Any(o => ExisteObjeto(plc, o));
             }
             return false;
         }
@@ -389,7 +491,14 @@ namespace ExportarXml
 
         // ---------- Importación ----------
 
-        private static void Importar(PlcSoftware plc, IEngineeringObject destino, Elemento e, bool sobrescribir)
+        /// <summary>Nombre del objeto de TIA que crea un elemento (en SD y XML, uno solo).</summary>
+        private static string NombreObjeto(Elemento e)
+        {
+            return e.Tipo == Tipo.Documento ? e.Objetos[0] : e.Nombre;
+        }
+
+        private static void Importar(PlcSoftware plc, IEngineeringObject destino, Elemento e, bool sobrescribir,
+                                     HashSet<string> creados)
         {
             ImportOptions opciones = sobrescribir ? ImportOptions.Override : ImportOptions.None;
 
@@ -424,18 +533,80 @@ namespace ExportarXml
                     break;
                 }
                 case Tipo.Fuente:
-                    GenerarDesdeFuente(plc, e);
+                    GenerarDesdeFuente(plc, e, sobrescribir, creados);
                     break;
+                case Tipo.Documento:
+                {
+                    // Igual que el XML: si ya existe, en su carpeta; si no, en la seleccionada
+                    PlcBlock existente = BuscarBloque(plc.BlockGroup, e.Objetos[0]);
+                    PlcBlockGroup grupo = (existente?.Parent as PlcBlockGroup)
+                                          ?? Ancestro<PlcBlockGroup>(destino)
+                                          ?? plc.BlockGroup;
+                    ImportarDocumento(grupo, e, sobrescribir);
+                    break;
+                }
             }
+        }
+
+        /// <summary>
+        /// Importa un bloque desde SIMATIC SD. ImportFromDocuments busca en la carpeta los ficheros
+        /// con ese nombre (el documento y su .s7res de textos, si lo hay).
+        /// </summary>
+        private static void ImportarDocumento(PlcBlockGroup grupo, Elemento e, bool sobrescribir)
+        {
+            DocumentImportResult r = grupo.Blocks.ImportFromDocuments(
+                e.Fichero.Directory,
+                Path.GetFileNameWithoutExtension(e.Fichero.Name),
+                sobrescribir ? ImportDocumentOptions.Override : ImportDocumentOptions.None);
+
+            if (r == null || r.State != DocumentResultState.Success)
+                throw new Exception("ImportFromDocuments terminó con estado " + (r == null ? "null" : r.State.ToString()) +
+                                    ". Revisa la sintaxis del documento y que el .s7res corresponda.");
         }
 
         /// <summary>
         /// Añade la fuente a "Fuentes externas", genera sus bloques y borra la fuente. Los bloques
         /// generados quedan en la raíz de "Bloques de programa" (Openness no deja elegir carpeta).
         /// </summary>
-        private static void GenerarDesdeFuente(PlcSoftware plc, Elemento e)
+        private static void GenerarDesdeFuente(PlcSoftware plc, Elemento e, bool sobrescribir, HashSet<string> creados)
         {
             PlcExternalSourceComposition fuentes = plc.ExternalSourceGroup.ExternalSources;
+
+            // GenerateBlocksFromSource no sobrescribe: deja el bloque existente con su código viejo.
+            // Para sobrescribir de verdad, se borran antes los objetos que declara la fuente
+            // (de atrás adelante: DB/OB antes que FB/FC, y estos antes que los tipos).
+            // Antes de borrar se exporta cada objeto a XML, por si la generación falla y hay que recuperarlo.
+            if (sobrescribir)
+            {
+                foreach (string nombre in Enumerable.Reverse(e.Objetos))
+                {
+                    // Lo acaba de importar otro fichero de esta selección: se respeta
+                    if (creados.Contains(nombre))
+                    {
+                        e.Notas.Add(nombre + ": ya importado en esta ejecución desde otro fichero; no se regenera");
+                        continue;
+                    }
+
+                    PlcBlock b = BuscarBloque(plc.BlockGroup, nombre);
+                    if (b != null)
+                    {
+                        // Un bloque inconsistente no se puede exportar: se intenta compilar antes
+                        if (!b.IsConsistent)
+                        {
+                            try { b.GetService<ICompilable>()?.Compile(); } catch { }
+                        }
+                        CopiaDeSeguridad(nombre, f => b.Export(f, ExportOptions.WithDefaults), e);
+                        b.Delete();
+                        continue;
+                    }
+                    PlcType t = BuscarTipo(plc.TypeGroup, nombre);
+                    if (t != null)
+                    {
+                        CopiaDeSeguridad(nombre, f => t.Export(f, ExportOptions.WithDefaults), e);
+                        t.Delete();
+                    }
+                }
+            }
 
             // Si quedó una fuente con el mismo nombre de una ejecución anterior, fuera
             PlcExternalSource anterior = fuentes.Find(e.Fichero.Name);
@@ -450,6 +621,31 @@ namespace ExportarXml
             {
                 try { fuente.Delete(); } catch { /* si no se puede borrar, se queda en Fuentes externas */ }
             }
+        }
+
+        // Carpeta de copias de esta ejecución (solo una ruta: no se guardan objetos de Engineering)
+        private static string _carpetaCopia;
+
+        private static string CarpetaCopia(TiaPortal tia)
+        {
+            Project proyecto = tia.Projects.FirstOrDefault();
+            if (proyecto == null) return null;
+            return Path.Combine(proyecto.Path.DirectoryName, "Import_XML", "copia_" + DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+        }
+
+        /// <summary>
+        /// Exporta a XML el objeto que se va a borrar. Si no se puede hacer la copia, no se borra
+        /// nada: se lanza la excepción y el fichero sale como ERROR en el resumen.
+        /// </summary>
+        private static void CopiaDeSeguridad(string nombre, Action<FileInfo> exportar, Elemento e)
+        {
+            if (_carpetaCopia == null) throw new Exception("No hay proyecto abierto para guardar la copia de " + nombre + ".");
+            Directory.CreateDirectory(_carpetaCopia);
+            string limpio = Path.GetInvalidFileNameChars().Aggregate(nombre, (n, c) => n.Replace(c, '_'));
+            FileInfo f = new FileInfo(Path.Combine(_carpetaCopia, limpio + ".xml"));
+            if (f.Exists) f.Delete();
+            exportar(f);
+            e.Notas.Add("borrado para regenerarlo; copia en " + f.FullName);
         }
 
         // ---------- Compilación y resumen ----------

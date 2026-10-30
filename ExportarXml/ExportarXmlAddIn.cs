@@ -38,6 +38,7 @@ namespace ExportarXml
         protected override void BuildContextMenuItems(ContextMenuAddInRoot raizMenu)
         {
             raizMenu.Items.AddActionItem<IEngineeringObject>("Exportar selección a XML", OnExportar, OnEstado);
+            raizMenu.Items.AddActionItem<IEngineeringObject>("Exportar selección a SIMATIC SD (texto)", OnExportarSd, OnEstadoSd);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar ficheros XML / fuentes...", OnImportarFicheros, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar carpeta XML / fuentes (con subcarpetas)...", OnImportarCarpeta, OnEstadoImportar);
         }
@@ -83,7 +84,7 @@ namespace ExportarXml
                     .ToArray();
                 if (ficheros.Length == 0)
                 {
-                    Dialogos.Informar("No hay ficheros .xml, .scl, .udt, .db ni .awl en esa carpeta.", "Importar XML", true);
+                    Dialogos.Informar("No hay ficheros .xml, fuentes (.scl, .udt, .db, .awl) ni documentos SIMATIC SD (.s7dcl, .s7dcf, .s7dcs, .s7dbd) en esa carpeta.", "Importar XML", true);
                     return;
                 }
                 Importador.Ejecutar(_tia, destino, ficheros);
@@ -91,6 +92,28 @@ namespace ExportarXml
             catch (Exception ex)
             {
                 Dialogos.Informar("Error inesperado al importar:" + Environment.NewLine + ex.Message, "Importar XML", true);
+            }
+        }
+
+        // ---------- Exportación a SIMATIC SD ----------
+
+        private MenuStatus OnEstadoSd(MenuSelectionProvider seleccion)
+        {
+            return seleccion.GetSelection().OfType<IEngineeringObject>().Any(ExportadorSd.EsExportable)
+                ? MenuStatus.Enabled
+                : MenuStatus.Hidden;
+        }
+
+        private void OnExportarSd(MenuSelectionProvider seleccion)
+        {
+            try
+            {
+                ExportadorSd.Ejecutar(_tia, seleccion.GetSelection().OfType<IEngineeringObject>().ToArray());
+            }
+            catch (Exception ex)
+            {
+                Dialogos.Informar("Error inesperado al exportar a SIMATIC SD:" + Environment.NewLine + ex.Message,
+                                  "Exportar SIMATIC SD", true);
             }
         }
 

@@ -168,9 +168,11 @@ namespace ExportarXml
                 Schemas = _esquemas,
                 DtdProcessing = DtdProcessing.Prohibit
             };
-            // Solo errores: el sobre <Document> no tiene esquema y daría avisos de "sin información de esquema"
             ajustes.ValidationEventHandler += (s, a) =>
             {
+                // El sobre <Document> no tiene XSD en TIA: ese mensaje sale siempre y no aporta nada.
+                // Lo de dentro (Interface, FlgNet, StructuredText...) sí se valida.
+                if (a.Exception != null && a.Exception.LineNumber <= 2 && a.Message.Contains("'Document'")) return;
                 if (a.Severity == XmlSeverityType.Error && avisos.Count <= MaxMensajes)
                     avisos.Add("Línea " + a.Exception.LineNumber + ", pos. " + a.Exception.LinePosition +
                                 " (XSD): " + a.Message);

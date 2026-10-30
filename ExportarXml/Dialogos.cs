@@ -23,9 +23,11 @@ namespace ExportarXml
                 using (OpenFileDialog dlg = new OpenFileDialog())
                 using (Form owner = Propietario())
                 {
-                    dlg.Title = "Selecciona los XML o fuentes a importar";
-                    dlg.Filter = "XML y fuentes (*.xml;*.scl;*.udt;*.db;*.awl)|*.xml;*.scl;*.udt;*.db;*.awl|" +
-                                 "SimaticML (*.xml)|*.xml|Fuentes externas (*.scl;*.udt;*.db;*.awl)|*.scl;*.udt;*.db;*.awl";
+                    dlg.Title = "Selecciona los XML, fuentes o documentos SD a importar";
+                    dlg.Filter = "Todo lo importable|*.xml;*.scl;*.udt;*.db;*.awl;*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd|" +
+                                 "SimaticML (*.xml)|*.xml|" +
+                                 "Fuentes externas (*.scl;*.udt;*.db;*.awl)|*.scl;*.udt;*.db;*.awl|" +
+                                 "SIMATIC SD (*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd)|*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd";
                     dlg.Multiselect = true;
                     dlg.RestoreDirectory = true; // si no, la carpeta elegida queda "en uso" mientras TIA esté abierto
                     return dlg.ShowDialog(owner) == DialogResult.OK ? dlg.FileNames : null;
