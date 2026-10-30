@@ -1,6 +1,6 @@
 # Tanda 1b: las cajas KOP aprendidas de la exportación real (24/24 TRUE en marcha)
 
-24 pruebas, una FC por caja, con la sintaxis SD exacta de la exportación `palclaude` (TIA V20). Dos nombres son deducidos por analogía y van marcados [DEDUCIDA]: `R_BitfieldCoil` (RESET_BF) y `FillBlockU` (UFILL_BLK).
+24 pruebas, una FC por caja, con la sintaxis SD exacta de una exportación real de TIA V20. Dos nombres son deducidos por analogía y van marcados [DEDUCIDA]: `R_BitfieldCoil` (RESET_BF) y `FillBlockU` (UFILL_BLK).
 
 Usa FC 42000..42024, DB 42900/42901, OB 128 y los DB de instancia `T5_Rt_L`, `T5_Ft_L`.
 
