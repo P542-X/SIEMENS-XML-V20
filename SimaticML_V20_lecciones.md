@@ -193,19 +193,6 @@ Llamada a FB con DB de instancia: `CallInfo` con `<Instance Scope="GlobalVariabl
 
 ---
 
-## 9. Datos del proyecto MES Pintura 2 que conviene recordar
-
-- La recepción por socket (`MES_Rockwell_Con` → `TCOMM_Allen_Bradley_V10` → `TCOMM_V1`, con TRCV) deja los datos en **`Cx_Rcv : Array[0..999] of Word`** del DB de instancia, que es **optimizado**. No es un `Array of Byte`.
-- Puertos: C1 = Estados (x0), C2 = Alarmas (x1). CPF: 2110 y 2111 en `MES_Rockwell_CPF_DB`. RECTIFICADORES: 2120 y 2121 en `MES_Rockwell_RECTIFICADORES_DB`.
-- Hay trama nueva cuando `"<DB instancia>".Cx_TCOMM.T_COMM.TRcvNdr` = 1. Es un Static Bool de `TCOMM_V1` y se lee desde fuera sin problema.
-- El Rockwell ya manda en orden Siemens (SWPB). Con TRCV sobre `Array of Word`, el byte 0 de la trama es el byte alto de `Rcv[0]`.
-- Para pasar `Array of Word` → tipo estructurado: **`Serialize`** (`Array of Word` → `Array of Byte`, en orden big-endian) y después **`Deserialize`** (bytes → UDT). Sin bucles. `Deserialize` no acepta directamente un `Array of Word`.
-- `MOVE_BLK_VARIANT` no sirve entre tipos distintos. `BLKMOV`, `PEEK` y `POKE` no sirven con origen optimizado.
-- Cabecera CentralAlarmas (64 B): `Socket_DIAG` es **WORD**. El bit de vida del Rockwell es `Socket_DIAG.%X8` (= DBX0.0), no `%X0`. Después vienen `Nombre[0..3]` (Int), `PuntoLectura`, `Spare`, `CodeResponse_MES`, `CodeResponse_Leg`, `Registro_Conexion` (DTL, byte 18) y `Spare_1[0..16]`.
-- Tamaños útiles: Alarmas 1664 B (cabecera + `Data_0..19`), Estados 184 B (cabecera + `Estados` + `Datos[0..19]`). El Rockwell manda siempre 2000 B.
-- Los DB de destino van con acceso **estándar**, con `Msg` en el offset 0 y detrás `Error` y `Contador`, para que los offsets coincidan con el estándar.
-
----
 
 ## 10. Checklist antes de importar
 
