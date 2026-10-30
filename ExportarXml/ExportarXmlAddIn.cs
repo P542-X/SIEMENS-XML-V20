@@ -38,8 +38,8 @@ namespace ExportarXml
         protected override void BuildContextMenuItems(ContextMenuAddInRoot raizMenu)
         {
             raizMenu.Items.AddActionItem<IEngineeringObject>("Exportar selección a XML", OnExportar, OnEstado);
-            raizMenu.Items.AddActionItem<IEngineeringObject>("Importar ficheros XML...", OnImportarFicheros, OnEstadoImportar);
-            raizMenu.Items.AddActionItem<IEngineeringObject>("Importar carpeta XML (con subcarpetas)...", OnImportarCarpeta, OnEstadoImportar);
+            raizMenu.Items.AddActionItem<IEngineeringObject>("Importar ficheros XML / fuentes...", OnImportarFicheros, OnEstadoImportar);
+            raizMenu.Items.AddActionItem<IEngineeringObject>("Importar carpeta XML / fuentes (con subcarpetas)...", OnImportarCarpeta, OnEstadoImportar);
         }
 
         // ---------- Importación ----------
@@ -78,10 +78,12 @@ namespace ExportarXml
                 if (destino == null) return;
                 string carpeta = Dialogos.ElegirCarpeta();
                 if (string.IsNullOrEmpty(carpeta)) return;
-                string[] ficheros = Directory.GetFiles(carpeta, "*.xml", SearchOption.AllDirectories);
+                string[] ficheros = Directory.GetFiles(carpeta, "*.*", SearchOption.AllDirectories)
+                    .Where(f => Importador.ExtensionesImportables.Contains(Path.GetExtension(f).ToLowerInvariant()))
+                    .ToArray();
                 if (ficheros.Length == 0)
                 {
-                    Dialogos.Informar("No hay ficheros .xml en esa carpeta.", "Importar XML", true);
+                    Dialogos.Informar("No hay ficheros .xml, .scl, .udt, .db ni .awl en esa carpeta.", "Importar XML", true);
                     return;
                 }
                 Importador.Ejecutar(_tia, destino, ficheros);

@@ -23,8 +23,9 @@ namespace ExportarXml
                 using (OpenFileDialog dlg = new OpenFileDialog())
                 using (Form owner = Propietario())
                 {
-                    dlg.Title = "Selecciona los XML a importar";
-                    dlg.Filter = "SimaticML (*.xml)|*.xml";
+                    dlg.Title = "Selecciona los XML o fuentes a importar";
+                    dlg.Filter = "XML y fuentes (*.xml;*.scl;*.udt;*.db;*.awl)|*.xml;*.scl;*.udt;*.db;*.awl|" +
+                                 "SimaticML (*.xml)|*.xml|Fuentes externas (*.scl;*.udt;*.db;*.awl)|*.scl;*.udt;*.db;*.awl";
                     dlg.Multiselect = true;
                     dlg.RestoreDirectory = true; // si no, la carpeta elegida queda "en uso" mientras TIA esté abierto
                     return dlg.ShowDialog(owner) == DialogResult.OK ? dlg.FileNames : null;
@@ -41,7 +42,7 @@ namespace ExportarXml
                 using (FolderBrowserDialog dlg = new FolderBrowserDialog())
                 using (Form owner = Propietario())
                 {
-                    dlg.Description = "Carpeta con los XML a importar (se incluyen las subcarpetas)";
+                    dlg.Description = "Carpeta con los XML o fuentes a importar (se incluyen las subcarpetas)";
                     dlg.ShowNewFolderButton = false;
                     if (Directory.Exists(_ultimaCarpeta)) dlg.SelectedPath = _ultimaCarpeta;
                     if (dlg.ShowDialog(owner) != DialogResult.OK) return null;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Siemens.Engineering;
 using Siemens.Engineering.Compiler;
@@ -10,14 +11,18 @@ using Siemens.Engineering.HW;
 using Siemens.Engineering.HW.Features;
 using Siemens.Engineering.SW;
 using Siemens.Engineering.SW.Blocks;
+using Siemens.Engineering.SW.ExternalSources;
 using Siemens.Engineering.SW.Tags;
 using Siemens.Engineering.SW.Types;
 
 namespace ExportarXml
 {
     /// <summary>
-    /// Importa XML (SimaticML) en el PLC del objeto seleccionado.
-    /// - Detecta solo qué es cada fichero (UDT, tabla de variables, FB, FC, OB, DB).
+    /// Importa XML (SimaticML) y fuentes externas (.scl, .udt, .db, .awl) en el PLC del objeto seleccionado.
+    /// - Detecta solo qué es cada fichero (UDT, tabla de variables, FB, FC, OB, DB, fuente).
+    /// - Antes de importar un XML lo comprueba con Validador: si incumple una regla conocida
+    ///   no se importa; los avisos de los XSD de TIA solo se apuntan en el resumen.
+    /// - Las fuentes se añaden a "Fuentes externas", se generan los bloques y se borra la fuente.
     /// - Orden: UDT > tablas > FB/FC > OB/DB global > DB de instancia, con varias
     ///   pasadas por si unos dependen de otros.
     /// - Si el objeto ya existe, pregunta si sobrescribir o saltar; al sobrescribir
@@ -28,7 +33,18 @@ namespace ExportarXml
     {
         private const string Titulo = "Importar XML";
 
-        private enum Tipo { Udt, TablaVariables, Bloque }
+        private enum Tipo { Udt, TablaVariables, Bloque, Fuente }
+
+        /// <summary>Extensiones de fuente externa que TIA sabe convertir en bloques.</summary>
+        public static readonly string[] ExtensionesFuente = { ".scl", ".udt", ".db", ".awl" };
+
+        /// <summary>Todo lo que se puede importar: XML + fuentes.</summary>
+        public static readonly string[] ExtensionesImportables = { ".xml", ".scl", ".udt", ".db", ".awl" };
+
+        private static bool EsFuente(string ruta)
+        {
+            return ExtensionesFuente.Contains(Path.GetExtension(ruta).ToLowerInvariant());
+        }
 
         private sealed class Elemento
         {
@@ -38,6 +54,10 @@ namespace ExportarXml
             public int Prioridad;
             public bool Existe;
             public string UltimoError;
+            /// <summary>Solo fuentes: bloques y tipos que declara (para saber si ya existen).</summary>
+            public List<string> Objetos = new List<string>();
+            /// <summary>Solo XML: avisos de los XSD de TIA (no bloquean la importación).</summary>
+            public List<string> Avisos = new List<string>();
         }
 
         // ---------- Destino de la importación ----------
@@ -99,6 +119,8 @@ namespace ExportarXml
             }
 
             StringBuilder log = new StringBuilder();
+            log.AppendLine(Validador.EstadoEsquemas());
+            log.AppendLine();
             int ignorados = 0;
             List<Elemento> elementos = new List<Elemento>();
             foreach (string ruta in rutas)
@@ -110,7 +132,11 @@ namespace ExportarXml
 
             if (elementos.Count == 0)
             {
-                Dialogos.Informar("Ninguno de los ficheros es un XML de TIA (SimaticML) que se pueda importar.", Titulo, true);
+                string rutaVacio = GuardarResumen(tia, "Ningún fichero se puede importar.", log);
+                Dialogos.Informar(
+                    "Ninguno de los ficheros se puede importar (ni XML SimaticML válido ni fuente externa)." +
+                    (rutaVacio != null ? Environment.NewLine + Environment.NewLine + "Detalle en:" + Environment.NewLine + rutaVacio : ""),
+                    Titulo, true);
                 return;
             }
 
@@ -121,7 +147,9 @@ namespace ExportarXml
             bool sobrescribir = false;
             if (existentes.Count > 0)
             {
-                string ejemplos = string.Join(", ", existentes.Take(6).Select(e => e.Nombre))
+                string ejemplos = string.Join(", ", existentes.Take(6).Select(e => e.Tipo == Tipo.Fuente
+                                                  ? e.Fichero.Name + " (" + string.Join(", ", e.Objetos.Where(o => ExisteObjeto(plc, o))) + ")"
+                                                  : e.Nombre))
                                   + (existentes.Count > 6 ? ", ..." : "");
                 Respuesta r = Dialogos.Preguntar(
                     "Ya existen " + existentes.Count + " de los " + elementos.Count + " objetos en \"" + plc.Name + "\":" +
@@ -168,6 +196,7 @@ namespace ExportarXml
                             importados++;
                             progreso = true;
                             log.AppendLine("OK       " + e.Nombre + "  <-  " + e.Fichero.FullName);
+                            foreach (string a in e.Avisos) log.AppendLine("         aviso XSD: " + a);
                         }
                         catch (Exception ex)
                         {
@@ -177,7 +206,10 @@ namespace ExportarXml
                 }
 
                 foreach (Elemento e in pendientes)
+                {
                     log.AppendLine("ERROR    " + e.Nombre + " -> " + (e.UltimoError ?? "cancelado"));
+                    foreach (string a in e.Avisos) log.AppendLine("         aviso XSD: " + a);
+                }
 
                 if (importados > 0 && !ea.IsCancellationRequested)
                 {
@@ -204,6 +236,8 @@ namespace ExportarXml
 
         private static Elemento Leer(string ruta, StringBuilder log)
         {
+            if (EsFuente(ruta)) return LeerFuente(ruta, log);
+
             try
             {
                 XElement raiz = XDocument.Load(ruta).Root;
@@ -224,7 +258,17 @@ namespace ExportarXml
                                    .Elements().FirstOrDefault(x => x.Name.LocalName == "Name")?.Value;
                 if (string.IsNullOrEmpty(nombre)) nombre = Path.GetFileNameWithoutExtension(ruta);
 
-                Elemento e = new Elemento { Fichero = new FileInfo(ruta), Nombre = nombre };
+                // Comprobación previa: si incumple una regla conocida, TIA lo va a rechazar
+                Validador.Resultado v = Validador.Comprobar(ruta);
+                if (v.Errores.Count > 0)
+                {
+                    log.AppendLine("NO VÁLIDO " + nombre + "  <-  " + ruta);
+                    foreach (string err in v.Errores) log.AppendLine("         " + err);
+                    foreach (string a in v.Avisos) log.AppendLine("         aviso XSD: " + a);
+                    return null;
+                }
+
+                Elemento e = new Elemento { Fichero = new FileInfo(ruta), Nombre = nombre, Avisos = v.Avisos };
                 switch (obj.Name.LocalName)
                 {
                     case "SW.Types.PlcStruct":   e.Tipo = Tipo.Udt;            e.Prioridad = 0; break;
@@ -248,6 +292,46 @@ namespace ExportarXml
             }
         }
 
+        // Cabeceras de una fuente: TYPE "x", FUNCTION_BLOCK "x", FUNCTION "x", DATA_BLOCK "x", ORGANIZATION_BLOCK "x"
+        private static readonly Regex Cabecera = new Regex(
+            @"^[ \t]*(TYPE|FUNCTION_BLOCK|FUNCTION|DATA_BLOCK|ORGANIZATION_BLOCK)[ \t]+(?:""([^""]+)""|([A-Za-z_][\w]*))",
+            RegexOptions.Multiline | RegexOptions.IgnoreCase);
+
+        private static Elemento LeerFuente(string ruta, StringBuilder log)
+        {
+            try
+            {
+                string texto = File.ReadAllText(ruta); // detecta BOM; sin BOM lo lee como UTF-8
+                List<Match> cabeceras = Cabecera.Matches(texto).Cast<Match>().ToList();
+                if (cabeceras.Count == 0)
+                {
+                    log.AppendLine("IGNORADO " + ruta + " (fuente sin TYPE / FUNCTION / FUNCTION_BLOCK / DATA_BLOCK / ORGANIZATION_BLOCK)");
+                    return null;
+                }
+
+                List<string> tipos = cabeceras.Select(c => c.Groups[1].Value.ToUpperInvariant()).ToList();
+                Elemento e = new Elemento
+                {
+                    Fichero = new FileInfo(ruta),
+                    Nombre = Path.GetFileName(ruta),
+                    Tipo = Tipo.Fuente,
+                    Objetos = cabeceras.Select(c => c.Groups[2].Success ? c.Groups[2].Value : c.Groups[3].Value).ToList()
+                };
+
+                // Mismo orden que el XML: tipos > FB/FC > OB/DB
+                if (tipos.All(t => t == "TYPE")) e.Prioridad = 0;
+                else if (tipos.All(t => t == "DATA_BLOCK" || t == "ORGANIZATION_BLOCK")) e.Prioridad = 3;
+                else e.Prioridad = 2;
+
+                return e;
+            }
+            catch (Exception ex)
+            {
+                log.AppendLine("IGNORADO " + ruta + " (no se puede leer: " + ex.Message + ")");
+                return null;
+            }
+        }
+
         // ---------- Búsqueda de objetos existentes ----------
 
         private static bool Existe(PlcSoftware plc, Elemento e)
@@ -257,8 +341,14 @@ namespace ExportarXml
                 case Tipo.Bloque:         return BuscarBloque(plc.BlockGroup, e.Nombre) != null;
                 case Tipo.Udt:            return BuscarTipo(plc.TypeGroup, e.Nombre) != null;
                 case Tipo.TablaVariables: return BuscarTabla(plc.TagTableGroup, e.Nombre) != null;
+                case Tipo.Fuente:         return e.Objetos.Any(o => ExisteObjeto(plc, o));
             }
             return false;
+        }
+
+        private static bool ExisteObjeto(PlcSoftware plc, string nombre)
+        {
+            return BuscarBloque(plc.BlockGroup, nombre) != null || BuscarTipo(plc.TypeGroup, nombre) != null;
         }
 
         private static PlcBlock BuscarBloque(PlcBlockGroup grupo, string nombre)
@@ -333,6 +423,32 @@ namespace ExportarXml
                     grupo.TagTables.Import(e.Fichero, opciones);
                     break;
                 }
+                case Tipo.Fuente:
+                    GenerarDesdeFuente(plc, e);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Añade la fuente a "Fuentes externas", genera sus bloques y borra la fuente. Los bloques
+        /// generados quedan en la raíz de "Bloques de programa" (Openness no deja elegir carpeta).
+        /// </summary>
+        private static void GenerarDesdeFuente(PlcSoftware plc, Elemento e)
+        {
+            PlcExternalSourceComposition fuentes = plc.ExternalSourceGroup.ExternalSources;
+
+            // Si quedó una fuente con el mismo nombre de una ejecución anterior, fuera
+            PlcExternalSource anterior = fuentes.Find(e.Fichero.Name);
+            if (anterior != null) anterior.Delete();
+
+            PlcExternalSource fuente = fuentes.CreateFromFile(e.Fichero.Name, e.Fichero.FullName);
+            try
+            {
+                fuente.GenerateBlocksFromSource();
+            }
+            finally
+            {
+                try { fuente.Delete(); } catch { /* si no se puede borrar, se queda en Fuentes externas */ }
             }
         }
 
