@@ -1,0 +1,22 @@
+﻿<root>
+  <Comment Id="MLC_40914_1">
+    <MultiLanguageText Lang="en-US">Add</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Add</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40914_2">
+    <MultiLanguageText Lang="en-US">Comprobar Add</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Add</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40914_3">
+    <MultiLanguageText Lang="en-US">Sub</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Sub</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40914_4">
+    <MultiLanguageText Lang="en-US">Comprobar Sub</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Sub</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40914_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 2: aritmética</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 2: aritmética</MultiLanguageText>
+  </Comment>
+</root>

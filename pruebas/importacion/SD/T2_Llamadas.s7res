@@ -1,0 +1,30 @@
+﻿<root>
+  <Comment Id="MLC_40917_1">
+    <MultiLanguageText Lang="en-US">FC SCL con entrada y salida</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">FC SCL con entrada y salida</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40917_2">
+    <MultiLanguageText Lang="en-US">Comprobar FC SCL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar FC SCL</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40917_3">
+    <MultiLanguageText Lang="en-US">FB KOP con DB de instancia</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">FB KOP con DB de instancia</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40917_4">
+    <MultiLanguageText Lang="en-US">Comprobar FB KOP</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar FB KOP</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40917_5">
+    <MultiLanguageText Lang="en-US">FB SCL con DB de instancia</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">FB SCL con DB de instancia</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40917_6">
+    <MultiLanguageText Lang="en-US">Comprobar FB SCL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar FB SCL</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40917_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 2: llamadas a FC y FB</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 2: llamadas a FC y FB</MultiLanguageText>
+  </Comment>
+</root>

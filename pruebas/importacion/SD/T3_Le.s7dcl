@@ -1,0 +1,25 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40935";
+    S7_BlockTitle := "MLC_40935_0"
+}
+FUNCTION "T3_Le" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40935_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Le{ SrcType := Int }(
+                IN1 := "T2_Datos".Int_5, 
+                IN2 := 5
+            )
+            Coil( "T3_Resultado".Le_ok )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

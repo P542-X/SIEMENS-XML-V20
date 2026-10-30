@@ -1,0 +1,60 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40919";
+    S7_BlockTitle := "MLC_40919_0"
+}
+FUNCTION_BLOCK "T2_FB_KOP"
+    VAR_INPUT 
+        Enable : Bool;
+    END_VAR
+    VAR_OUTPUT 
+        Q : Bool;
+    END_VAR
+    VAR 
+        {
+             InstructionName := "IEC_TIMER";
+             LibVersion := "1.0"
+        }
+        Tmr : IEC_TIMER;
+        Llamadas : DInt;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40919_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #Enable )
+            #Tmr.TON{ time_type := Time }(
+                PT := T#100MS, 
+                ET =>  
+            )
+            Coil( #Q )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40919_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Add{
+                Card := 2; 
+                Type := AUTO; 
+                DisableENO := TRUE
+            }(
+                IN1 := #Llamadas, 
+                IN2 := 1, 
+                OUT => #Llamadas
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION_BLOCK

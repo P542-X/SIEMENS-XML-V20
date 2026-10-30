@@ -10,6 +10,12 @@ publisher.log
 *.user
 *.suo
 
-# Exportaciones de prueba
+# Exportaciones e importaciones de TIA (no se suben)
+Export/
 Export_XML/
 Import_XML/
+*.zip
+
+# Proyectos de TIA Portal
+*.ap*
+

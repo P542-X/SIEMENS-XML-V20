@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_40934_1">
+    <MultiLanguageText Lang="en-US">Div</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Div</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40934_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40934_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 3: Div</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 3: Div</MultiLanguageText>
+  </Comment>
+</root>

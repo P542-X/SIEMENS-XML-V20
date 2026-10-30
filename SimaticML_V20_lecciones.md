@@ -1,6 +1,6 @@
 # Generar XML SimaticML para TIA Portal V20: lo aprendido
 
-Notas sacadas de generar a mano los bloques de recepción **Estandar CentralAlarmas** del PLC MES de Pintura 2 e importarlos con el Add-In **SIEMENS-XML-V20** (`P542-X/SIEMENS-XML-V20`).
+Notas sacadas de generar bloques a mano (y con IA) e importarlos en un S7-1500 con TIA Portal V20 mediante el Add-In **SIEMENS-XML-V20** (`P542-X/SIEMENS-XML-V20`). Todo lo que pone *comprobado* se ha importado y compilado de verdad.
 
 ---
 
@@ -71,7 +71,7 @@ Espacios de nombres que funcionan en V20:
 
 - FC: secciones `Input`, `Output`, `InOut`, `Temp`, `Constant` y `Return` con `<Member Name="Ret_Val" Datatype="Void" />`.
 - OB de ciclo: `<SecondaryType>ProgramCycle</SecondaryType>` y en `Input` los miembros `Initial_Call` y `Remanence` (`Datatype="Bool" Informative="true"`).
-- **Un OB de ciclo con número > 1 se ejecuta en cada ciclo detrás del OB1**, por orden de número. Sirve para añadir lógica sin tocar `Main` (aquí, OB123 detrás de `MES_Rockwell_Llamadas`).
+- **Un OB de ciclo con número > 1 se ejecuta en cada ciclo detrás del OB1**, por orden de número. Sirve para añadir lógica sin tocar `Main`.
 - Si al importar una FC el bloque que la llama queda en rojo: clic derecho en la caja → **Actualizar llamada de bloque**.
 
 ---
@@ -176,12 +176,12 @@ Llamada a FC sin parámetros:
 
 ```xml
 <Call UId="21">
-  <CallInfo Name="MES_CentralAlarmas_Recibir" BlockType="FC" />
+  <CallInfo Name="FC_Recibir" BlockType="FC" />
 </Call>
 <!-- Wire: <Powerrail /> → <NameCon UId="21" Name="en" /> -->
 ```
 
-Llamada a FB con DB de instancia: `CallInfo` con `<Instance Scope="GlobalVariable">` y un `<Parameter Name=… Section=… Type=…/>` por cada pin (ver `MES_Rockwell_Llamadas`).
+Llamada a FB con DB de instancia: `CallInfo` con `<Instance Scope="GlobalVariable">` y un `<Parameter Name=… Section=… Type=…/>` por cada pin.
 
 ### Errores de KOP vistos
 
@@ -203,3 +203,93 @@ Llamada a FB con DB de instancia: `CallInfo` con `<Instance Scope="GlobalVariabl
 5. ¿Los cables de salida van `NameCon` → `IdentCon`?
 6. ¿Pasa el XML por un parser sin errores?
 7. Tras importar: leer el `resumen_*.txt` y actualizar las llamadas en rojo.
+
+---
+
+## 11. Para KOP, mejor SIMATIC SD que SimaticML (no depende de la CPU)
+
+TIA V20 tiene un formato de texto para bloques, **SIMATIC SD**: `.s7dcl` (KOP), `.s7dcf` (FUP), `.s7dcs` (SCL) y `.s7dbd` (DB), más un `.s7res` con los textos. Openness lo exporta con `PlcBlock.ExportAsDocuments(carpeta, nombre)` y lo importa con `PlcBlockComposition.ImportFromDocuments(carpeta, nombre, ImportDocumentOptions.Override)`. **Para bloques solo admite `Override`**: con `None` falla (*"only supports the 'Override' option for blocks"*).
+
+**En SD las cajas van por nombre, sin versión.** TIA pone al importar la versión que corresponde a la CPU de destino, así que el mismo fichero vale para cualquier CPU (siempre que la instrucción exista en ese modelo). En SimaticML, en cambio, la versión va escrita (`Serialize` 2.2) y ata el XML a una CPU y firmware.
+
+Sintaxis confirmada con una exportación real de V20 (`referencia/SD/`):
+
+```
+{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_BlockNumber := "40031"          <- opcional: sin él, número automático
+}
+FUNCTION "FC_Recibir" : Void
+    VAR_TEMP
+        Buf : Array[0..1999] of Byte;
+        PosS : DInt;
+    END_VAR
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "DB_Origen".Nueva_Trama )
+            Move{
+                Card := 2;
+                DisableENO := FALSE
+            }(
+                IN := 0,
+                OUT1 => #PosS,
+                OUT2 => #PosD
+            )
+            Serialize{
+                src_type := Variant;
+                dest_type := Variant
+            }(
+                SRC_VARIABLE := "DB_Origen".Rcv,
+                Ret_Val => #RetS,
+                DEST_ARRAY => #Buf,
+                POS := #PosS
+            )
+            Add{
+                Card := 2;
+                Type := AUTO;
+                DisableENO := TRUE
+            }(
+                IN1 := "DB_Destino".Contador,
+                IN2 := 1,
+                OUT => "DB_Destino".Contador
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION
+```
+
+Reglas:
+
+- Las cajas de una rama van una detrás de otra dentro de `RUNG wire#powerrail … END_RUNG`; se encadenan por EN/ENO.
+- Las plantillas de la caja van entre `{ }` separadas por `;` (`Card`, `DisableENO`, `Type := AUTO`, `src_type`…). Son las mismas que los `TemplateValue` del XML, pero sin versión.
+- Parámetros: entradas e InOut con `:=`, salidas con `=>`. Pines en mayúsculas (`IN`, `OUT1`, `SRC_VARIABLE`), salvo `Ret_Val`.
+- Fichero en UTF-8 con BOM y saltos CRLF. Sin textos, el `.s7res` es solo `<root />`.
+- En esta exportación las redes no llevaban título ni comentario en el `.s7res`, aunque el XML importado sí los tenía: pendiente de ver cómo se escriben los textos en SD.
+
+Para aprender la sintaxis SD de cualquier caja: ponerla en un bloque, exportar a SD y guardar el fichero en `referencia/SD/`.
+
+## 12. `GenerateBlocksFromSource` no sobrescribe
+
+Si el bloque ya existe, al generar desde fuente se queda el código viejo sin dar error. Para sobrescribir hay que borrar antes el bloque (el Add-In v1.3.0 hace copia en XML antes de borrar). `ImportFromDocuments` con `Override` sí sobrescribe.
+
+## 13. Transacciones de Openness: una excepción las invalida
+
+Dentro de `ExclusiveAccess.Transaction(...)`, si **cualquier** llamada de Openness lanza una excepción (aunque se capture), `CommitOnDispose()` falla con *"Commit of a Transaction is not allowed after an exception is thrown due to potential project data corruption"* y todo se deshace. Para importar con reintentos (bloques que dependen de otros) hay que hacer un ensayo en una transacción que se deshace, apuntar el orden que funciona y repetirlo en otra transacción donde ya no falle nada.
+
+Además, en la prueba real **el Ctrl+Z de TIA no deshizo la importación** aunque la transacción se confirmó sin errores. El Add-In ya no usa transacciones: hace su propio deshacer (copia en XML de lo que sobrescribe, lista de lo nuevo y menú *Deshacer última importación*).
+
+## 14. SIMATIC SD: lo aprendido con las pruebas de importación (49 casos)
+
+- **Si un `.s7dcl` falla, TIA solo devuelve `Failure`**, sin línea ni motivo. Con construcciones dudosas: una por bloque.
+- **OR**: el punto de unión `wire#wN` va en medio de una rama (delante de la salida) y las otras ramas terminan en `END_RUNG wire#wN`. Empezar una rama con `RUNG wire#wN` cuando ese cable solo es destino rompe el bloque entero.
+- **`Type := AUTO` / `SrcType`** con todas las entradas constantes sin tipo: importa pero no compila (*"Please select a data type"*, *"At least one constant must be typed"*). Usar una variable o `INT#6`.
+- **FC con retorno** desde KOP: `Ret_Val =>` (TIA acepta también `RET_VAL =>`).
+- **DB de instancia** en SD: `DATA_BLOCK Nombre : FB_Nombre` + `END_DATA_BLOCK`, sin `.s7res`.
+- **`ImportFromDocuments`** solo admite `Override` en bloques.

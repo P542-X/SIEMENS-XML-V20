@@ -1,0 +1,46 @@
+﻿<root>
+  <Comment Id="MLC_40911_1">
+    <MultiLanguageText Lang="en-US">Contacto con constante TRUE</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Contacto con constante TRUE</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_2">
+    <MultiLanguageText Lang="en-US">Contacto negado sobre bit a FALSE</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Contacto negado sobre bit a FALSE</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_3">
+    <MultiLanguageText Lang="en-US">NOT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">NOT</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_4">
+    <MultiLanguageText Lang="en-US">Set</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Set</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_5">
+    <MultiLanguageText Lang="en-US">Comprobar Set</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Set</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_6">
+    <MultiLanguageText Lang="en-US">Set y Reset</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Set y Reset</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_7">
+    <MultiLanguageText Lang="en-US">Comprobar Reset</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Reset</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_8">
+    <MultiLanguageText Lang="en-US">Flanco positivo (PBox)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Flanco positivo (PBox)</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_9">
+    <MultiLanguageText Lang="en-US">Contactos en serie (AND)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Contactos en serie (AND)</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_10">
+    <MultiLanguageText Lang="en-US">Variable de la tabla de variables PLC</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Variable de la tabla de variables PLC</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40911_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 2: lógica de bits</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 2: lógica de bits</MultiLanguageText>
+  </Comment>
+</root>

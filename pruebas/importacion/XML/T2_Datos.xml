@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="Falso" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Siempre FALSE</MultiLanguageText></Comment><StartValue>false</StartValue></Member>
+          <Member Name="Verdadero" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Siempre TRUE</MultiLanguageText></Comment><StartValue>true</StartValue></Member>
+          <Member Name="Mem_Set" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Mem_Reset" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Mem_Flanco" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Int_5" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 5</MultiLanguageText></Comment><StartValue>5</StartValue></Member>
+          <Member Name="Word_1234" Datatype="Word" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 16#1234</MultiLanguageText></Comment><StartValue>16#1234</StartValue></Member>
+          <Member Name="Real_2_5" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 2.5</MultiLanguageText></Comment><StartValue>2.5</StartValue></Member>
+          <Member Name="DInt_100" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 100</MultiLanguageText></Comment><StartValue>100</StartValue></Member>
+          <Member Name="Move_1" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Move_2a" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Move_2b" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Swap_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Conv_Real" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Str_Hola" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Len_Hola" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Udt_A" Datatype="&quot;T2_UDT_Padre&quot;" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Origen de Serialize</MultiLanguageText></Comment></Member>
+          <Member Name="Udt_B" Datatype="&quot;T2_UDT_Padre&quot;" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Destino de Deserialize</MultiLanguageText></Comment></Member>
+          <Member Name="Buffer" Datatype="Array[0..99] of Byte" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="PosS" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="PosD" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_Ser" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_Des" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Calc_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Add_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Sub_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Concat_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Len_Concat" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="P_Val" Datatype="UInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Posición VAL_STRG</MultiLanguageText></Comment><StartValue>1</StartValue></Member>
+          <Member Name="P_Strg" Datatype="UInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Posición STRG_VAL</MultiLanguageText></Comment><StartValue>1</StartValue></Member>
+          <Member Name="Val_Str" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Strg_Int" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Str_20" Datatype="String[20]" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="MaxLen_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Str_Xyz" Datatype="String" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 'XYZ'</MultiLanguageText></Comment><StartValue>'XYZ'</StartValue></Member>
+          <Member Name="Cnt_Chars" Datatype="UInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Chars" Datatype="Array[0..9] of Char" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Tmr" Datatype="IEC_TIMER" Version="1.0" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">TON de T2_Tiempo</MultiLanguageText></Comment></Member>
+          <Member Name="Rd_Ret" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Rd_Dtl" Datatype="DTL" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Doble_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="FbKop_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="SclFb_Suma" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Lista" Datatype="Array[0..2] of &quot;T2_UDT_Hijo&quot;" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Array de UDT (SCL)</MultiLanguageText></Comment></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T2_Datos</Name>
+      <Namespace />
+      <Number>40921</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Prueba IA 2: datos de las pruebas</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Prueba IA 2: datos de las pruebas</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

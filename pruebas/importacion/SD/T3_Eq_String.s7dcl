@@ -1,0 +1,25 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40938";
+    S7_BlockTitle := "MLC_40938_0"
+}
+FUNCTION "T3_Eq_String" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40938_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := String }(
+                IN1 := "T2_Datos".Str_Xyz, 
+                IN2 := 'XYZ'
+            )
+            Coil( "T3_Resultado".EqString_ok )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

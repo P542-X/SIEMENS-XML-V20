@@ -23,8 +23,9 @@ namespace ExportarXml
                 using (OpenFileDialog dlg = new OpenFileDialog())
                 using (Form owner = Propietario())
                 {
-                    dlg.Title = "Selecciona los XML, fuentes o documentos SD a importar";
-                    dlg.Filter = "Todo lo importable|*.xml;*.scl;*.udt;*.db;*.awl;*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd|" +
+                    dlg.Title = "Selecciona lo que quieres importar (XML, SD, fuentes o un paquete .zip)";
+                    dlg.Filter = "Todo lo importable|*.xml;*.scl;*.udt;*.db;*.awl;*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd;*.zip|" +
+                                 "Paquete exportado (*.zip)|*.zip|" +
                                  "SimaticML (*.xml)|*.xml|" +
                                  "Fuentes externas (*.scl;*.udt;*.db;*.awl)|*.scl;*.udt;*.db;*.awl|" +
                                  "SIMATIC SD (*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd)|*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd";

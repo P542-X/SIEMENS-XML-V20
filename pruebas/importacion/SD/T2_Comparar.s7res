@@ -1,0 +1,30 @@
+﻿<root>
+  <Comment Id="MLC_40912_1">
+    <MultiLanguageText Lang="en-US">Eq Int</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Eq Int</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40912_2">
+    <MultiLanguageText Lang="en-US">Ne Word</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Ne Word</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40912_3">
+    <MultiLanguageText Lang="en-US">Gt Real</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Gt Real</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40912_4">
+    <MultiLanguageText Lang="en-US">Ge DInt</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Ge DInt</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40912_5">
+    <MultiLanguageText Lang="en-US">Lt Int</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Lt Int</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40912_6">
+    <MultiLanguageText Lang="en-US">Dos comparaciones en serie</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Dos comparaciones en serie</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40912_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 2: comparaciones</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 2: comparaciones</MultiLanguageText>
+  </Comment>
+</root>

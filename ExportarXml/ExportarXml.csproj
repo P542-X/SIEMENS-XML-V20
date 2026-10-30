@@ -14,11 +14,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Instrucciones para la IA: van dentro de la DLL y se copian a cada exportación -->
+    <EmbeddedResource Include="IA\INSTRUCCIONES_IA.md" LogicalName="INSTRUCCIONES_IA.md" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Siemens.Engineering.AddIn">
       <HintPath>$(TiaAddInApi)\Siemens.Engineering.AddIn.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 

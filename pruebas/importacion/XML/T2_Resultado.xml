@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="T01_Contacto" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Contacto NA con TRUE</MultiLanguageText></Comment></Member>
+          <Member Name="T02_Contacto_negado" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Contacto NC sobre bit FALSE</MultiLanguageText></Comment></Member>
+          <Member Name="T03_Not" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Inversor NOT</MultiLanguageText></Comment></Member>
+          <Member Name="T04_Set" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Bobina S (set)</MultiLanguageText></Comment></Member>
+          <Member Name="T05_Reset" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Bobina R (reset)</MultiLanguageText></Comment></Member>
+          <Member Name="T06_Flanco_P" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Flanco positivo PBox (un ciclo, enclavado)</MultiLanguageText></Comment></Member>
+          <Member Name="T07_Serie_AND" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Dos contactos en serie</MultiLanguageText></Comment></Member>
+          <Member Name="T08_Variable_PLC" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Variable %M de la tabla T2_Variables</MultiLanguageText></Comment></Member>
+          <Member Name="T09_Eq_Int" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Igual (Int)</MultiLanguageText></Comment></Member>
+          <Member Name="T10_Ne_Word" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Distinto (Word)</MultiLanguageText></Comment></Member>
+          <Member Name="T11_Gt_Real" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Mayor (Real)</MultiLanguageText></Comment></Member>
+          <Member Name="T12_Ge_DInt" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Mayor o igual (DInt)</MultiLanguageText></Comment></Member>
+          <Member Name="T13_Lt_Int" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Menor (Int)</MultiLanguageText></Comment></Member>
+          <Member Name="T14_Rango" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Dos comparaciones en serie (rango)</MultiLanguageText></Comment></Member>
+          <Member Name="T15_Move" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Move (1 salida)</MultiLanguageText></Comment></Member>
+          <Member Name="T16_Move_2_salidas" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Move (2 salidas)</MultiLanguageText></Comment></Member>
+          <Member Name="T17_Swap" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Swap de bytes (Word)</MultiLanguageText></Comment></Member>
+          <Member Name="T18_Convert" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Convert Int -&gt; Real</MultiLanguageText></Comment></Member>
+          <Member Name="T19_S_Move_LEN" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">S_Move de String y LEN</MultiLanguageText></Comment></Member>
+          <Member Name="T20_Serialize_Deserialize" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Serialize + Deserialize de un UDT anidado</MultiLanguageText></Comment></Member>
+          <Member Name="T21_Calculate" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Calculate (IN1*IN2)+IN3</MultiLanguageText></Comment></Member>
+          <Member Name="T22_Add" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Suma (Add)</MultiLanguageText></Comment></Member>
+          <Member Name="T23_Sub" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Resta (Sub)</MultiLanguageText></Comment></Member>
+          <Member Name="T24_CONCAT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">CONCAT de dos String</MultiLanguageText></Comment></Member>
+          <Member Name="T25_VAL_STRG_STRG_VAL" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Número -&gt; texto -&gt; número</MultiLanguageText></Comment></Member>
+          <Member Name="T26_MAX_LEN" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">MAX_LEN de String[20]</MultiLanguageText></Comment></Member>
+          <Member Name="T27_Strg_TO_Chars" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">String -&gt; Array of Char</MultiLanguageText></Comment></Member>
+          <Member Name="T28_TON" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">TON (IEC_TIMER en DB global)</MultiLanguageText></Comment></Member>
+          <Member Name="T29_RD_SYS_T" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Leer hora del sistema (DTL)</MultiLanguageText></Comment></Member>
+          <Member Name="T30_Llamada_FC" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Llamada a FC SCL con parámetros</MultiLanguageText></Comment></Member>
+          <Member Name="T31_Llamada_FB_KOP" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">FB KOP (SD) con DB de instancia (SD) y TON interno</MultiLanguageText></Comment></Member>
+          <Member Name="T32_Llamada_FB_SCL" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">FB SCL (fuente) con DB de instancia</MultiLanguageText></Comment></Member>
+          <Member Name="T33_SCL_IF" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: IF / ELSIF / ELSE</MultiLanguageText></Comment></Member>
+          <Member Name="T34_SCL_CASE" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: CASE</MultiLanguageText></Comment></Member>
+          <Member Name="T35_SCL_FOR_WHILE" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: FOR y WHILE</MultiLanguageText></Comment></Member>
+          <Member Name="T36_SCL_String" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: CONCAT, LEN, LEFT</MultiLanguageText></Comment></Member>
+          <Member Name="T37_SCL_Real" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: SQRT y operaciones Real</MultiLanguageText></Comment></Member>
+          <Member Name="T38_SCL_Slice" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: acceso a bit %X de un Word</MultiLanguageText></Comment></Member>
+          <Member Name="T39_SCL_Funcion" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: llamada a FC con valor de retorno</MultiLanguageText></Comment></Member>
+          <Member Name="T40_SCL_Array_UDT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: array de UDT</MultiLanguageText></Comment></Member>
+          <Member Name="T41_SCL_Conversion" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCL: conversiones de tipo</MultiLanguageText></Comment></Member>
+          <Member Name="N01_OR_ramas" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[NUEVA] OR con dos ramas en paralelo</MultiLanguageText></Comment></Member>
+          <Member Name="N02_Mul" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[NUEVA] Multiplicación (Mul)</MultiLanguageText></Comment></Member>
+          <Member Name="N03_Div" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[NUEVA] División (Div)</MultiLanguageText></Comment></Member>
+          <Member Name="N04_Le" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[NUEVA] Menor o igual (Le)</MultiLanguageText></Comment></Member>
+          <Member Name="N05_FC_retorno_KOP" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[NUEVA] Llamada KOP a FC con valor de retorno</MultiLanguageText></Comment></Member>
+          <Member Name="Base_OK" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas base correctas</MultiLanguageText></Comment></Member>
+          <Member Name="Base_Total" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas base</MultiLanguageText></Comment><StartValue>41</StartValue></Member>
+          <Member Name="Base_Todo_OK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">TRUE si todas las base están bien</MultiLanguageText></Comment></Member>
+          <Member Name="Nuevas_OK" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas nuevas correctas</MultiLanguageText></Comment></Member>
+          <Member Name="Nuevas_Total" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas nuevas</MultiLanguageText></Comment><StartValue>5</StartValue></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T2_Resultado</Name>
+      <Namespace />
+      <Number>40923</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Prueba IA 2: un Bool por prueba. Base_Todo_OK = todo correcto</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Prueba IA 2: un Bool por prueba. Base_Todo_OK = todo correcto</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

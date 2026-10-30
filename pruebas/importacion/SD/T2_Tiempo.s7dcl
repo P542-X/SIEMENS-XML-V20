@@ -1,0 +1,60 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40916";
+    S7_BlockTitle := "MLC_40916_0"
+}
+FUNCTION "T2_Tiempo" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40916_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            "T2_Datos".Tmr.TON{ time_type := Time }(
+                PT := T#100MS, 
+                ET =>  
+            )
+            Coil( "T2_Resultado".T28_TON )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40916_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            RD_SYS_T{ date_type := DTL }(
+                RET_VAL => "T2_Datos".Rd_Ret, 
+                OUT => "T2_Datos".Rd_Dtl
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40916_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Rd_Ret, 
+                IN2 := 0
+            )
+            Gt{ SrcType := UInt }(
+                IN1 := "T2_Datos".Rd_Dtl.YEAR, 
+                IN2 := 2000
+            )
+            Coil( "T2_Resultado".T29_RD_SYS_T )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

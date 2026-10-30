@@ -1,0 +1,197 @@
+﻿FUNCTION "T2_SCL_Suma" : Int
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT
+      A : Int;
+      B : Int;
+   END_VAR
+
+BEGIN
+	#T2_SCL_Suma := #A + #B;
+END_FUNCTION
+
+FUNCTION "T2_SCL_Doble" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT
+      Entrada : Int;
+   END_VAR
+   VAR_OUTPUT
+      Salida : Int;
+   END_VAR
+
+BEGIN
+	#Salida := #Entrada * 2;
+END_FUNCTION
+
+FUNCTION_BLOCK "T2_SCL_FB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_INPUT
+      N : Int;
+   END_VAR
+   VAR_OUTPUT
+      Suma : Int;
+   END_VAR
+   VAR
+      Tmr : TON_TIME;
+      Llamadas : DInt;
+   END_VAR
+   VAR_TEMP
+      i : Int;
+      acc : Int;
+   END_VAR
+
+BEGIN
+	REGION Suma 1..N
+	    #acc := 0;
+	    FOR #i := 1 TO #N DO
+	        #acc := #acc + #i;
+	    END_FOR;
+	    #Suma := #acc;
+	END_REGION
+	
+	#Tmr(IN := TRUE, PT := T#100MS);
+	#Llamadas := #Llamadas + 1;
+END_FUNCTION_BLOCK
+
+DATA_BLOCK "T2_SCL_FB_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+"T2_SCL_FB"
+
+BEGIN
+
+END_DATA_BLOCK
+
+FUNCTION "T2_SCL_Pruebas" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      n : Int;
+      r : Real;
+      s : String;
+      w : Word;
+      d : DInt;
+   END_VAR
+
+BEGIN
+	// IF / ELSIF / ELSE
+	IF "T2_Datos".Int_5 > 10 THEN
+	    "T2_Resultado".T33_SCL_IF := FALSE;
+	ELSIF "T2_Datos".Int_5 = 5 THEN
+	    "T2_Resultado".T33_SCL_IF := TRUE;
+	ELSE
+	    "T2_Resultado".T33_SCL_IF := FALSE;
+	END_IF;
+	
+	// CASE
+	CASE "T2_Datos".Int_5 OF
+	    1..4:
+	        "T2_Resultado".T34_SCL_CASE := FALSE;
+	    5:
+	        "T2_Resultado".T34_SCL_CASE := TRUE;
+	    ELSE
+	        "T2_Resultado".T34_SCL_CASE := FALSE;
+	END_CASE;
+	
+	// FOR y WHILE
+	#n := 0;
+	FOR #i := 1 TO 10 DO
+	    #n := #n + 1;
+	END_FOR;
+	WHILE #n < 15 DO
+	    #n := #n + 1;
+	END_WHILE;
+	"T2_Resultado".T35_SCL_FOR_WHILE := #n = 15;
+	
+	// Cadenas
+	#s := CONCAT(IN1 := 'PLC', IN2 := '-IA');
+	"T2_Resultado".T36_SCL_String := LEN(#s) = 6 AND LEFT(IN := #s, L := 3) = 'PLC';
+	
+	// Real
+	#r := SQRT(16.0) * "T2_Datos".Real_2_5;
+	"T2_Resultado".T37_SCL_Real := ABS(#r - 10.0) < 0.001;
+	
+	// Bit de un Word
+	#w := "T2_Datos".Word_1234;
+	"T2_Resultado".T38_SCL_Slice := #w.%X2 AND NOT #w.%X0;
+	
+	// Función con retorno
+	"T2_Resultado".T39_SCL_Funcion := "T2_SCL_Suma"(A := 2, B := 3) = 5;
+	
+	// Array de UDT
+	FOR #i := 0 TO 2 DO
+	    "T2_Datos".Lista[#i].Valor := #i * 10;
+	END_FOR;
+	"T2_Resultado".T40_SCL_Array_UDT := "T2_Datos".Lista[2].Valor = 20;
+	
+	// Conversiones
+	#d := INT_TO_DINT("T2_Datos".Int_5) * 1000;
+	#r := DINT_TO_REAL(#d) / 2.0;
+	"T2_Resultado".T41_SCL_Conversion := REAL_TO_INT(#r) = 2500;
+END_FUNCTION
+
+FUNCTION "T2_Contar_OK" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      n : Int;
+      k : Int;
+   END_VAR
+
+BEGIN
+	#n := 0;
+	IF "T2_Resultado".T01_Contacto THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T02_Contacto_negado THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T03_Not THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T04_Set THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T05_Reset THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T06_Flanco_P THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T07_Serie_AND THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T08_Variable_PLC THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T09_Eq_Int THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T10_Ne_Word THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T11_Gt_Real THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T12_Ge_DInt THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T13_Lt_Int THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T14_Rango THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T15_Move THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T16_Move_2_salidas THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T17_Swap THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T18_Convert THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T19_S_Move_LEN THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T20_Serialize_Deserialize THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T21_Calculate THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T22_Add THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T23_Sub THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T24_CONCAT THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T25_VAL_STRG_STRG_VAL THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T26_MAX_LEN THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T27_Strg_TO_Chars THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T28_TON THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T29_RD_SYS_T THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T30_Llamada_FC THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T31_Llamada_FB_KOP THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T32_Llamada_FB_SCL THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T33_SCL_IF THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T34_SCL_CASE THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T35_SCL_FOR_WHILE THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T36_SCL_String THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T37_SCL_Real THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T38_SCL_Slice THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T39_SCL_Funcion THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T40_SCL_Array_UDT THEN #n := #n + 1; END_IF;
+	IF "T2_Resultado".T41_SCL_Conversion THEN #n := #n + 1; END_IF;
+	"T2_Resultado".Base_OK := #n;
+	"T2_Resultado".Base_Todo_OK := #n = "T2_Resultado".Base_Total;
+	#k := 0;
+	IF "T2_Resultado".N01_OR_ramas THEN #k := #k + 1; END_IF;
+	IF "T2_Resultado".N02_Mul THEN #k := #k + 1; END_IF;
+	IF "T2_Resultado".N03_Div THEN #k := #k + 1; END_IF;
+	IF "T2_Resultado".N04_Le THEN #k := #k + 1; END_IF;
+	IF "T2_Resultado".N05_FC_retorno_KOP THEN #k := #k + 1; END_IF;
+	"T2_Resultado".Nuevas_OK := #k;
+END_FUNCTION

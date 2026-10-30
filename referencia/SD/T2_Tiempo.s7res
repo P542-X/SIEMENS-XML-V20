@@ -1,0 +1,18 @@
+﻿<root>
+  <Comment Id="MLC_40916_1">
+    <MultiLanguageText Lang="en-US">TON en DB global</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TON en DB global</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40916_2">
+    <MultiLanguageText Lang="en-US">RD_SYS_T</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">RD_SYS_T</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40916_3">
+    <MultiLanguageText Lang="en-US">Comprobar RD_SYS_T</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar RD_SYS_T</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40916_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 2: temporizador y reloj</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 2: temporizador y reloj</MultiLanguageText>
+  </Comment>
+</root>

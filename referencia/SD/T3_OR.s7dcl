@@ -1,0 +1,26 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40931";
+    S7_BlockTitle := "MLC_40931_0"
+}
+FUNCTION "T3_OR" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40931_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T2_Datos".Falso )
+            wire#w1
+            Coil( "T3_Resultado".OR_ok )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( True )
+        END_RUNG wire#w1
+
+    END_NETWORK
+
+END_FUNCTION

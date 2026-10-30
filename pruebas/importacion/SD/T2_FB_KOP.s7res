@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_40919_1">
+    <MultiLanguageText Lang="en-US">TON multiinstancia</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TON multiinstancia</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40919_2">
+    <MultiLanguageText Lang="en-US">Contador de llamadas</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Contador de llamadas</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40919_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 2: FB en KOP con TON multiinstancia</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 2: FB en KOP con TON multiinstancia</MultiLanguageText>
+  </Comment>
+</root>

@@ -1,0 +1,8 @@
+﻿        {
+           S7_Author := "IA";
+           S7_BlockNumber := "40920";
+           S7_Optimized := "TRUE";
+           S7_StandardRetain := "FALSE"
+        }
+    DATA_BLOCK T2_FB_KOP_DB : T2_FB_KOP
+    END_DATA_BLOCK

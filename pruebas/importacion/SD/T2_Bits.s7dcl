@@ -1,0 +1,137 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40911";
+    S7_BlockTitle := "MLC_40911_0"
+}
+FUNCTION "T2_Bits" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Coil( "T2_Resultado".T01_Contacto )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            I_Contact( "T2_Datos".Falso )
+            Coil( "T2_Resultado".T02_Contacto_negado )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T2_Datos".Falso )
+            Not()
+            Coil( "T2_Resultado".T03_Not )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_4"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            S_Coil( "T2_Datos".Mem_Set )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_5"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T2_Datos".Mem_Set )
+            Coil( "T2_Resultado".T04_Set )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_6"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            S_Coil( "T2_Datos".Mem_Reset )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( True )
+            R_Coil( "T2_Datos".Mem_Reset )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_7"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            I_Contact( "T2_Datos".Mem_Reset )
+            Coil( "T2_Resultado".T05_Reset )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_8"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            PBox( "T2_Datos".Mem_Flanco )
+            S_Coil( "T2_Resultado".T06_Flanco_P )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_9"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Contact( "T2_Datos".Verdadero )
+            Coil( "T2_Resultado".T07_Serie_AND )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_10"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            I_Contact( "T2_M_Falso" )
+            Coil( "T2_Resultado".T08_Variable_PLC )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

@@ -1,0 +1,66 @@
+﻿<root>
+  <Comment Id="MLC_40913_1">
+    <MultiLanguageText Lang="en-US">Move</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Move</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_2">
+    <MultiLanguageText Lang="en-US">Comprobar Move</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Move</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_3">
+    <MultiLanguageText Lang="en-US">Move con 2 salidas</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Move con 2 salidas</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_4">
+    <MultiLanguageText Lang="en-US">Comprobar Move 2 salidas</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Move 2 salidas</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_5">
+    <MultiLanguageText Lang="en-US">Swap</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Swap</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_6">
+    <MultiLanguageText Lang="en-US">Comprobar Swap</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Swap</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_7">
+    <MultiLanguageText Lang="en-US">Convert Int a Real</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Convert Int a Real</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_8">
+    <MultiLanguageText Lang="en-US">Comprobar Convert</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Convert</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_9">
+    <MultiLanguageText Lang="en-US">S_Move y LEN</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">S_Move y LEN</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_10">
+    <MultiLanguageText Lang="en-US">Comprobar S_Move</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar S_Move</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_11">
+    <MultiLanguageText Lang="en-US">Valor de origen para Serialize</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Valor de origen para Serialize</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_12">
+    <MultiLanguageText Lang="en-US">Serialize y Deserialize</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Serialize y Deserialize</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_13">
+    <MultiLanguageText Lang="en-US">Comprobar Serialize</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Serialize</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_14">
+    <MultiLanguageText Lang="en-US">Calculate</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Calculate</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_15">
+    <MultiLanguageText Lang="en-US">Comprobar Calculate</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Calculate</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40913_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 2: mover y convertir</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 2: mover y convertir</MultiLanguageText>
+  </Comment>
+</root>

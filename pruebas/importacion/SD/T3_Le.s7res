@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_40935_1">
+    <MultiLanguageText Lang="en-US">Le</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Le</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40935_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 3: Le</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 3: Le</MultiLanguageText>
+  </Comment>
+</root>

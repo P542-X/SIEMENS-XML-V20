@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_40938_1">
+    <MultiLanguageText Lang="en-US">Eq String</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Eq String</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40938_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 3: comparar String</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 3: comparar String</MultiLanguageText>
+  </Comment>
+</root>

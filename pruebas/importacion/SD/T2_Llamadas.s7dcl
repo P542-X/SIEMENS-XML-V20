@@ -1,0 +1,94 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40917";
+    S7_BlockTitle := "MLC_40917_0"
+}
+FUNCTION "T2_Llamadas" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40917_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+"T2_SCL_Doble"(
+                Entrada := 21, 
+                Salida => "T2_Datos".Doble_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40917_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Doble_Out, 
+                IN2 := 42
+            )
+            Coil( "T2_Resultado".T30_Llamada_FC )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40917_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+"T2_FB_KOP_DB"(
+                Enable := True, 
+                Q => "T2_Datos".FbKop_Q
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40917_4"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T2_Datos".FbKop_Q )
+            Coil( "T2_Resultado".T31_Llamada_FB_KOP )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40917_5"
+    }
+    NETWORK
+        RUNG wire#powerrail
+"T2_SCL_FB_DB"(
+                N := 5, 
+                Suma => "T2_Datos".SclFb_Suma
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40917_6"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".SclFb_Suma, 
+                IN2 := 15
+            )
+            Coil( "T2_Resultado".T32_Llamada_FB_SCL )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

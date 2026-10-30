@@ -1,0 +1,104 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40912";
+    S7_BlockTitle := "MLC_40912_0"
+}
+FUNCTION "T2_Comparar" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40912_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Int_5, 
+                IN2 := 5
+            )
+            Coil( "T2_Resultado".T09_Eq_Int )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40912_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Ne{ SrcType := Word }(
+                IN1 := "T2_Datos".Word_1234, 
+                IN2 := 16#0000
+            )
+            Coil( "T2_Resultado".T10_Ne_Word )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40912_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Gt{ SrcType := Real }(
+                IN1 := "T2_Datos".Real_2_5, 
+                IN2 := 1.0
+            )
+            Coil( "T2_Resultado".T11_Gt_Real )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40912_4"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Ge{ SrcType := DInt }(
+                IN1 := "T2_Datos".DInt_100, 
+                IN2 := 100
+            )
+            Coil( "T2_Resultado".T12_Ge_DInt )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40912_5"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Lt{ SrcType := Int }(
+                IN1 := "T2_Datos".Int_5, 
+                IN2 := 10
+            )
+            Coil( "T2_Resultado".T13_Lt_Int )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40912_6"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Ge{ SrcType := Int }(
+                IN1 := "T2_Datos".Int_5, 
+                IN2 := 1
+            )
+            Lt{ SrcType := Int }(
+                IN1 := "T2_Datos".Int_5, 
+                IN2 := 9
+            )
+            Coil( "T2_Resultado".T14_Rango )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

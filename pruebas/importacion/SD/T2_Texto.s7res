@@ -1,0 +1,42 @@
+﻿<root>
+  <Comment Id="MLC_40915_1">
+    <MultiLanguageText Lang="en-US">CONCAT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">CONCAT</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_2">
+    <MultiLanguageText Lang="en-US">Comprobar CONCAT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar CONCAT</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_3">
+    <MultiLanguageText Lang="en-US">VAL_STRG y STRG_VAL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">VAL_STRG y STRG_VAL</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_4">
+    <MultiLanguageText Lang="en-US">Reponer posiciones P</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Reponer posiciones P</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_5">
+    <MultiLanguageText Lang="en-US">Comprobar VAL_STRG / STRG_VAL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar VAL_STRG / STRG_VAL</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_6">
+    <MultiLanguageText Lang="en-US">MAX_LEN</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">MAX_LEN</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_7">
+    <MultiLanguageText Lang="en-US">Comprobar MAX_LEN</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar MAX_LEN</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_8">
+    <MultiLanguageText Lang="en-US">Strg_TO_Chars</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Strg_TO_Chars</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_9">
+    <MultiLanguageText Lang="en-US">Comprobar Strg_TO_Chars</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Strg_TO_Chars</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40915_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 2: cadenas de texto</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 2: cadenas de texto</MultiLanguageText>
+  </Comment>
+</root>

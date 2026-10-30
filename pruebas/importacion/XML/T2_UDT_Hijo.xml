@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Types.PlcStruct ID="0">
+    <AttributeList>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="None">
+          <Member Name="Valor" Datatype="Int"><Comment><MultiLanguageText Lang="es-ES">Valor</MultiLanguageText></Comment></Member>
+          <Member Name="Texto" Datatype="String[10]"><Comment><MultiLanguageText Lang="es-ES">Texto</MultiLanguageText></Comment></Member>
+        </Section>
+      </Sections></Interface>
+      <Name>T2_UDT_Hijo</Name>
+      <Namespace />
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Prueba IA 2: UDT hijo</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Prueba IA 2: UDT hijo</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Types.PlcStruct>
+</Document>

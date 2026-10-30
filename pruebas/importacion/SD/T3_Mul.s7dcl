@@ -1,0 +1,45 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40933";
+    S7_BlockTitle := "MLC_40933_0"
+}
+FUNCTION "T3_Mul" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40933_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Mul{
+                Card := 2; 
+                Type := AUTO; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T2_Datos".Int_5, 
+                IN2 := 7, 
+                OUT => "T3_Datos".Mul_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40933_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T3_Datos".Mul_Out, 
+                IN2 := 35
+            )
+            Coil( "T3_Resultado".Mul_ok )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

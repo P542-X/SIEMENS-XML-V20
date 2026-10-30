@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_40931_1">
+    <MultiLanguageText Lang="en-US">OR</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">OR</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40931_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 3: OR (dos ramas en paralelo)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 3: OR (dos ramas en paralelo)</MultiLanguageText>
+  </Comment>
+</root>

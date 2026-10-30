@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_40933_1">
+    <MultiLanguageText Lang="en-US">Mul</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Mul</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40933_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_40933_0">
+    <MultiLanguageText Lang="en-US">Prueba IA 3: Mul</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Prueba IA 3: Mul</MultiLanguageText>
+  </Comment>
+</root>

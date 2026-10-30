@@ -1,0 +1,300 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40913";
+    S7_BlockTitle := "MLC_40913_0"
+}
+FUNCTION "T2_Mover" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 1; 
+                DisableENO := TRUE
+            }(
+                IN := 42, 
+                OUT1 => "T2_Datos".Move_1
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Move_1, 
+                IN2 := 42
+            )
+            Coil( "T2_Resultado".T15_Move )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 2; 
+                DisableENO := TRUE
+            }(
+                IN := 7, 
+                OUT1 => "T2_Datos".Move_2a, 
+                OUT2 => "T2_Datos".Move_2b
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_4"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Move_2a, 
+                IN2 := 7
+            )
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Move_2b, 
+                IN2 := 7
+            )
+            Coil( "T2_Resultado".T16_Move_2_salidas )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_5"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Swap{
+                SrcType := Word; 
+                DisableENO := TRUE
+            }(
+                IN := 16#1234, 
+                OUT => "T2_Datos".Swap_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_6"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Word }(
+                IN1 := "T2_Datos".Swap_Out, 
+                IN2 := 16#3412
+            )
+            Coil( "T2_Resultado".T17_Swap )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_7"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Convert{
+                SrcType := Int; 
+                DestType := Real; 
+                DisableENO := TRUE
+            }(
+                IN := 7, 
+                OUT => "T2_Datos".Conv_Real
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_8"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Real }(
+                IN1 := "T2_Datos".Conv_Real, 
+                IN2 := 7.0
+            )
+            Coil( "T2_Resultado".T18_Convert )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_9"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            S_Move{ DisableENO := TRUE }(
+                IN := 'HOLA', 
+                OUT => "T2_Datos".Str_Hola
+            )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( True )
+            LEN{
+                str_type := String; 
+                return_type := Int; 
+                DisableENO := TRUE
+            }(
+                IN := "T2_Datos".Str_Hola, 
+                OUT => "T2_Datos".Len_Hola
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_10"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Len_Hola, 
+                IN2 := 4
+            )
+            Coil( "T2_Resultado".T19_S_Move_LEN )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_11"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 1; 
+                DisableENO := TRUE
+            }(
+                IN := 123, 
+                OUT1 => "T2_Datos".Udt_A.Hijo.Valor
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_12"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 2; 
+                DisableENO := FALSE
+            }(
+                IN := 0, 
+                OUT1 => "T2_Datos".PosS, 
+                OUT2 => "T2_Datos".PosD
+            )
+            Serialize{
+                src_type := Variant; 
+                dest_type := Variant
+            }(
+                SRC_VARIABLE := "T2_Datos".Udt_A, 
+                Ret_Val => "T2_Datos".Ret_Ser, 
+                DEST_ARRAY => "T2_Datos".Buffer, 
+                POS := "T2_Datos".PosS
+            )
+            Deserialize{
+                src_type := Variant; 
+                dest_type := Variant
+            }(
+                SRC_ARRAY := "T2_Datos".Buffer, 
+                Ret_Val => "T2_Datos".Ret_Des, 
+                DEST_VARIABLE => "T2_Datos".Udt_B, 
+                POS := "T2_Datos".PosD
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_13"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Udt_B.Hijo.Valor, 
+                IN2 := 123
+            )
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Ret_Des, 
+                IN2 := 0
+            )
+            Coil( "T2_Resultado".T20_Serialize_Deserialize )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_14"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Calculate{
+                Card := 3; 
+                SrcType := Int; 
+                DisableENO := TRUE; 
+                Equation := (IN1 * IN2) + IN3
+            }(
+                IN1 := 2, 
+                IN2 := 3, 
+                IN3 := 4, 
+                OUT => "T2_Datos".Calc_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40913_15"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T2_Datos".Calc_Out, 
+                IN2 := 10
+            )
+            Coil( "T2_Resultado".T21_Calculate )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

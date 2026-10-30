@@ -1,0 +1,40 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "40936";
+    S7_BlockTitle := "MLC_40936_0"
+}
+FUNCTION "T3_Ret_A" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40936_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+"T2_SCL_Suma"(
+                A := 2, 
+                B := 3, 
+                Ret_Val => "T3_Datos".Ret_A
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40936_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T3_Datos".Ret_A, 
+                IN2 := 5
+            )
+            Coil( "T3_Resultado".Ret_A_ok )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION
