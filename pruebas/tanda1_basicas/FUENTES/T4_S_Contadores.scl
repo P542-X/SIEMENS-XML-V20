@@ -1,0 +1,27 @@
+﻿FUNCTION "T4_S_Contadores" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      j : Int;
+      r : Int;
+      d : DInt;
+      re : Real;
+      w : Word;
+      dw : DWord;
+      lr : LReal;
+   END_VAR
+
+BEGIN
+	// [SCL] CTU
+	"T4_Inst".CTU_S.CTU(CU := "T4_Datos".Tog, R := FALSE, PV := 3);
+	IF "T4_Inst".CTU_S.QU THEN "T4_Resultado".S_CTU := TRUE; END_IF;
+
+	// [SCL] CTD
+	"T4_Inst".CTD_S.CTD(CD := "T4_Datos".Tog, LD := FALSE, PV := 3);
+	IF "T4_Inst".CTD_S.QD THEN "T4_Resultado".S_CTD := TRUE; END_IF;
+
+	// [SCL] CTUD
+	"T4_Inst".CTUD_S.CTUD(CU := "T4_Datos".Tog, CD := FALSE, R := FALSE, LD := FALSE, PV := 2);
+	IF "T4_Inst".CTUD_S.QU THEN "T4_Resultado".S_CTUD := TRUE; END_IF;
+END_FUNCTION

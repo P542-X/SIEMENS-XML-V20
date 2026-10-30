@@ -1,0 +1,40 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42002";
+    S7_BlockTitle := "MLC_42002_0"
+}
+FUNCTION "T5_L_Dec" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42002_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Dec{
+                DestType := Int; 
+                DisableENO := TRUE
+            }( "T5_Datos".Dec_Var )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42002_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Lt{ SrcType := Int }(
+                IN1 := "T5_Datos".Dec_Var, 
+                IN2 := 0
+            )
+            Coil( "T5_Resultado".L_Dec )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

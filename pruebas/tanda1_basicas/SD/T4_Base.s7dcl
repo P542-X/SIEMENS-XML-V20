@@ -1,0 +1,43 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "41000";
+    S7_BlockTitle := "MLC_41000_0"
+}
+FUNCTION "T4_Base" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41000_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T4_Datos".Tog )
+            Not()
+            Coil( "T4_Datos".Tog )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41000_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Add{
+                Card := 2; 
+                Type := AUTO; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T4_Resultado".Vida, 
+                IN2 := 1, 
+                OUT => "T4_Resultado".Vida
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

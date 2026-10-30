@@ -61,6 +61,8 @@
           <Member Name="Base_Todo_OK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">TRUE si todas las base están bien</MultiLanguageText></Comment></Member>
           <Member Name="Nuevas_OK" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas nuevas correctas</MultiLanguageText></Comment></Member>
           <Member Name="Nuevas_Total" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas nuevas</MultiLanguageText></Comment><StartValue>5</StartValue></Member>
+          <Member Name="Vida_OB125" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sube 1 en cada ciclo si el OB125 se ejecuta</MultiLanguageText></Comment></Member>
+          <Member Name="Vida_T2_Bits" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sube 1 en cada ciclo si T2_Bits se ejecuta</MultiLanguageText></Comment></Member>
         </Section>
       </Sections></Interface>
       <MemoryLayout>Optimized</MemoryLayout>

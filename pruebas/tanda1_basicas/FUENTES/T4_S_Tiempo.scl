@@ -1,0 +1,31 @@
+﻿FUNCTION "T4_S_Tiempo" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      j : Int;
+      r : Int;
+      d : DInt;
+      re : Real;
+      w : Word;
+      dw : DWord;
+      lr : LReal;
+   END_VAR
+
+BEGIN
+	// [SCL] TP
+	"T4_Inst".TP_S.TP(IN := TRUE, PT := T#100MS);
+	IF "T4_Inst".TP_S.Q THEN "T4_Resultado".S_TP := TRUE; END_IF;
+
+	// [SCL] TON
+	"T4_Inst".TON_S.TON(IN := TRUE, PT := T#100MS);
+	IF "T4_Inst".TON_S.Q THEN "T4_Resultado".S_TON := TRUE; END_IF;
+
+	// [SCL] TOF
+	"T4_Inst".TOF_S.TOF(IN := TRUE, PT := T#100MS);
+	IF "T4_Inst".TOF_S.Q THEN "T4_Resultado".S_TOF := TRUE; END_IF;
+
+	// [SCL] TONR
+	"T4_Inst".TONR_S.TONR(IN := TRUE, R := FALSE, PT := T#100MS);
+	IF "T4_Inst".TONR_S.Q THEN "T4_Resultado".S_TONR := TRUE; END_IF;
+END_FUNCTION

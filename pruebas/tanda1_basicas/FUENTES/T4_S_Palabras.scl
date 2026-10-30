@@ -1,0 +1,43 @@
+﻿FUNCTION "T4_S_Palabras" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      j : Int;
+      r : Int;
+      d : DInt;
+      re : Real;
+      w : Word;
+      dw : DWord;
+      lr : LReal;
+   END_VAR
+
+BEGIN
+	// [SCL] AND
+	"T4_Resultado".S_And := ("T4_Datos".Word_00F0 AND "T4_Datos".Word_0033) = WORD#16#0030;
+
+	// [SCL] OR
+	"T4_Resultado".S_Or := ("T4_Datos".Word_00F0 OR "T4_Datos".Word_0033) = WORD#16#00F3;
+
+	// [SCL] XOR
+	"T4_Resultado".S_Xor := ("T4_Datos".Word_00F0 XOR "T4_Datos".Word_0033) = WORD#16#00C3;
+
+	// [SCL] NOT de Word
+	"T4_Resultado".S_Inv := NOT "T4_Datos".Word_00F0 = WORD#16#FF0F;
+
+	// [SCL] DECO
+	#dw := DECO(IN := 3);
+	"T4_Resultado".S_Deco := #dw = DWORD#16#00000008;
+
+	// [SCL] ENCO
+	#i := ENCO("T4_Datos".Word_00F0);
+	"T4_Resultado".S_Enco := #i = 4;
+
+	// [SCL] SEL
+	#i := SEL(G := TRUE, IN0 := "T4_Datos".Int_3, IN1 := "T4_Datos".Int_5);
+	"T4_Resultado".S_Sel := #i = 5;
+
+	// [SCL] MUX
+	#i := MUX(K := 1, IN0 := "T4_Datos".Int_3, IN1 := "T4_Datos".Int_5, INELSE := 0);
+	"T4_Resultado".S_Mux := #i = 5;
+END_FUNCTION

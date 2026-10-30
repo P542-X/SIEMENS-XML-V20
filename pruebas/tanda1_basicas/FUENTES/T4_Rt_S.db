@@ -1,0 +1,9 @@
+﻿DATA_BLOCK "T4_Rt_S"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+"R_TRIG"
+
+BEGIN
+
+END_DATA_BLOCK

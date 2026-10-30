@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42020_1">
+    <MultiLanguageText Lang="en-US">FILL_BLK</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">FILL_BLK</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42020_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42020_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: FILL_BLK (FillBlockI)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: FILL_BLK (FillBlockI)</MultiLanguageText>
+  </Comment>
+</root>

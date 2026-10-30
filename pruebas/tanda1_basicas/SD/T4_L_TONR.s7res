@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_41009_1">
+    <MultiLanguageText Lang="en-US">TONR</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TONR</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41009_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: retardo a la conexión con memoria TONR</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: retardo a la conexión con memoria TONR</MultiLanguageText>
+  </Comment>
+</root>

@@ -1,0 +1,30 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "41012";
+    S7_BlockTitle := "MLC_41012_0"
+}
+FUNCTION "T4_L_CTUD" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41012_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T4_Datos".Tog )
+"T4_Inst".CTUD_L.CTUD{ value_type := Int }(
+                CD := "T4_Datos".Falso, 
+                R := "T4_Datos".Falso, 
+                LD := "T4_Datos".Falso, 
+                PV := 2, 
+                QD =>  , 
+                CV =>  
+            )
+            S_Coil( "T4_Resultado".L_CTUD )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

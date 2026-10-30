@@ -1,0 +1,45 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42004";
+    S7_BlockTitle := "MLC_42004_0"
+}
+FUNCTION "T5_L_MAX" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42004_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            MAX{
+                value_type := Int; 
+                card := 2; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T5_Datos".Int_5, 
+                IN2 := "T5_Datos".Int_3, 
+                OUT => "T5_Datos".MAX_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42004_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T5_Datos".MAX_Out, 
+                IN2 := 5
+            )
+            Coil( "T5_Resultado".L_MAX )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

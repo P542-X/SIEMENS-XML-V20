@@ -1,0 +1,31 @@
+﻿FUNCTION "T4_S_Desplazamiento" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      j : Int;
+      r : Int;
+      d : DInt;
+      re : Real;
+      w : Word;
+      dw : DWord;
+      lr : LReal;
+   END_VAR
+
+BEGIN
+	// [SCL] SHR
+	#w := SHR(IN := "T4_Datos".Word_00F0, N := 4);
+	"T4_Resultado".S_Shr := #w = WORD#16#000F;
+
+	// [SCL] SHL
+	#w := SHL(IN := "T4_Datos".Word_00F0, N := 4);
+	"T4_Resultado".S_Shl := #w = WORD#16#0F00;
+
+	// [SCL] ROR
+	#w := ROR(IN := "T4_Datos".Word_00F0, N := 8);
+	"T4_Resultado".S_Ror := #w = WORD#16#F000;
+
+	// [SCL] ROL
+	#w := ROL(IN := "T4_Datos".Word_00F0, N := 8);
+	"T4_Resultado".S_Rol := #w = WORD#16#F000;
+END_FUNCTION

@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41030_1">
+    <MultiLanguageText Lang="en-US">Trunc</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Trunc</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41030_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41030_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: Trunc</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: Trunc</MultiLanguageText>
+  </Comment>
+</root>

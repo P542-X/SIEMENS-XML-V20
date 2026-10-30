@@ -1,5 +1,31 @@
 # Cambios
 
+## 2.3.8
+- Tanda 1 completa: 120 pruebas de instrucciones básicas, todas TRUE en marcha (`pruebas/tanda1_basicas/` y `pruebas/tanda1b_complemento/`). Tabla de nombres SD ≠ nombres TIA en `INSTRUCCIONES_IA.md`.
+- `INSTRUCCIONES_IA.md` reescrito: reglas de oro, flujo de trabajo con el usuario, recetas paso a paso por caso (A–M), referencia completa de SD, fuentes y SimaticML con esqueletos comprobados, lista de lo que cierra TIA y tabla de errores con su solución.
+- También se bloquean `NORM_X`/`SCALE_X` escritos con plantilla `out_type` (cierran TIA).
+- Tanda 1 de instrucciones básicas comprobada en marcha (96 pruebas): `pruebas/tanda1_basicas/`; sintaxis confirmada en `INSTRUCCIONES_IA.md`.
+
+## 2.3.7
+- Los documentos SD con `MOVE_BLK`, `UMOVE_BLK`, `MOVE_BLK_VARIANT`, `FILL_BLK` o `UFILL_BLK` escritos como `{ DisableENO := TRUE }` salen como NO VÁLIDO y no se importan: con esa forma TIA Portal se cierra.
+
+## 2.3.6
+- *Importar carpeta* ya no coge los `.zip` que haya dentro: con varios paquetes en una carpeta se importaban todos mezclados. Un `.zip` se importa con *Importar ficheros*.
+
+## 2.3.5
+- Guarda el proyecto antes de importar: si TIA se cierra durante la importación (algunas cajas SD mal escritas lo provocan), no se pierde el trabajo anterior.
+
+## 2.3.4
+- `Import_XML\progreso.txt`: la importación apunta cada paso en disco antes de hacerlo. Si TIA Portal se cierra de golpe, la última línea `IMPORTANDO …` sin `OK` ni `ERROR` dice qué fichero lo ha provocado.
+
+## 2.3.3
+- Los XML se adaptan a los idiomas del proyecto antes de importarlos (`Idiomas.cs`): TIA rechazaba un XML con textos en un idioma no activado en el proyecto. Se importa una copia en `Import_XML\adaptado_<fecha>\`; el original no se toca.
+- `_info.md` incluye los idiomas del proyecto.
+
+## 2.3.2
+- Corregido: al sobrescribir desde una fuente `.scl`, si un bloque había quedado inconsistente (por ejemplo, porque en la misma importación se reimporta un DB que usa) no se podía hacer la copia extra y la fuente fallaba. Ahora esa copia es opcional: la copia buena ya la hace el deshacer antes de empezar.
+- `pruebas/importacion/`: contadores de vida (`Vida_OB125`, `Vida_T2_Bits`, `Vida_OB126`) para saber si el programa se está ejecutando.
+
 ## 2.3.1
 - `INSTRUCCIONES_IA.md` y lecciones: resultados de las pruebas de importación (49 casos en S7-1500): sintaxis SD de ramas OR y de salida, tipos con `Type := AUTO`, FC con retorno, y lista de cajas comprobadas.
 - Mensaje más útil cuando un `.s7dcl` falla (TIA no indica la línea).

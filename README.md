@@ -10,7 +10,7 @@ Clic derecho en el árbol del proyecto → **XML**. Solo hay cuatro opciones:
 |---|---|
 | **Exportar selección** | Exporta lo seleccionado (bloque, carpeta, *Bloques de programa*, UDT, tablas o el PLC entero) y deja **un .zip** listo para compartir. |
 | **Importar ficheros (xml, sd, fuentes, zip)…** | Importa ficheros sueltos o el .zip de una exportación. |
-| **Importar carpeta…** | Importa todo lo importable de una carpeta y sus subcarpetas. |
+| **Importar carpeta…** | Importa todo lo importable de una carpeta y sus subcarpetas (sin los `.zip`: esos, con *Importar ficheros*). |
 | **Deshacer última importación** | Deja el PLC como estaba antes de la última importación. |
 
 ### Pensado para trabajar con una IA
@@ -120,6 +120,8 @@ Después, en TIA Portal: task card **Add-Ins** → activar "Exportar e importar 
 | `ExportarXmlAddIn.cs` | Menú contextual y exportación (XML + SD + info + zip) |
 | `Cpu.cs` | CPU y firmware de un PLC, y `_info.txt` del paquete |
 | `Deshacer.cs` | Copias antes de importar y menú *Deshacer última importación* |
+| `Idiomas.cs` | Adapta los textos de los XML a los idiomas del proyecto |
+| `Progreso.cs` | `Import_XML\progreso.txt`: paso a paso, para localizar un cierre de TIA |
 | `Importador.cs` | Importación (XML, SD, fuentes, zip), elección XML/SD según la CPU y compilación |
 | `Validador.cs` | Comprobación previa de los XML: reglas propias y XSD de TIA |
 | `ExportadorSd.cs` | Parte SIMATIC SD de la exportación |

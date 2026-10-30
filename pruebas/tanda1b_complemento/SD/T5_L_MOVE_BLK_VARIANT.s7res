@@ -1,0 +1,18 @@
+﻿<root>
+  <Comment Id="MLC_42022_1">
+    <MultiLanguageText Lang="en-US">Preparar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Preparar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42022_2">
+    <MultiLanguageText Lang="en-US">MOVE_BLK_VARIANT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">MOVE_BLK_VARIANT</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42022_3">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42022_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: MOVE_BLK_VARIANT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: MOVE_BLK_VARIANT</MultiLanguageText>
+  </Comment>
+</root>

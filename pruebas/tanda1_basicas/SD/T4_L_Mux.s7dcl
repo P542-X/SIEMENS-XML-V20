@@ -1,0 +1,47 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "41035";
+    S7_BlockTitle := "MLC_41035_0"
+}
+FUNCTION "T4_L_Mux" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41035_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Mux{
+                Card := 2; 
+                SrcType := Int; 
+                DisableENO := TRUE
+            }(
+                K := 1, 
+                IN0 := "T4_Datos".Int_3, 
+                IN1 := "T4_Datos".Int_5, 
+                ELSE := 0, 
+                OUT => "T4_Datos".Mux_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41035_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T4_Datos".Mux_Out, 
+                IN2 := 5
+            )
+            Coil( "T4_Resultado".L_Mux )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

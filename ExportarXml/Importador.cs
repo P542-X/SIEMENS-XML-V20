@@ -143,11 +143,13 @@ namespace ExportarXml
             }
 
             _carpetaCopia = CarpetaCopia(tia);
+            Progreso.Iniciar(tia);
 
             Cpu cpuDestino = Cpu.De(plc);
             StringBuilder log = new StringBuilder();
             log.AppendLine("PLC destino: " + cpuDestino);
             log.AppendLine(Validador.EstadoEsquemas());
+            log.AppendLine(Idiomas.Preparar(tia));
             log.AppendLine();
             int ignorados = 0;
             List<Elemento> elementos = new List<Elemento>();
@@ -220,7 +222,22 @@ namespace ExportarXml
             {
                 // Deshacer propio: copia de lo que se va a sobrescribir y lista de lo nuevo, ANTES de tocar nada.
                 // (El Ctrl+Z de TIA no deshace lo que hace un Add-In.)
+                // Guardar antes de tocar nada: si TIA se cierra durante la importación (algunas cajas SD
+                // mal escritas lo provocan), no se pierde el trabajo anterior. El deshacer sigue funcionando.
+                try
+                {
+                    ea.Text = "Guardando el proyecto antes de importar...";
+                    Project pr = tia.Projects.FirstOrDefault();
+                    if (pr != null) { pr.Save(); log.AppendLine("Proyecto guardado antes de importar."); }
+                }
+                catch (Exception ex)
+                {
+                    log.AppendLine("Aviso: no se pudo guardar el proyecto antes de importar (" + ex.Message.Replace(Environment.NewLine, " ") + ")");
+                }
+                Progreso.Paso("PROYECTO GUARDADO");
+
                 ea.Text = "Preparando el deshacer...";
+                Progreso.Paso("PREPARANDO DESHACER (" + pendientes.Count + " ficheros)");
                 List<string> objetos = new List<string>();
                 foreach (Elemento e in pendientes)
                 {
@@ -244,7 +261,9 @@ namespace ExportarXml
                 if (importados > 0 && !ea.IsCancellationRequested)
                 {
                     ea.Text = "Compilando " + plc.Name + "...";
+                    Progreso.Paso("COMPILANDO " + plc.Name);
                     compilacion = Compilar(plc, log);
+                    Progreso.Paso("COMPILADO: " + compilacion);
                 }
 
                 deshacer = carpetaDeshacer != null
@@ -385,7 +404,9 @@ namespace ExportarXml
 
                     try
                     {
+                        Progreso.Paso("IMPORTANDO " + e.Fichero.FullName);
                         Importar(plc, destino, e, sobrescribir, creados);
+                        Progreso.Paso("  OK");
                         if (e.Tipo == Tipo.Fuente) foreach (string o in e.Objetos) creados.Add(o);
                         else creados.Add(NombreObjeto(e));
                         exitos?.Add(e);
@@ -399,6 +420,7 @@ namespace ExportarXml
                     catch (Exception ex)
                     {
                         e.UltimoError = ex.Message;
+                        Progreso.Paso("  ERROR: " + ex.Message.Replace(Environment.NewLine, " "));
                     }
                 }
             }
@@ -470,6 +492,15 @@ namespace ExportarXml
             @"^[ \t]*(TYPE|FUNCTION_BLOCK|FUNCTION|DATA_BLOCK|ORGANIZATION_BLOCK)[ \t]+(?:""([^""]+)""|([A-Za-z_][\w]*))",
             RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
+        /// <summary>
+        /// Formas de caja SD que hacen que TIA Portal se cierre al importarlas (comprobado en V20):
+        /// MOVE_BLK y FILL_BLK con { DisableENO := TRUE }, y NORM_X con plantilla out_type. Se bloquea la familia.
+        /// </summary>
+        private static readonly Regex CierraTia = new Regex(
+            @"\b(MOVE_BLK|UMOVE_BLK|MOVE_BLK_VARIANT|FILL_BLK|UFILL_BLK)\s*\{\s*DisableENO\s*:=\s*TRUE\s*\}" +
+            @"|\b(NORM_X|SCALE_X)\s*\{[^}]*out_type",
+            RegexOptions.IgnoreCase);
+
         private static Elemento LeerFuente(string ruta, StringBuilder log, Tipo tipo)
         {
             try
@@ -485,6 +516,17 @@ namespace ExportarXml
                 {
                     log.AppendLine("IGNORADO " + ruta + " (un documento SIMATIC SD tiene que contener un solo bloque)");
                     return null;
+                }
+                if (tipo == Tipo.Documento)
+                {
+                    Match peligro = CierraTia.Match(texto);
+                    if (peligro.Success)
+                    {
+                        log.AppendLine("NO VÁLIDO " + Path.GetFileName(ruta) + "  <-  " + ruta);
+                        log.AppendLine("         Contiene '" + peligro.Value.Replace(Environment.NewLine, " ").Trim() +
+                                       "': con esta sintaxis TIA Portal se cierra al importar. No se importa.");
+                        return null;
+                    }
                 }
 
                 List<string> tipos = cabeceras.Select(c => c.Groups[1].Value.ToUpperInvariant()).ToList();
@@ -574,6 +616,14 @@ namespace ExportarXml
             return e.Tipo == Tipo.Documento ? e.Objetos[0] : e.Nombre;
         }
 
+        /// <summary>Copia del XML sin los idiomas que el proyecto no tiene (ver Idiomas.cs).</summary>
+        private static FileInfo AdaptarIdiomas(Elemento e)
+        {
+            FileInfo f = Idiomas.Adaptar(e.Fichero, out string nota);
+            if (nota != null && !e.Notas.Contains(nota)) e.Notas.Add(nota);
+            return f;
+        }
+
         private static void Importar(PlcSoftware plc, IEngineeringObject destino, Elemento e, bool sobrescribir,
                                      HashSet<string> creados)
         {
@@ -588,7 +638,7 @@ namespace ExportarXml
                     PlcBlockGroup grupo = (existente?.Parent as PlcBlockGroup)
                                           ?? Ancestro<PlcBlockGroup>(destino)
                                           ?? plc.BlockGroup;
-                    grupo.Blocks.Import(e.Fichero, opciones);
+                    grupo.Blocks.Import(AdaptarIdiomas(e), opciones);
                     break;
                 }
                 case Tipo.Udt:
@@ -597,7 +647,7 @@ namespace ExportarXml
                     PlcTypeGroup grupo = (existente?.Parent as PlcTypeGroup)
                                          ?? Ancestro<PlcTypeGroup>(destino)
                                          ?? plc.TypeGroup;
-                    grupo.Types.Import(e.Fichero, opciones);
+                    grupo.Types.Import(AdaptarIdiomas(e), opciones);
                     break;
                 }
                 case Tipo.TablaVariables:
@@ -606,7 +656,7 @@ namespace ExportarXml
                     PlcTagTableGroup grupo = (existente?.Parent as PlcTagTableGroup)
                                              ?? Ancestro<PlcTagTableGroup>(destino)
                                              ?? plc.TagTableGroup;
-                    grupo.TagTables.Import(e.Fichero, opciones);
+                    grupo.TagTables.Import(AdaptarIdiomas(e), opciones);
                     break;
                 }
                 case Tipo.Fuente:
@@ -674,14 +724,14 @@ namespace ExportarXml
                         {
                             try { b.GetService<ICompilable>()?.Compile(); } catch { }
                         }
-                        CopiaDeSeguridad(nombre, f => b.Export(f, ExportOptions.WithDefaults), e);
+                        CopiaOpcional(nombre, f => b.Export(f, ExportOptions.WithDefaults), e);
                         b.Delete();
                         continue;
                     }
                     PlcType t = BuscarTipo(plc.TypeGroup, nombre);
                     if (t != null)
                     {
-                        CopiaDeSeguridad(nombre, f => t.Export(f, ExportOptions.WithDefaults), e);
+                        CopiaOpcional(nombre, f => t.Export(f, ExportOptions.WithDefaults), e);
                         t.Delete();
                     }
                 }
@@ -725,6 +775,21 @@ namespace ExportarXml
             if (f.Exists) f.Delete();
             exportar(f);
             e.Notas.Add("borrado para regenerarlo; copia en " + f.FullName);
+        }
+
+        /// <summary>
+        /// Copia extra antes de regenerar desde fuente. La copia buena ya la hizo Deshacer.Preparar
+        /// antes de empezar (con los bloques aún consistentes); si esta falla (p. ej. el bloque ha
+        /// quedado inconsistente porque se acaba de reimportar un DB que usa), se apunta y se sigue.
+        /// </summary>
+        private static void CopiaOpcional(string nombre, Action<FileInfo> exportar, Elemento e)
+        {
+            try { CopiaDeSeguridad(nombre, exportar, e); }
+            catch (Exception ex)
+            {
+                e.Notas.Add(nombre + ": sin copia extra (" + ex.Message.Replace(Environment.NewLine, " ") +
+                            "); se puede restaurar con Deshacer última importación");
+            }
         }
 
         // ---------- Compilación y resumen ----------

@@ -1,0 +1,18 @@
+﻿<root>
+  <Comment Id="MLC_42017_1">
+    <MultiLanguageText Lang="en-US">Preparar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Preparar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42017_2">
+    <MultiLanguageText Lang="en-US">RESET_BF</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">RESET_BF</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42017_3">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42017_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: RESET_BF (nombre deducido: R_BitfieldCoil)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: RESET_BF (nombre deducido: R_BitfieldCoil)</MultiLanguageText>
+  </Comment>
+</root>

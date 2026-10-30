@@ -1,0 +1,26 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42010";
+    S7_BlockTitle := "MLC_42010_0"
+}
+FUNCTION "T5_L_InRange" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42010_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            InRange{ SrcType := Int }(
+                MIN := "T5_Datos".Int_1, 
+                IN := "T5_Datos".Int_5, 
+                MAX := "T5_Datos".Int_9
+            )
+            Coil( "T5_Resultado".L_InRange )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

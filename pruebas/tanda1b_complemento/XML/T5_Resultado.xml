@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="L_Inc" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Inc</MultiLanguageText></Comment></Member>
+          <Member Name="L_Dec" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Dec</MultiLanguageText></Comment></Member>
+          <Member Name="L_MIN" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">MIN</MultiLanguageText></Comment></Member>
+          <Member Name="L_MAX" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">MAX</MultiLanguageText></Comment></Member>
+          <Member Name="L_LIMIT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">LIMIT</MultiLanguageText></Comment></Member>
+          <Member Name="L_Expt" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Expt</MultiLanguageText></Comment></Member>
+          <Member Name="L_DECO" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">DECO</MultiLanguageText></Comment></Member>
+          <Member Name="L_ENCO" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">ENCO</MultiLanguageText></Comment></Member>
+          <Member Name="L_SEL" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SEL</MultiLanguageText></Comment></Member>
+          <Member Name="L_InRange" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">IN_RANGE (InRange)</MultiLanguageText></Comment></Member>
+          <Member Name="L_OutRange" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">OUT_RANGE (OutRange)</MultiLanguageText></Comment></Member>
+          <Member Name="L_OK_NOK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">OK / NOT_OK (NOK)</MultiLanguageText></Comment></Member>
+          <Member Name="L_R_TRIG" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">R_TRIG (DB de instancia T5_Rt_L)</MultiLanguageText></Comment></Member>
+          <Member Name="L_F_TRIG" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">F_TRIG (DB de instancia T5_Ft_L)</MultiLanguageText></Comment></Member>
+          <Member Name="L_RS" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Biestable RS (S_RS)</MultiLanguageText></Comment></Member>
+          <Member Name="L_SET_BF" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SET_BF (S_BitfieldCoil)</MultiLanguageText></Comment></Member>
+          <Member Name="L_RESET_BF" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[DEDUCIDA] RESET_BF (R_BitfieldCoil)</MultiLanguageText></Comment></Member>
+          <Member Name="L_MOVE_BLK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">MOVE_BLK (MoveBlockI)</MultiLanguageText></Comment></Member>
+          <Member Name="L_UMOVE_BLK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">UMOVE_BLK (MoveBlockU)</MultiLanguageText></Comment></Member>
+          <Member Name="L_FILL_BLK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">FILL_BLK (FillBlockI)</MultiLanguageText></Comment></Member>
+          <Member Name="L_UFILL_BLK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[DEDUCIDA] UFILL_BLK (FillBlockU)</MultiLanguageText></Comment></Member>
+          <Member Name="L_MOVE_BLK_VARIANT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">MOVE_BLK_VARIANT</MultiLanguageText></Comment></Member>
+          <Member Name="L_NORM_X" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">NORM_X (Normalize)</MultiLanguageText></Comment></Member>
+          <Member Name="L_SCALE_X" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SCALE_X (Scale_X)</MultiLanguageText></Comment></Member>
+          <Member Name="Vida" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sube cada ciclo</MultiLanguageText></Comment></Member>
+          <Member Name="OK" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Correctas</MultiLanguageText></Comment></Member>
+          <Member Name="Total" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas</MultiLanguageText></Comment><StartValue>24</StartValue></Member>
+          <Member Name="Todo_OK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Todas correctas</MultiLanguageText></Comment></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T5_Resultado</Name>
+      <Namespace />
+      <Number>42901</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Tanda 1b: un Bool por prueba</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Tanda 1b: un Bool por prueba</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

@@ -1,0 +1,875 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.OB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Input">
+          <Member Name="Initial_Call" Datatype="Bool" Informative="true" />
+          <Member Name="Remanence" Datatype="Bool" Informative="true" />
+        </Section>
+        <Section Name="Temp" />
+        <Section Name="Constant" />
+      </Sections></Interface>
+      <IsIECCheckEnabled>false</IsIECCheckEnabled>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T5_Ciclo</Name>
+      <Namespace />
+      <Number>128</Number>
+      <ProgrammingLanguage>LAD</ProgrammingLanguage>
+      <SecondaryType>ProgramCycle</SecondaryType>
+      <SetENOAutomatically>false</SetENOAutomatically>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Tanda 1b: llama a todas las pruebas</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Tanda 1b: llama a todas las pruebas</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <SW.Blocks.CompileUnit ID="4" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_Base" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="5" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="7" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="8" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="9" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_Base</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="A" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_Base</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="B" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_Inc" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="C" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="D" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="E" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="F" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="10" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_Inc</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="11" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_Inc</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="12" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_Dec" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="13" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="14" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="15" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="16" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="17" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_Dec</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="18" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_Dec</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="19" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_MIN" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="1A" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="1B" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="1C" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="1D" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="1E" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_MIN</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="1F" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_MIN</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="20" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_MAX" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="21" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="22" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="23" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="24" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="25" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_MAX</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="26" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_MAX</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="27" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_LIMIT" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="28" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="29" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="2A" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="2B" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="2C" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_LIMIT</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="2D" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_LIMIT</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="2E" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_Expt" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="2F" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="30" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="31" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="32" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="33" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_Expt</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="34" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_Expt</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="35" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_DECO" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="36" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="37" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="38" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="39" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="3A" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_DECO</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3B" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_DECO</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="3C" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_ENCO" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="3D" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="3E" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3F" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="40" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="41" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_ENCO</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="42" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_ENCO</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="43" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_SEL" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="44" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="45" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="46" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="47" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="48" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_SEL</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="49" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_SEL</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="4A" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_InRange" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="4B" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="4C" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="4D" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4E" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="4F" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_InRange</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="50" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_InRange</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="51" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_OutRange" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="52" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="53" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="54" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="55" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="56" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_OutRange</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="57" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_OutRange</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="58" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_OK_NOK" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="59" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="5A" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="5B" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="5C" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5D" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_OK_NOK</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="5E" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_OK_NOK</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="5F" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_R_TRIG" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="60" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="61" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="62" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="63" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="64" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_R_TRIG</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="65" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_R_TRIG</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="66" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_F_TRIG" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="67" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="68" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="69" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="6A" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="6B" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_F_TRIG</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6C" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_F_TRIG</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="6D" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_RS" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="6E" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="6F" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="70" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="71" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="72" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_RS</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="73" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_RS</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="74" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_SET_BF" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="75" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="76" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="77" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="78" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="79" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_SET_BF</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="7A" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_SET_BF</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="7B" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_RESET_BF" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="7C" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="7D" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="7E" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="7F" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="80" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_RESET_BF</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="81" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_RESET_BF</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="82" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_MOVE_BLK" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="83" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="84" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="85" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="86" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="87" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_MOVE_BLK</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="88" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_MOVE_BLK</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="89" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_UMOVE_BLK" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="8A" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="8B" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="8C" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="8D" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="8E" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_UMOVE_BLK</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="8F" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_UMOVE_BLK</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="90" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_FILL_BLK" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="91" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="92" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="93" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="94" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="95" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_FILL_BLK</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="96" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_FILL_BLK</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="97" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_UFILL_BLK" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="98" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="99" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="9A" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="9B" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="9C" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_UFILL_BLK</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="9D" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_UFILL_BLK</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="9E" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_MOVE_BLK_VARIANT" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="9F" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="A0" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="A1" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="A2" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="A3" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_MOVE_BLK_VARIANT</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="A4" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_MOVE_BLK_VARIANT</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="A5" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_NORM_X" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="A6" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="A7" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="A8" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="A9" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="AA" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_NORM_X</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="AB" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_NORM_X</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="AC" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_L_SCALE_X" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="AD" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="AE" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="AF" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="B0" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="B1" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_L_SCALE_X</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="B2" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_L_SCALE_X</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <SW.Blocks.CompileUnit ID="B3" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Call UId="21">
+      <CallInfo Name="T5_Contar" BlockType="FC" />
+    </Call>
+  </Parts>
+  <Wires>
+    <Wire UId="22">
+      <Powerrail />
+      <NameCon UId="21" Name="en" />
+    </Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+      <MultilingualText ID="B4" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="B5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="B6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="B7" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="B8" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_Contar</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="B9" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_Contar</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
+      <MultilingualText ID="BA" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="BB" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>T5_Ciclo</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="BC" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>T5_Ciclo</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.OB>
+</Document>

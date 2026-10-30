@@ -43,4 +43,8 @@
     <MultiLanguageText Lang="en-US">Prueba IA 2: lógica de bits</MultiLanguageText>
     <MultiLanguageText Lang="es-ES">Prueba IA 2: lógica de bits</MultiLanguageText>
   </Comment>
+  <Comment Id="MLC_40911_V">
+    <MultiLanguageText Lang="en-US">Contador de vida</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Contador de vida</MultiLanguageText>
+  </Comment>
 </root>

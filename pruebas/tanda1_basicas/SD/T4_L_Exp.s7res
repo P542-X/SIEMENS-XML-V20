@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41019_1">
+    <MultiLanguageText Lang="en-US">Exp</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Exp</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41019_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41019_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: Exp</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: Exp</MultiLanguageText>
+  </Comment>
+</root>

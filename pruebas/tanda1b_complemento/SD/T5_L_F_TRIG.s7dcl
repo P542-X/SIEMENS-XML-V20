@@ -1,0 +1,36 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42014";
+    S7_BlockTitle := "MLC_42014_0"
+}
+FUNCTION "T5_L_F_TRIG" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42014_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "T5_Ft_L".F_TRIG(
+                CLK := "T5_Datos".Tog, 
+                Q => "T5_Datos".F_TRIG_Q
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42014_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T5_Datos".F_TRIG_Q )
+            S_Coil( "T5_Resultado".L_F_TRIG )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

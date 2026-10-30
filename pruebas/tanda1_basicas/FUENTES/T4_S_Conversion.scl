@@ -1,0 +1,39 @@
+﻿FUNCTION "T4_S_Conversion" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      j : Int;
+      r : Int;
+      d : DInt;
+      re : Real;
+      w : Word;
+      dw : DWord;
+      lr : LReal;
+   END_VAR
+
+BEGIN
+	// [SCL] Round
+	#d := ROUND("T4_Datos".Round_In);
+	"T4_Resultado".S_Round := #d = 2;
+
+	// [SCL] Ceil
+	#d := CEIL("T4_Datos".Ceil_In);
+	"T4_Resultado".S_Ceil := #d = 3;
+
+	// [SCL] Floor
+	#d := FLOOR("T4_Datos".Floor_In);
+	"T4_Resultado".S_Floor := #d = 2;
+
+	// [SCL] Trunc
+	#d := TRUNC("T4_Datos".Trunc_In);
+	"T4_Resultado".S_Trunc := #d = 2;
+
+	// [SCL] SCALE_X
+	#i := SCALE_X(MIN := INT#0, VALUE := REAL#0.5, MAX := INT#100);
+	"T4_Resultado".S_SCALE_X := #i = 50;
+
+	// [SCL] NORM_X
+	#re := NORM_X(MIN := INT#0, VALUE := INT#50, MAX := INT#100);
+	"T4_Resultado".S_NORM_X := ABS(#re - 0.5) < 0.001;
+END_FUNCTION

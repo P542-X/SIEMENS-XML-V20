@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42016_1">
+    <MultiLanguageText Lang="en-US">SET_BF</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">SET_BF</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42016_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42016_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: SET_BF</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: SET_BF</MultiLanguageText>
+  </Comment>
+</root>

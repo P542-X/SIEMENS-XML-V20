@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_41012_1">
+    <MultiLanguageText Lang="en-US">CTUD</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">CTUD</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41012_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: contador CTUD</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: contador CTUD</MultiLanguageText>
+  </Comment>
+</root>

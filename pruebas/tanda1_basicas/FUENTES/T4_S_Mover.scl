@@ -1,0 +1,47 @@
+﻿FUNCTION "T4_S_Coe" : UDInt
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_IN_OUT
+      Arr : Variant;
+   END_VAR
+
+BEGIN
+	// CountOfElements solo admite un parámetro Variant, no un array directamente
+	#T4_S_Coe := CountOfElements(#Arr);
+END_FUNCTION
+
+FUNCTION "T4_S_Mover" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      j : Int;
+      r : Int;
+      d : DInt;
+      re : Real;
+      w : Word;
+      dw : DWord;
+      lr : LReal;
+   END_VAR
+
+BEGIN
+	// [SCL] MOVE_BLK
+	"T4_Datos".Arr_A[0] := 7; "T4_Datos".Arr_A[1] := 7;
+	MOVE_BLK(IN := "T4_Datos".Arr_A[0], COUNT := 2, OUT => "T4_Datos".Arr_S1[0]);
+	"T4_Resultado".S_MOVE_BLK := "T4_Datos".Arr_S1[1] = 7;
+
+	// [SCL] FILL_BLK
+	FILL_BLK(IN := 9, COUNT := 10, OUT => "T4_Datos".Arr_S2[0]);
+	"T4_Resultado".S_FILL_BLK := "T4_Datos".Arr_S2[9] = 9;
+
+	// [SCL] MOVE_BLK_VARIANT
+	#r := MOVE_BLK_VARIANT(SRC := "T4_Datos".Arr_A, COUNT := 2, SRC_INDEX := 0, DEST_INDEX := 5, DEST => "T4_Datos".Arr_S3);
+	"T4_Resultado".S_MOVE_BLK_VARIANT := #r = 0 AND "T4_Datos".Arr_S3[6] = 7;
+
+	// [SCL] CountOfElements (dentro de una FC con parámetro Variant)
+	"T4_Resultado".S_CountOfElements := "T4_S_Coe"(Arr := "T4_Datos".Arr_A) = 10;
+
+	// [SCL] SWAP
+	#w := SWAP(WORD#16#1234);
+	"T4_Resultado".S_SWAP := #w = WORD#16#3412;
+END_FUNCTION

@@ -1,0 +1,36 @@
+﻿FUNCTION "T5_Contar" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      n : Int;
+   END_VAR
+
+BEGIN
+	#n := 0;
+	IF "T5_Resultado".L_Inc THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_Dec THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_MIN THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_MAX THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_LIMIT THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_Expt THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_DECO THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_ENCO THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_SEL THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_InRange THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_OutRange THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_OK_NOK THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_R_TRIG THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_F_TRIG THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_RS THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_SET_BF THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_RESET_BF THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_MOVE_BLK THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_UMOVE_BLK THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_FILL_BLK THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_UFILL_BLK THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_MOVE_BLK_VARIANT THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_NORM_X THEN #n := #n + 1; END_IF;
+	IF "T5_Resultado".L_SCALE_X THEN #n := #n + 1; END_IF;
+	"T5_Resultado".OK := #n;
+	"T5_Resultado".Todo_OK := #n = "T5_Resultado".Total;
+END_FUNCTION

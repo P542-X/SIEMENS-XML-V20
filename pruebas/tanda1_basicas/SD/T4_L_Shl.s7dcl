@@ -1,0 +1,44 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "41038";
+    S7_BlockTitle := "MLC_41038_0"
+}
+FUNCTION "T4_L_Shl" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41038_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Shl{
+                SrcType := Word; 
+                DisableENO := TRUE
+            }(
+                IN := "T4_Datos".Word_00F0, 
+                N := 4, 
+                OUT => "T4_Datos".Shl_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41038_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Word }(
+                IN1 := "T4_Datos".Shl_Out, 
+                IN2 := 16#0F00
+            )
+            Coil( "T4_Resultado".L_Shl )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

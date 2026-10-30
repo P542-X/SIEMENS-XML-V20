@@ -18,6 +18,7 @@ Ficheros que **han entrado y compilado** en un PLC real, para copiar su formato 
 | `SD/T3_OR` | OR: dos ramas en paralelo |
 | `SD/T3_Ramas` | Una condición con dos salidas |
 | `SD/T3_Ret_A` | Llamada a FC con valor de retorno |
+| `SD/Cajas_basicas_V20` | Exportación real de TIA: Inc, Dec, MIN, MAX, LIMIT, Expt, DECO, ENCO, SEL, InRange, OutRange, OK, NOK, R_TRIG, F_TRIG, S_RS, S_BitfieldCoil, MoveBlockI, MoveBlockU, MOVE_BLK_VARIANT, FillBlockI, Normalize, Scale_X |
 | `XML/Serialize_Deserialize_V2.2.xml` | Serialize y Deserialize 2.2 en KOP con `src_type` / `dest_type` (exportado de TIA) |
 
 Para añadir una caja: ponerla en un bloque de prueba, exportarlo con el Add-In y dejar aquí el fichero. La batería completa de pruebas está en `../pruebas/importacion/`.

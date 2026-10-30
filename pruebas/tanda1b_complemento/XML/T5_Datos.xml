@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="Tog" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Cambia cada ciclo</MultiLanguageText></Comment></Member>
+          <Member Name="Falso" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><StartValue>false</StartValue></Member>
+          <Member Name="Int_0" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>0</StartValue></Member>
+          <Member Name="Int_1" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>1</StartValue></Member>
+          <Member Name="Int_3" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>3</StartValue></Member>
+          <Member Name="Int_4" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>4</StartValue></Member>
+          <Member Name="Int_5" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>5</StartValue></Member>
+          <Member Name="Int_9" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>9</StartValue></Member>
+          <Member Name="Int_10" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>10</StartValue></Member>
+          <Member Name="Int_20" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>20</StartValue></Member>
+          <Member Name="Int_50" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>50</StartValue></Member>
+          <Member Name="Int_100" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>100</StartValue></Member>
+          <Member Name="Real_2" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><StartValue>2.0</StartValue></Member>
+          <Member Name="Real_0_5" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><StartValue>0.5</StartValue></Member>
+          <Member Name="Real_16" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><StartValue>16.0</StartValue></Member>
+          <Member Name="UInt_2" Datatype="UInt" Remanence="NonRetain" Accessibility="Public"><StartValue>2</StartValue></Member>
+          <Member Name="UInt_3" Datatype="UInt" Remanence="NonRetain" Accessibility="Public"><StartValue>3</StartValue></Member>
+          <Member Name="DWord_00F0" Datatype="DWord" Remanence="NonRetain" Accessibility="Public"><StartValue>16#000000F0</StartValue></Member>
+          <Member Name="Arr_A" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_B" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_C" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_E" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Inc_Var" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Dec_Var" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="MIN_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="MAX_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="LIMIT_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Expt_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="DECO_Out" Datatype="DWord" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="ENCO_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="SEL_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="OK_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="NOK_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="R_TRIG_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="F_TRIG_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="RS_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="RS_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Bits_BF" Datatype="Array[0..7] of Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Bits_RBF" Datatype="Array[0..7] of Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_F" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_U" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="UInt_10" Datatype="UInt" Remanence="NonRetain" Accessibility="Public"><StartValue>10</StartValue></Member>
+          <Member Name="MBV_Ret" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="UDInt_2" Datatype="UDInt" Remanence="NonRetain" Accessibility="Public"><StartValue>2</StartValue></Member>
+          <Member Name="DInt_0" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><StartValue>0</StartValue></Member>
+          <Member Name="DInt_5" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><StartValue>5</StartValue></Member>
+          <Member Name="NORM_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="SCALE_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T5_Datos</Name>
+      <Namespace />
+      <Number>42900</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Tanda 1b: datos</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Tanda 1b: datos</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

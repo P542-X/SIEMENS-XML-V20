@@ -1,0 +1,23 @@
+﻿FUNCTION "T4_S_Bits" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      j : Int;
+      r : Int;
+      d : DInt;
+      re : Real;
+      w : Word;
+      dw : DWord;
+      lr : LReal;
+   END_VAR
+
+BEGIN
+	// [SCL] R_TRIG
+	"T4_Rt_S"(CLK := "T4_Datos".Tog);
+	IF "T4_Rt_S".Q THEN "T4_Resultado".S_R_TRIG := TRUE; END_IF;
+
+	// [SCL] F_TRIG
+	"T4_Ft_S"(CLK := "T4_Datos".Tog);
+	IF "T4_Ft_S".Q THEN "T4_Resultado".S_F_TRIG := TRUE; END_IF;
+END_FUNCTION

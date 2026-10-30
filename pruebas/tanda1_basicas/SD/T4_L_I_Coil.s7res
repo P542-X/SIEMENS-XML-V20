@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41001_1">
+    <MultiLanguageText Lang="en-US">Bobina negada</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Bobina negada</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41001_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41001_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: bobina negada</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: bobina negada</MultiLanguageText>
+  </Comment>
+</root>

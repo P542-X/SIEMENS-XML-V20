@@ -1,0 +1,370 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+}
+FUNCTION "Cajas_basicas_V20" : Void
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Inc{
+                DestType := Int; 
+                DisableENO := TRUE
+            }( "T4_Datos".Arr_B[2] )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Dec{
+                DestType := Int; 
+                DisableENO := TRUE
+            }( "T4_Datos".Arr_B[2] )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            MIN{
+                value_type := Int; 
+                card := 2; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T4_Datos".Arr_B[2], 
+                IN2 := "T4_Datos".Arr_B[2], 
+                OUT => "T4_Datos".Arr_B[2]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            MAX{
+                value_type := Int; 
+                card := 2; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T4_Datos".Arr_B[2], 
+                IN2 := "T4_Datos".Arr_B[2], 
+                OUT => "T4_Datos".Arr_B[2]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            LIMIT{
+                value_type := Int; 
+                DisableENO := TRUE
+            }(
+                MN := "T4_Datos".Arr_B[2], 
+                IN := "T4_Datos".Arr_B[2], 
+                MX := "T4_Datos".Arr_B[2], 
+                OUT => "T4_Datos".Arr_B[2]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Expt{
+                DestType := Real; 
+                SrcType := Real; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T4_Datos".Atan_Out, 
+                IN2 := "T4_Datos".Atan_Out, 
+                OUT => "T4_Datos".Atan_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            DECO{
+                value_type := UInt; 
+                return_type := DWord; 
+                DisableENO := TRUE
+            }(
+                IN := "T4_Datos".Atan_Out, 
+                OUT => "T4_Datos".Atan_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            ENCO{
+                src_type := DWord; 
+                DisableENO := TRUE
+            }(
+                IN := "T4_Datos".Deco_Out, 
+                OUT => "T4_Datos".Atan_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            SEL{ value_type := Real }(
+                G := "T4_Datos".Falso, 
+                IN0 := "T4_Datos".Atan_Out, 
+                IN1 := "T4_Datos".Atan_Out, 
+                OUT => "T4_Datos".Atan_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_x8"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            InRange{ SrcType := Real }(
+                MIN := 3.0, 
+                IN := 1.0, 
+                MAX := 3.0
+            )
+            Coil( "T4_Datos".Falso )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_4ie"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            OutRange{ SrcType := Real }(
+                MIN := 2.0, 
+                IN := 1.0, 
+                MAX := 3.0
+            )
+            Coil( "T4_Datos".Falso )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_3Mt"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            OK( "T4_Datos".Exp_Out )
+            Coil( "T4_Datos".Falso )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_4SA"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            NOK( "T4_Datos".Exp_Out )
+            Coil( "T4_Datos".Falso )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "R_TRIG_DB".R_TRIG(
+                CLK :=  , 
+                Q =>  
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( true )
+            "F_TRIG_DB".F_TRIG(
+                CLK :=  , 
+                Q =>  
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( true )
+            S_RS(
+                Top := "T4_Datos".NBox_Mem, 
+                S1 := true
+            )
+            Coil( "R_TRIG_DB".Q )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            S_BitfieldCoil(
+                Top => "T4_Datos".Bits_BF[0], 
+                N := 1
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            MoveBlockI{ DisableENO := TRUE }(
+                IN := "T4_Datos".Arr_B[2], 
+                COUNT := "T4_Datos".Inv_Out, 
+                OUT => "T4_Datos".Arr_B[2]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            MoveBlockU{ DisableENO := TRUE }(
+                IN := "T4_Datos".Arr_B[2], 
+                COUNT := "T4_Datos".Inv_Out, 
+                OUT => "T4_Datos".Arr_B[2]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            MOVE_BLK_VARIANT(
+                SRC := "T4_Datos".Arr_B[2], 
+                COUNT := "T4_Datos".Arr_B[2], 
+                SRC_INDEX := "T4_Datos".Arr_B[2], 
+                DEST_INDEX := "T4_Datos".Arr_B[2], 
+                Ret_Val => "T4_Datos".Arr_B[2], 
+                DEST => "T4_Datos".Arr_B[2]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            FillBlockI{ DisableENO := TRUE }(
+                IN := "T4_Datos".Arr_B[2], 
+                COUNT := "T4_Datos".Inv_Out, 
+                OUT => "T4_Datos".Arr_B[2]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Normalize{
+                SrcType := Int; 
+                DestType := Real; 
+                DisableENO := TRUE
+            }(
+                MIN := "T4_Datos".Arr_B[2], 
+                VALUE := "T4_Datos".Arr_B[2], 
+                MAX := "T4_Datos".Arr_B[2], 
+                OUT => "T4_Datos".Asin_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Scale_X{
+                SrcType := Real; 
+                DestType := Int; 
+                DisableENO := TRUE
+            }(
+                MIN := "T4_Datos".Arr_B[2], 
+                VALUE := "T4_Datos".Asin_Out, 
+                MAX := "T4_Datos".Arr_B[2], 
+                OUT => "T4_Datos".Asin_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD"
+    }
+    NETWORK
+        RUNG wire#powerrail
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

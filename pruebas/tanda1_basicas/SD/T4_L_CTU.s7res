@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_41010_1">
+    <MultiLanguageText Lang="en-US">CTU</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">CTU</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41010_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: contador ascendente CTU</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: contador ascendente CTU</MultiLanguageText>
+  </Comment>
+</root>

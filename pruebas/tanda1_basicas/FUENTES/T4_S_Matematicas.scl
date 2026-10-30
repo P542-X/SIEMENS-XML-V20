@@ -1,0 +1,77 @@
+﻿FUNCTION "T4_S_Matematicas" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+      j : Int;
+      r : Int;
+      d : DInt;
+      re : Real;
+      w : Word;
+      dw : DWord;
+      lr : LReal;
+   END_VAR
+
+BEGIN
+	// [SCL] Mod (resto)
+	"T4_Resultado".S_Mod := ("T4_Datos".Int_5 MOD 3) = 2;
+
+	// [SCL] Neg (cambio de signo)
+	#i := -"T4_Datos".Int_5;
+	"T4_Resultado".S_Neg := #i = -5;
+
+	// [SCL] Abs (valor absoluto)
+	"T4_Resultado".S_Abs := ABS("T4_Datos".Int_m5) = 5;
+
+	// [SCL] Min
+	#i := MIN(IN1 := "T4_Datos".Int_5, IN2 := "T4_Datos".Int_3);
+	"T4_Resultado".S_Min := #i = 3;
+
+	// [SCL] Max
+	#i := MAX(IN1 := "T4_Datos".Int_5, IN2 := "T4_Datos".Int_3);
+	"T4_Resultado".S_Max := #i = 5;
+
+	// [SCL] Limit
+	#i := LIMIT(MN := INT#0, IN := "T4_Datos".Int_5, MX := INT#4);
+	"T4_Resultado".S_Limit := #i = 4;
+
+	// [SCL] Sqr
+	"T4_Resultado".S_Sqr := ABS(SQR("T4_Datos".Real_2) - (3.999 + 4.001) / 2.0) < 0.01;
+
+	// [SCL] Sqrt
+	"T4_Resultado".S_Sqrt := ABS(SQRT("T4_Datos".Real_16) - (3.999 + 4.001) / 2.0) < 0.01;
+
+	// [SCL] Ln
+	"T4_Resultado".S_Ln := ABS(LN("T4_Datos".Real_16) - (2.772 + 2.773) / 2.0) < 0.01;
+
+	// [SCL] Exp
+	"T4_Resultado".S_Exp := ABS(EXP("T4_Datos".Real_2) - (7.388 + 7.390) / 2.0) < 0.01;
+
+	// [SCL] Sin
+	"T4_Resultado".S_Sin := ABS(SIN("T4_Datos".Real_2) - (0.909 + 0.910) / 2.0) < 0.01;
+
+	// [SCL] Cos
+	"T4_Resultado".S_Cos := ABS(COS("T4_Datos".Real_2) - (-0.417 + -0.416) / 2.0) < 0.01;
+
+	// [SCL] Tan
+	"T4_Resultado".S_Tan := ABS(TAN("T4_Datos".Real_2) - (-2.186 + -2.184) / 2.0) < 0.01;
+
+	// [SCL] Frac
+	"T4_Resultado".S_Frac := ABS(FRAC("T4_Datos".Real_2_75) - (0.749 + 0.751) / 2.0) < 0.01;
+
+	// [SCL] Asin
+	"T4_Resultado".S_Asin := ABS(ASIN("T4_Datos".Real_0_5) - (0.523 + 0.524) / 2.0) < 0.01;
+
+	// [SCL] Acos
+	"T4_Resultado".S_Acos := ABS(ACOS("T4_Datos".Real_0_5) - (1.047 + 1.048) / 2.0) < 0.01;
+
+	// [SCL] Atan
+	"T4_Resultado".S_Atan := ABS(ATAN("T4_Datos".Real_0_5) - (0.463 + 0.464) / 2.0) < 0.01;
+
+	// [SCL] Expt (potencia)
+	"T4_Resultado".S_Expt := ABS("T4_Datos".Real_2 ** "T4_Datos".Real_2 - 4.0) < 0.01;
+
+	// [SCL] INC / DEC no existen en SCL: x := x + 1
+	#i := "T4_Datos".Int_5 + 1 - 1;
+	"T4_Resultado".S_Inc_Dec := #i = 5;
+END_FUNCTION

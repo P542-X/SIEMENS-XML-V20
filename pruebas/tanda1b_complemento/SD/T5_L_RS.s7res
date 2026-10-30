@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42015_1">
+    <MultiLanguageText Lang="en-US">RS</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">RS</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42015_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42015_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: biestable RS</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: biestable RS</MultiLanguageText>
+  </Comment>
+</root>

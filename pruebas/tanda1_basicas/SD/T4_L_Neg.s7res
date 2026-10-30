@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41014_1">
+    <MultiLanguageText Lang="en-US">Neg</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Neg</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41014_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41014_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: Neg (cambio de signo)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: Neg (cambio de signo)</MultiLanguageText>
+  </Comment>
+</root>

@@ -1,0 +1,18 @@
+﻿<root>
+  <Comment Id="MLC_42012_1">
+    <MultiLanguageText Lang="en-US">OK</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">OK</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42012_2">
+    <MultiLanguageText Lang="en-US">NOK</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">NOK</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42012_3">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42012_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: OK y NOT_OK</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: OK y NOT_OK</MultiLanguageText>
+  </Comment>
+</root>

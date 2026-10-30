@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_41005_1">
+    <MultiLanguageText Lang="en-US">Flanco</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Flanco</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41005_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: flanco negativo (N_TRIG)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: flanco negativo (N_TRIG)</MultiLanguageText>
+  </Comment>
+</root>

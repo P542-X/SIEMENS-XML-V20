@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_41008_1">
+    <MultiLanguageText Lang="en-US">TOF</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TOF</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41008_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: retardo a la desconexión TOF</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: retardo a la desconexión TOF</MultiLanguageText>
+  </Comment>
+</root>

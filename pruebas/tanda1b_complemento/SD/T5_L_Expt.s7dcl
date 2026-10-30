@@ -1,0 +1,49 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42006";
+    S7_BlockTitle := "MLC_42006_0"
+}
+FUNCTION "T5_L_Expt" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42006_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Expt{
+                DestType := Real; 
+                SrcType := Real; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T5_Datos".Real_2, 
+                IN2 := "T5_Datos".Real_2, 
+                OUT => "T5_Datos".Expt_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42006_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Ge{ SrcType := Real }(
+                IN1 := "T5_Datos".Expt_Out, 
+                IN2 := 3.999
+            )
+            Le{ SrcType := Real }(
+                IN1 := "T5_Datos".Expt_Out, 
+                IN2 := 4.001
+            )
+            Coil( "T5_Resultado".L_Expt )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

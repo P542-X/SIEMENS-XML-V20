@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_41004_1">
+    <MultiLanguageText Lang="en-US">Flanco</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Flanco</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41004_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: contacto de flanco negativo</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: contacto de flanco negativo</MultiLanguageText>
+  </Comment>
+</root>

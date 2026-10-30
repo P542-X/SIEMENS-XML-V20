@@ -2,11 +2,11 @@
 <PackageConfiguration xmlns="http://www.siemens.com/automation/Openness/AddIn/Publisher/V20">
   <Author>Paulo Carrasco</Author>
   <Description>Exporta e importa bloques, UDTs y tablas de variables en XML (SimaticML), fuentes externas y SIMATIC SD, con validación previa, desde el árbol del proyecto</Description>
-  <AddInVersion>2.3.1</AddInVersion>
+  <AddInVersion>2.3.8</AddInVersion>
   <Product>
     <Name>Exportar e importar XML</Name>
     <Id>ExportarXml</Id>
-    <Version>2.3.1</Version>
+    <Version>2.3.8</Version>
   </Product>
   <FeatureAssembly>
     <AssemblyInfo>

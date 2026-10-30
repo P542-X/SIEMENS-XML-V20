@@ -1,0 +1,34 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "41001";
+    S7_BlockTitle := "MLC_41001_0"
+}
+FUNCTION "T4_L_I_Coil" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41001_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T4_Datos".Falso )
+            I_Coil( "T4_Datos".ICoil_Q )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41001_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T4_Datos".ICoil_Q )
+            Coil( "T4_Resultado".L_I_Coil )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

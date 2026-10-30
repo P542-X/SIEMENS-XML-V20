@@ -1,0 +1,41 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42020";
+    S7_BlockTitle := "MLC_42020_0"
+}
+FUNCTION "T5_L_FILL_BLK" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42020_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            FillBlockI{ DisableENO := TRUE }(
+                IN := "T5_Datos".Int_9, 
+                COUNT := "T5_Datos".UInt_10, 
+                OUT => "T5_Datos".Arr_F[0]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42020_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T5_Datos".Arr_F[9], 
+                IN2 := 9
+            )
+            Coil( "T5_Resultado".L_FILL_BLK )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

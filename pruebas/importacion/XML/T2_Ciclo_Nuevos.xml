@@ -32,6 +32,38 @@
           <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Prueba IA 3: una FC por construcción nueva</Text></AttributeList></MultilingualTextItem>
         </ObjectList>
       </MultilingualText>
+      <SW.Blocks.CompileUnit ID="FFF0" CompositionName="CompileUnits">
+        <AttributeList>
+          <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">
+  <Parts>
+    <Access Scope="GlobalVariable" UId="21"><Symbol><Component Name="T3_Resultado" /><Component Name="Vida_OB126" /></Symbol></Access>
+    <Access Scope="LiteralConstant" UId="22"><Constant><ConstantType>DInt</ConstantType><ConstantValue>1</ConstantValue></Constant></Access>
+    <Access Scope="GlobalVariable" UId="23"><Symbol><Component Name="T3_Resultado" /><Component Name="Vida_OB126" /></Symbol></Access>
+    <Part Name="Add" UId="24" DisabledENO="true">
+      <TemplateValue Name="Card" Type="Cardinality">2</TemplateValue>
+      <AutomaticTyped Name="SrcType" />
+    </Part>
+  </Parts>
+  <Wires>
+    <Wire UId="25"><Powerrail /><NameCon UId="24" Name="en" /></Wire>
+    <Wire UId="26"><IdentCon UId="21" /><NameCon UId="24" Name="in1" /></Wire>
+    <Wire UId="27"><IdentCon UId="22" /><NameCon UId="24" Name="in2" /></Wire>
+    <Wire UId="28"><NameCon UId="24" Name="out" /><IdentCon UId="23" /></Wire>
+  </Wires>
+</FlgNet></NetworkSource>
+          <ProgrammingLanguage>LAD</ProgrammingLanguage>
+        </AttributeList>
+        <ObjectList>
+          <MultilingualText ID="FFF1" CompositionName="Comment"><ObjectList>
+            <MultilingualTextItem ID="FFF2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+            <MultilingualTextItem ID="FFF3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+          </ObjectList></MultilingualText>
+          <MultilingualText ID="FFF4" CompositionName="Title"><ObjectList>
+            <MultilingualTextItem ID="FFF5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Contador de vida</Text></AttributeList></MultilingualTextItem>
+            <MultilingualTextItem ID="FFF6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Contador de vida</Text></AttributeList></MultilingualTextItem>
+          </ObjectList></MultilingualText>
+        </ObjectList>
+      </SW.Blocks.CompileUnit>
       <SW.Blocks.CompileUnit ID="4" CompositionName="CompileUnits">
         <AttributeList>
           <NetworkSource><FlgNet xmlns="http://www.siemens.com/automation/Openness/SW/NetworkSource/FlgNet/v5">

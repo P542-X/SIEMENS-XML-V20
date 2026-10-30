@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41033_1">
+    <MultiLanguageText Lang="en-US">Xor</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Xor</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41033_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41033_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: XOR</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: XOR</MultiLanguageText>
+  </Comment>
+</root>

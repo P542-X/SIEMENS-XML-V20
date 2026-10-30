@@ -1,0 +1,60 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42018";
+    S7_BlockTitle := "MLC_42018_0"
+}
+FUNCTION "T5_L_MOVE_BLK" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42018_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 2; 
+                DisableENO := TRUE
+            }(
+                IN := 7, 
+                OUT1 => "T5_Datos".Arr_A[0], 
+                OUT2 => "T5_Datos".Arr_A[1]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42018_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            MoveBlockI{ DisableENO := TRUE }(
+                IN := "T5_Datos".Arr_A[0], 
+                COUNT := "T5_Datos".UInt_2, 
+                OUT => "T5_Datos".Arr_B[0]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42018_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T5_Datos".Arr_B[1], 
+                IN2 := 7
+            )
+            Coil( "T5_Resultado".L_MOVE_BLK )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

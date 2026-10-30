@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42000_1">
+    <MultiLanguageText Lang="en-US">Tog</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tog</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42000_2">
+    <MultiLanguageText Lang="en-US">Vida</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Vida</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42000_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b: Tog y Vida</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b: Tog y Vida</MultiLanguageText>
+  </Comment>
+</root>

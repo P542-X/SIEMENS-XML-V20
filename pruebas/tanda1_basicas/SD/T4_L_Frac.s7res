@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41023_1">
+    <MultiLanguageText Lang="en-US">Frac</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Frac</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41023_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41023_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: Frac</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: Frac</MultiLanguageText>
+  </Comment>
+</root>

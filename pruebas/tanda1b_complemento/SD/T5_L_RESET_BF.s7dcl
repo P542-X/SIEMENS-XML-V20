@@ -1,0 +1,55 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42017";
+    S7_BlockTitle := "MLC_42017_0"
+}
+FUNCTION "T5_L_RESET_BF" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42017_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            S_BitfieldCoil(
+                Top => "T5_Datos".Bits_RBF[0], 
+                N := 4
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42017_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            R_BitfieldCoil(
+                Top => "T5_Datos".Bits_RBF[1], 
+                N := 2
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42017_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T5_Datos".Bits_RBF[0] )
+            I_Contact( "T5_Datos".Bits_RBF[1] )
+            I_Contact( "T5_Datos".Bits_RBF[2] )
+            Contact( "T5_Datos".Bits_RBF[3] )
+            Coil( "T5_Resultado".L_RESET_BF )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

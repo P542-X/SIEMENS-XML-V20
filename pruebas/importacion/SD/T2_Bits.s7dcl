@@ -9,6 +9,26 @@ FUNCTION "T2_Bits" : Void
 
     {
       S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_40911_V"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Add{
+                Card := 2; 
+                Type := AUTO; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T2_Resultado".Vida_T2_Bits, 
+                IN2 := 1, 
+                OUT => "T2_Resultado".Vida_T2_Bits
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
       S7_NetworkTitle := "MLC_40911_1"
     }
     NETWORK

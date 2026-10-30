@@ -102,8 +102,12 @@ namespace ExportarXml
                 if (destino == null) return;
                 string carpeta = Dialogos.ElegirCarpeta();
                 if (string.IsNullOrEmpty(carpeta)) return;
+                // Los .zip NO se cogen al importar una carpeta: en una carpeta con varios paquetes
+                // (alternativas, pruebas por partes...) se importarían todos mezclados. Un .zip se
+                // importa eligiéndolo con "Importar ficheros".
                 string[] ficheros = Directory.GetFiles(carpeta, "*.*", SearchOption.AllDirectories)
-                    .Where(f => Importador.ExtensionesImportables.Contains(Path.GetExtension(f).ToLowerInvariant()))
+                    .Where(f => Importador.ExtensionesImportables.Contains(Path.GetExtension(f).ToLowerInvariant()) &&
+                                !string.Equals(Path.GetExtension(f), ".zip", StringComparison.OrdinalIgnoreCase))
                     .ToArray();
                 if (ficheros.Length == 0)
                 {
@@ -279,6 +283,12 @@ namespace ExportarXml
             md.AppendLine("| Proyecto | " + proyecto.Name + " |");
             md.AppendLine("| Fecha | " + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + " |");
             md.AppendLine("| TIA Portal (API) | " + typeof(TiaPortal).Assembly.GetName().Version + " |");
+            try
+            {
+                md.AppendLine("| Idiomas del proyecto | " + string.Join(", ", proyecto.LanguageSettings.ActiveLanguages.Select(l => l.Culture.Name)) +
+                              " (referencia " + proyecto.LanguageSettings.ReferenceLanguage?.Culture?.Name + ") |");
+            }
+            catch { }
             foreach (Cpu c in cpus)
                 md.AppendLine("| PLC " + c.Plc + " | " + (c.Conocida ? (c.Modelo + " · " + c.Referencia + " · " + c.Firmware).Trim(' ', '·') : "CPU desconocida") + " |");
             md.AppendLine();

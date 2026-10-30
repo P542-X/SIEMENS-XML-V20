@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41027_1">
+    <MultiLanguageText Lang="en-US">Round</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Round</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41027_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41027_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: Round</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: Round</MultiLanguageText>
+  </Comment>
+</root>

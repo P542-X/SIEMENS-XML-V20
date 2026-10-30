@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_41007_1">
+    <MultiLanguageText Lang="en-US">TP</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TP</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41007_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: impulso TP</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: impulso TP</MultiLanguageText>
+  </Comment>
+</root>

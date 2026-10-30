@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41016_1">
+    <MultiLanguageText Lang="en-US">Sqr</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Sqr</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41016_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41016_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: Sqr</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: Sqr</MultiLanguageText>
+  </Comment>
+</root>

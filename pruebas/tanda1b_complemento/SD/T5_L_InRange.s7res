@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_42010_1">
+    <MultiLanguageText Lang="en-US">InRange</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">InRange</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42010_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: IN_RANGE</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: IN_RANGE</MultiLanguageText>
+  </Comment>
+</root>

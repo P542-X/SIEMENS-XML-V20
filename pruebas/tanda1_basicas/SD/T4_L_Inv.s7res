@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41034_1">
+    <MultiLanguageText Lang="en-US">Inv</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Inv</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41034_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41034_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: INV (complemento)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: INV (complemento)</MultiLanguageText>
+  </Comment>
+</root>

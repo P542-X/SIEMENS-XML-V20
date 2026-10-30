@@ -1,0 +1,46 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42024";
+    S7_BlockTitle := "MLC_42024_0"
+}
+FUNCTION "T5_L_SCALE_X" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42024_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Scale_X{
+                SrcType := Real; 
+                DestType := Int; 
+                DisableENO := TRUE
+            }(
+                MIN := "T5_Datos".Int_0, 
+                VALUE := "T5_Datos".Real_0_5, 
+                MAX := "T5_Datos".Int_100, 
+                OUT => "T5_Datos".SCALE_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42024_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T5_Datos".SCALE_Out, 
+                IN2 := 50
+            )
+            Coil( "T5_Resultado".L_SCALE_X )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

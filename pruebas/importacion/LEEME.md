@@ -6,7 +6,8 @@
 
 1. Comprimir el contenido de esta carpeta (o seleccionar la carpeta) e importarlo en un PLC de pruebas con *XML → Importar carpeta…*.
 2. Compilar y cargar (PLC o PLCSIM).
-3. Online:
+3. Online (columna *Monitor value*):
+   - Contadores de vida: `T2_Resultado.Vida_OB125`, `T2_Resultado.Vida_T2_Bits` y `T3_Resultado.Vida_OB126` tienen que subir sin parar. Si no suben, el programa no se está ejecutando (CPU en STOP o software sin cargar).
    - `T2_Resultado`: **`Base_Todo_OK` = TRUE** y `Base_OK` = 41 (`Nuevas_OK` no se usa).
    - `T3_Resultado`: los 8 Bool a TRUE.
 4. Quitarlo: *XML → Deshacer última importación*.

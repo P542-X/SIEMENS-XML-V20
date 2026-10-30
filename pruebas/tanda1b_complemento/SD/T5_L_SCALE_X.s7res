@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42024_1">
+    <MultiLanguageText Lang="en-US">SCALE_X</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">SCALE_X</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42024_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42024_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: SCALE_X (Scale_X)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: SCALE_X (Scale_X)</MultiLanguageText>
+  </Comment>
+</root>

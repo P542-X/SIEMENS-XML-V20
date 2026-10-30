@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42008_1">
+    <MultiLanguageText Lang="en-US">ENCO</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">ENCO</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42008_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42008_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: ENCO</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: ENCO</MultiLanguageText>
+  </Comment>
+</root>

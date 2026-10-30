@@ -293,3 +293,27 @@ Además, en la prueba real **el Ctrl+Z de TIA no deshizo la importación** aunqu
 - **FC con retorno** desde KOP: `Ret_Val =>` (TIA acepta también `RET_VAL =>`).
 - **DB de instancia** en SD: `DATA_BLOCK Nombre : FB_Nombre` + `END_DATA_BLOCK`, sin `.s7res`.
 - **`ImportFromDocuments`** solo admite `Override` en bloques.
+
+## 15. Idiomas del proyecto
+
+Un XML con textos en un idioma que el proyecto no tiene activado no importa: *"the specified culture does not exist within the current project"* (en `MultilingualTextItem` y en los comentarios `MultiLanguageText Lang=…` de la interfaz). En SD el `.s7res` con un idioma de más sí entró. El Add-In (v2.3.3) adapta los XML antes de importarlos: quita los idiomas que faltan y, si un texto se queda sin ninguno, lo pasa al idioma de referencia.
+
+## 16. Algunas cajas SD mal escritas cierran TIA
+
+Importar `FILL_BLK{ DisableENO := TRUE }( IN := 9, COUNT := 10, OUT => "DB".Arr[0] )` o `MOVE_BLK{ DisableENO := TRUE }( IN := "DB".A[0], COUNT := 2, OUT => "DB".B[0] )` en SD hace que `ImportFromDocuments` lance una excepción y **TIA Portal se cierra** justo después, sin guardar. Desde la v2.3.4 el Add-In deja `Import_XML\progreso.txt` para saber qué fichero fue. Cajas dudosas: en un .zip aparte. Desde la v2.3.5 el Add-In guarda el proyecto antes de importar.
+
+## 17. Tanda 1 (instrucciones básicas): lo aprendido
+
+- `Type := AUTO` solo en Add/Sub/Mul/Div. En el resto de cajas con tipo: *"The property 'IsAuto' is not supported for this instruction"*. `Type := Real` tampoco: deja el tipo en *Undef* (*"does not match the data type Undef"*, *"Data type Void is not permitted here"*). La forma a probar es `SrcType := Real`, como en las comparaciones.
+- `IEC_COUNTER`: salidas `.QU` / `.QD`, no `.Q`.
+- SCL: `x := -"DB".a = -5` → *"Invalid assignment"*; usar una variable intermedia.
+- Nombre de caja desconocido en SD → TIA lo importa como llamada a `<Nombre>_Callee` y falla al compilar.
+- `R_TRIG`/`F_TRIG` no se admiten como miembros de un DB global (en fuente `.db`).
+- `CountOfElements` no está disponible en KOP en S7-1500 V4.0; en SCL solo con un parámetro Variant del bloque (con un array global directo: *"Invalid assignment"*).
+- En SCL, `SCALE_X`/`NORM_X` con constantes sin tipo no compilan.
+- Entran y compilan en KOP (SD): Abs, Acos, Asin, Atan, Cos, Sin, Tan, Exp, Expt, Ln, Frac, Sqr, Sqrt, Mod, Neg, And, Or, Xor, Inv, Mux, Demux, Shl, Shr, Rol, Ror, Ceil, Floor, Round, Trunc, CTU, CTD, CTUD, TP, TOF, TONR, I_Coil, N_Contact, P_Contact, P_Coil, NBox, SR (`S_SR`) — **comprobadas en marcha (96 pruebas, todas TRUE en PLCSIM)**.
+- No entran (sintaxis por aprender): Inc, Dec, Min, Max, Limit, Deco, Enco, Sel, Expt, IN_Range, OUT_Range, OK/NOT_OK, R_TRIG, F_TRIG, RS, SET_BF/RESET_BF. Cierran TIA: MOVE_BLK, FILL_BLK, NORM_X (y se bloquean UMOVE_BLK, MOVE_BLK_VARIANT, SCALE_X).
+
+## 18. El nombre de la caja en SD no es el de TIA
+
+Las 24 cajas que fallaban en la tanda 1 tenían otro nombre interno en SD. Con una FC hecha a mano y exportada se vio: `MoveBlockI` (MOVE_BLK), `MoveBlockU` (UMOVE_BLK), `FillBlockI`/`FillBlockU` (FILL_BLK/UFILL_BLK), `Normalize`/`Scale_X` (NORM_X/SCALE_X), `InRange`/`OutRange` con pin `IN`, `NOK` (NOT_OK), `S_RS` (RS), `S_BitfieldCoil`/`R_BitfieldCoil` (SET_BF/RESET_BF), `Inc{ DestType := Int }( var )`, `MIN{ value_type := Int; card := 2 }`… Con esos nombres, las 24 importan, compilan y funcionan (tanda 1 completa: **120 pruebas, todas TRUE**). Método para cada tanda nueva: **primero una FC con las cajas hecha a mano y exportada**, después las pruebas.

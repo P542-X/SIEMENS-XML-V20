@@ -18,6 +18,7 @@
           <Member Name="Ret_A_ok" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">T3_Ret_A</MultiLanguageText></Comment></Member>
           <Member Name="Ret_B_ok" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">T3_Ret_B</MultiLanguageText></Comment></Member>
           <Member Name="EqString_ok" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">T3_Eq_String</MultiLanguageText></Comment></Member>
+          <Member Name="Vida_OB126" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sube 1 en cada ciclo si el OB126 se ejecuta</MultiLanguageText></Comment></Member>
         </Section>
       </Sections></Interface>
       <MemoryLayout>Optimized</MemoryLayout>

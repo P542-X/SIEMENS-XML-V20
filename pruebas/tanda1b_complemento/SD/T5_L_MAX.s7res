@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42004_1">
+    <MultiLanguageText Lang="en-US">MAX</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">MAX</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42004_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42004_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: MAX</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: MAX</MultiLanguageText>
+  </Comment>
+</root>

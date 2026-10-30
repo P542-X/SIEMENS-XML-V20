@@ -1,0 +1,50 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42023";
+    S7_BlockTitle := "MLC_42023_0"
+}
+FUNCTION "T5_L_NORM_X" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42023_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Normalize{
+                SrcType := Int; 
+                DestType := Real; 
+                DisableENO := TRUE
+            }(
+                MIN := "T5_Datos".Int_0, 
+                VALUE := "T5_Datos".Int_50, 
+                MAX := "T5_Datos".Int_100, 
+                OUT => "T5_Datos".NORM_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42023_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Ge{ SrcType := Real }(
+                IN1 := "T5_Datos".NORM_Out, 
+                IN2 := 0.499
+            )
+            Le{ SrcType := Real }(
+                IN1 := "T5_Datos".NORM_Out, 
+                IN2 := 0.501
+            )
+            Coil( "T5_Resultado".L_NORM_X )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

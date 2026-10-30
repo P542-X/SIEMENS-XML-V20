@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="L_I_Coil" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Bobina negada -( / )-</MultiLanguageText></Comment></Member>
+          <Member Name="L_SR" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Biestable SR (S_SR)</MultiLanguageText></Comment></Member>
+          <Member Name="L_P_Contact" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Contacto flanco positivo -|P|-</MultiLanguageText></Comment></Member>
+          <Member Name="L_N_Contact" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Contacto flanco negativo -|N|-</MultiLanguageText></Comment></Member>
+          <Member Name="L_NBox" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Flanco negativo N_TRIG</MultiLanguageText></Comment></Member>
+          <Member Name="L_P_Coil" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Bobina flanco positivo -(P)-</MultiLanguageText></Comment></Member>
+          <Member Name="S_R_TRIG" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] R_TRIG</MultiLanguageText></Comment></Member>
+          <Member Name="S_F_TRIG" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] F_TRIG</MultiLanguageText></Comment></Member>
+          <Member Name="L_TP" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Temporizador TP</MultiLanguageText></Comment></Member>
+          <Member Name="L_TOF" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Temporizador TOF</MultiLanguageText></Comment></Member>
+          <Member Name="L_TONR" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Temporizador TONR</MultiLanguageText></Comment></Member>
+          <Member Name="S_TP" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] TP</MultiLanguageText></Comment></Member>
+          <Member Name="S_TON" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] TON</MultiLanguageText></Comment></Member>
+          <Member Name="S_TOF" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] TOF</MultiLanguageText></Comment></Member>
+          <Member Name="S_TONR" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] TONR</MultiLanguageText></Comment></Member>
+          <Member Name="L_CTU" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Contador CTU</MultiLanguageText></Comment></Member>
+          <Member Name="L_CTD" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Contador CTD</MultiLanguageText></Comment></Member>
+          <Member Name="L_CTUD" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Contador CTUD</MultiLanguageText></Comment></Member>
+          <Member Name="S_CTU" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] CTU</MultiLanguageText></Comment></Member>
+          <Member Name="S_CTD" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] CTD</MultiLanguageText></Comment></Member>
+          <Member Name="S_CTUD" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] CTUD</MultiLanguageText></Comment></Member>
+          <Member Name="L_Mod" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Mod (resto)</MultiLanguageText></Comment></Member>
+          <Member Name="S_Mod" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Mod (resto)</MultiLanguageText></Comment></Member>
+          <Member Name="L_Neg" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Neg (cambio de signo)</MultiLanguageText></Comment></Member>
+          <Member Name="S_Neg" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Neg (cambio de signo)</MultiLanguageText></Comment></Member>
+          <Member Name="L_Abs" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Abs (valor absoluto)</MultiLanguageText></Comment></Member>
+          <Member Name="S_Abs" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Abs (valor absoluto)</MultiLanguageText></Comment></Member>
+          <Member Name="S_Min" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Min</MultiLanguageText></Comment></Member>
+          <Member Name="S_Max" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Max</MultiLanguageText></Comment></Member>
+          <Member Name="S_Limit" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Limit</MultiLanguageText></Comment></Member>
+          <Member Name="L_Sqr" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sqr</MultiLanguageText></Comment></Member>
+          <Member Name="S_Sqr" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Sqr</MultiLanguageText></Comment></Member>
+          <Member Name="L_Sqrt" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sqrt</MultiLanguageText></Comment></Member>
+          <Member Name="S_Sqrt" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Sqrt</MultiLanguageText></Comment></Member>
+          <Member Name="L_Ln" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Ln</MultiLanguageText></Comment></Member>
+          <Member Name="S_Ln" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Ln</MultiLanguageText></Comment></Member>
+          <Member Name="L_Exp" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Exp</MultiLanguageText></Comment></Member>
+          <Member Name="S_Exp" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Exp</MultiLanguageText></Comment></Member>
+          <Member Name="L_Sin" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sin</MultiLanguageText></Comment></Member>
+          <Member Name="S_Sin" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Sin</MultiLanguageText></Comment></Member>
+          <Member Name="L_Cos" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Cos</MultiLanguageText></Comment></Member>
+          <Member Name="S_Cos" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Cos</MultiLanguageText></Comment></Member>
+          <Member Name="L_Tan" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Tan</MultiLanguageText></Comment></Member>
+          <Member Name="S_Tan" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Tan</MultiLanguageText></Comment></Member>
+          <Member Name="L_Frac" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Frac</MultiLanguageText></Comment></Member>
+          <Member Name="S_Frac" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Frac</MultiLanguageText></Comment></Member>
+          <Member Name="L_Asin" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Asin</MultiLanguageText></Comment></Member>
+          <Member Name="S_Asin" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Asin</MultiLanguageText></Comment></Member>
+          <Member Name="L_Acos" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Acos</MultiLanguageText></Comment></Member>
+          <Member Name="S_Acos" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Acos</MultiLanguageText></Comment></Member>
+          <Member Name="L_Atan" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Atan</MultiLanguageText></Comment></Member>
+          <Member Name="S_Atan" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Atan</MultiLanguageText></Comment></Member>
+          <Member Name="S_Expt" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Expt (potencia)</MultiLanguageText></Comment></Member>
+          <Member Name="S_Inc_Dec" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] INC / DEC no existen en SCL: x := x + 1</MultiLanguageText></Comment></Member>
+          <Member Name="S_MOVE_BLK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] MOVE_BLK</MultiLanguageText></Comment></Member>
+          <Member Name="S_FILL_BLK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] FILL_BLK</MultiLanguageText></Comment></Member>
+          <Member Name="S_MOVE_BLK_VARIANT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] MOVE_BLK_VARIANT</MultiLanguageText></Comment></Member>
+          <Member Name="S_CountOfElements" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] CountOfElements (dentro de una FC con parámetro Variant)</MultiLanguageText></Comment></Member>
+          <Member Name="S_SWAP" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] SWAP</MultiLanguageText></Comment></Member>
+          <Member Name="L_Round" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Round</MultiLanguageText></Comment></Member>
+          <Member Name="S_Round" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Round</MultiLanguageText></Comment></Member>
+          <Member Name="L_Ceil" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Ceil</MultiLanguageText></Comment></Member>
+          <Member Name="S_Ceil" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Ceil</MultiLanguageText></Comment></Member>
+          <Member Name="L_Floor" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Floor</MultiLanguageText></Comment></Member>
+          <Member Name="S_Floor" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Floor</MultiLanguageText></Comment></Member>
+          <Member Name="L_Trunc" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Trunc</MultiLanguageText></Comment></Member>
+          <Member Name="S_Trunc" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] Trunc</MultiLanguageText></Comment></Member>
+          <Member Name="S_SCALE_X" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] SCALE_X</MultiLanguageText></Comment></Member>
+          <Member Name="S_NORM_X" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] NORM_X</MultiLanguageText></Comment></Member>
+          <Member Name="L_And" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">AND</MultiLanguageText></Comment></Member>
+          <Member Name="S_And" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] AND</MultiLanguageText></Comment></Member>
+          <Member Name="L_Or" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">OR</MultiLanguageText></Comment></Member>
+          <Member Name="S_Or" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] OR</MultiLanguageText></Comment></Member>
+          <Member Name="L_Xor" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">XOR</MultiLanguageText></Comment></Member>
+          <Member Name="S_Xor" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] XOR</MultiLanguageText></Comment></Member>
+          <Member Name="L_Inv" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">INV</MultiLanguageText></Comment></Member>
+          <Member Name="S_Inv" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] NOT de Word</MultiLanguageText></Comment></Member>
+          <Member Name="L_Mux" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">MUX</MultiLanguageText></Comment></Member>
+          <Member Name="L_Demux" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">DEMUX</MultiLanguageText></Comment></Member>
+          <Member Name="S_Deco" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] DECO</MultiLanguageText></Comment></Member>
+          <Member Name="S_Enco" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] ENCO</MultiLanguageText></Comment></Member>
+          <Member Name="S_Sel" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] SEL</MultiLanguageText></Comment></Member>
+          <Member Name="S_Mux" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] MUX</MultiLanguageText></Comment></Member>
+          <Member Name="L_Shr" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SHR</MultiLanguageText></Comment></Member>
+          <Member Name="S_Shr" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] SHR</MultiLanguageText></Comment></Member>
+          <Member Name="L_Shl" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SHL</MultiLanguageText></Comment></Member>
+          <Member Name="S_Shl" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] SHL</MultiLanguageText></Comment></Member>
+          <Member Name="L_Ror" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">ROR</MultiLanguageText></Comment></Member>
+          <Member Name="S_Ror" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] ROR</MultiLanguageText></Comment></Member>
+          <Member Name="L_Rol" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">ROL</MultiLanguageText></Comment></Member>
+          <Member Name="S_Rol" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] ROL</MultiLanguageText></Comment></Member>
+          <Member Name="S_REPEAT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] REPEAT / UNTIL</MultiLanguageText></Comment></Member>
+          <Member Name="S_EXIT_CONTINUE" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] EXIT y CONTINUE</MultiLanguageText></Comment></Member>
+          <Member Name="S_GOTO" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] GOTO y etiqueta</MultiLanguageText></Comment></Member>
+          <Member Name="S_RUNTIME" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] RUNTIME</MultiLanguageText></Comment></Member>
+          <Member Name="S_GET_ERR_ID" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] GET_ERR_ID</MultiLanguageText></Comment></Member>
+          <Member Name="Vida" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sube cada ciclo si T4_Base se ejecuta</MultiLanguageText></Comment></Member>
+          <Member Name="OK" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas correctas</MultiLanguageText></Comment></Member>
+          <Member Name="Total" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas</MultiLanguageText></Comment><StartValue>96</StartValue></Member>
+          <Member Name="Todo_OK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Todas correctas</MultiLanguageText></Comment></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T4_Resultado</Name>
+      <Namespace />
+      <Number>41901</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Tanda 1: un Bool por prueba (L_ = KOP, S_ = SCL)</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Tanda 1: un Bool por prueba (L_ = KOP, S_ = SCL)</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

@@ -1,0 +1,26 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "41008";
+    S7_BlockTitle := "MLC_41008_0"
+}
+FUNCTION "T4_L_TOF" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_41008_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+"T4_Inst".TOF_L.TOF{ time_type := Time }(
+                PT := T#100MS, 
+                ET =>  
+            )
+            S_Coil( "T4_Resultado".L_TOF )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

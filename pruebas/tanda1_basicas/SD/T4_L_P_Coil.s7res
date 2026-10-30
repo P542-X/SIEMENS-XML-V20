@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_41006_1">
+    <MultiLanguageText Lang="en-US">Flanco</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Flanco</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41006_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41006_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: bobina de flanco positivo</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: bobina de flanco positivo</MultiLanguageText>
+  </Comment>
+</root>

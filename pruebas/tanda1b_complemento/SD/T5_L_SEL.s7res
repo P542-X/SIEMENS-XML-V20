@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42009_1">
+    <MultiLanguageText Lang="en-US">SEL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">SEL</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42009_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42009_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: SEL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: SEL</MultiLanguageText>
+  </Comment>
+</root>

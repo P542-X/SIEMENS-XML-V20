@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="Tog" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Cambia en cada ciclo (lo escribe T4_Base)</MultiLanguageText></Comment></Member>
+          <Member Name="Falso" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Siempre FALSE</MultiLanguageText></Comment><StartValue>false</StartValue></Member>
+          <Member Name="Int_5" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 5</MultiLanguageText></Comment><StartValue>5</StartValue></Member>
+          <Member Name="Int_3" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 3</MultiLanguageText></Comment><StartValue>3</StartValue></Member>
+          <Member Name="Real_16" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 16.0</MultiLanguageText></Comment><StartValue>16.0</StartValue></Member>
+          <Member Name="Real_2" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 2.0</MultiLanguageText></Comment><StartValue>2.0</StartValue></Member>
+          <Member Name="Word_00F0" Datatype="Word" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 16#00F0</MultiLanguageText></Comment><StartValue>16#00F0</StartValue></Member>
+          <Member Name="Word_0033" Datatype="Word" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 16#0033</MultiLanguageText></Comment><StartValue>16#0033</StartValue></Member>
+          <Member Name="Mem_Runtime" Datatype="LReal" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="ICoil_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="SR_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="SR_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="RS_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="RS_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="PCont_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="NCont_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="NBox_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="PCoil_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="PCoil_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Bits_BF" Datatype="Array[0..7] of Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="OK_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="NOTOK_Q" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Mod_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Neg_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Inc_Var" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Dec_Var" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Abs_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Int_m5" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante -5</MultiLanguageText></Comment><StartValue>-5</StartValue></Member>
+          <Member Name="Min_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Max_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Limit_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Real_2_75" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 2.75</MultiLanguageText></Comment><StartValue>2.75</StartValue></Member>
+          <Member Name="Sqr_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Sqrt_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ln_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Exp_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Sin_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Cos_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Tan_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Frac_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Real_0_5" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 0.5</MultiLanguageText></Comment><StartValue>0.5</StartValue></Member>
+          <Member Name="Asin_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Acos_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Atan_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Expt_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_A" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_B" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_C" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_D" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_E" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="MBV_Ret" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="COE_Out" Datatype="UDInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_S1" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_S2" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Arr_S3" Datatype="Array[0..9] of Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Round_Out" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Round_In" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 2.5</MultiLanguageText></Comment><StartValue>2.5</StartValue></Member>
+          <Member Name="Ceil_Out" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ceil_In" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 2.5</MultiLanguageText></Comment><StartValue>2.5</StartValue></Member>
+          <Member Name="Floor_Out" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Floor_In" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 2.5</MultiLanguageText></Comment><StartValue>2.5</StartValue></Member>
+          <Member Name="Trunc_Out" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Trunc_In" Datatype="Real" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Constante 2.5</MultiLanguageText></Comment><StartValue>2.5</StartValue></Member>
+          <Member Name="ScaleX_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="NormX_Out" Datatype="Real" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="And_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Or_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Xor_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Inv_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Deco_Out" Datatype="DWord" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Enco_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Sel_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Mux_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Demux_0" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Demux_1" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Shr_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Shl_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ror_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Rol_Out" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T4_Datos</Name>
+      <Namespace />
+      <Number>41900</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Tanda 1: datos de las pruebas</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Tanda 1: datos de las pruebas</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

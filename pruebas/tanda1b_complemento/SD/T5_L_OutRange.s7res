@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_42011_1">
+    <MultiLanguageText Lang="en-US">OutRange</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">OutRange</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42011_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: OUT_RANGE</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: OUT_RANGE</MultiLanguageText>
+  </Comment>
+</root>

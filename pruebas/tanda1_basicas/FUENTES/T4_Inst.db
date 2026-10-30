@@ -1,0 +1,24 @@
+﻿DATA_BLOCK "T4_Inst"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   VAR 
+      TP_L : IEC_TIMER;
+      TOF_L : IEC_TIMER;
+      TONR_L : IEC_TIMER;
+      TP_S : IEC_TIMER;
+      TON_S : IEC_TIMER;
+      TOF_S : IEC_TIMER;
+      TONR_S : IEC_TIMER;
+      CTU_L : IEC_COUNTER;
+      CTD_L : IEC_COUNTER;
+      CTUD_L : IEC_COUNTER;
+      CTU_S : IEC_COUNTER;
+      CTD_S : IEC_COUNTER;
+      CTUD_S : IEC_COUNTER;
+   END_VAR
+
+
+BEGIN
+
+END_DATA_BLOCK

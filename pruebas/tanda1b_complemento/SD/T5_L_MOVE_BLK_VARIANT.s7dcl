@@ -1,0 +1,67 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "42022";
+    S7_BlockTitle := "MLC_42022_0"
+}
+FUNCTION "T5_L_MOVE_BLK_VARIANT" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42022_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 2; 
+                DisableENO := TRUE
+            }(
+                IN := 7, 
+                OUT1 => "T5_Datos".Arr_A[0], 
+                OUT2 => "T5_Datos".Arr_A[1]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42022_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            MOVE_BLK_VARIANT(
+                SRC := "T5_Datos".Arr_A, 
+                COUNT := "T5_Datos".UDInt_2, 
+                SRC_INDEX := "T5_Datos".DInt_0, 
+                DEST_INDEX := "T5_Datos".DInt_5, 
+                Ret_Val => "T5_Datos".MBV_Ret, 
+                DEST => "T5_Datos".Arr_E
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_42022_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T5_Datos".Arr_E[6], 
+                IN2 := 7
+            )
+            Eq{ SrcType := Int }(
+                IN1 := "T5_Datos".MBV_Ret, 
+                IN2 := 0
+            )
+            Coil( "T5_Resultado".L_MOVE_BLK_VARIANT )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

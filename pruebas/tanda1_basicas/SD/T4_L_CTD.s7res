@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_41011_1">
+    <MultiLanguageText Lang="en-US">CTD</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">CTD</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_41011_0">
+    <MultiLanguageText Lang="en-US">Tanda 1 KOP: contador descendente CTD</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1 KOP: contador descendente CTD</MultiLanguageText>
+  </Comment>
+</root>

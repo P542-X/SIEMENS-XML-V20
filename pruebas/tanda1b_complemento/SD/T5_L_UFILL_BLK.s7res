@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42021_1">
+    <MultiLanguageText Lang="en-US">UFILL_BLK</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">UFILL_BLK</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42021_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42021_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: UFILL_BLK (nombre deducido: FillBlockU)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: UFILL_BLK (nombre deducido: FillBlockU)</MultiLanguageText>
+  </Comment>
+</root>

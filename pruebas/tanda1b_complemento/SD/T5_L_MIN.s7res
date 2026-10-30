@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_42003_1">
+    <MultiLanguageText Lang="en-US">MIN</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">MIN</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42003_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_42003_0">
+    <MultiLanguageText Lang="en-US">Tanda 1b KOP: MIN</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 1b KOP: MIN</MultiLanguageText>
+  </Comment>
+</root>
