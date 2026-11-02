@@ -85,6 +85,7 @@ Es la forma recomendada de **generar KOP**: las instrucciones se escriben por no
 | `referencia/` | Bloques de ejemplo comprobados (SD y XML) |
 | `pruebas/importacion/` | Batería de 49 pruebas con autocomprobación en el PLC |
 | `CHANGELOG.md` | Cambios por versión |
+| `ROADMAP.md` | Hoja de ruta: PLC V20, exportación ampliada, HMI clásico, HMI Unified, otras versiones de TIA |
 
 ## Limitaciones
 

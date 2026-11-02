@@ -1,5 +1,12 @@
 # Cambios
 
+## 2.3.9
+- `INSTRUCCIONES_IA.md` 6.6: sintaxis vista en una segunda exportación real (GET, T_DIAG, `VAR RETAIN`, `VAR CONSTANT`, `DB_SPECIFIC`, `S7_Access`/`S7_Visibility`, valores iniciales de DB en SD, arrays con límite inferior ≠ 0, `S7_BlockComment`). Las multiinstancias del sistema llevan `LibVersion`.
+- Comentarios en **todos** los idiomas del proyecto (si solo van en es-ES y se edita en inglés, la columna *Comment* sale vacía).
+- `_info.md`/resumen: motivo propio para un DB de instancia sin interfaz (no sale en SD).
+- `ROADMAP.md`: fases (PLC V20, exportación ampliada, HMI clásico, HMI Unified, otras versiones).
+- Lecciones 19.
+
 ## 2.3.8
 - Tanda 1 completa: 120 pruebas de instrucciones básicas, todas TRUE en marcha (`pruebas/tanda1_basicas/` y `pruebas/tanda1b_complemento/`). Tabla de nombres SD ≠ nombres TIA en `INSTRUCCIONES_IA.md`.
 - `INSTRUCCIONES_IA.md` reescrito: reglas de oro, flujo de trabajo con el usuario, recetas paso a paso por caso (A–M), referencia completa de SD, fuentes y SimaticML con esqueletos comprobados, lista de lo que cierra TIA y tabla de errores con su solución.

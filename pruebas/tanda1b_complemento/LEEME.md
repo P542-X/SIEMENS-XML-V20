@@ -1,6 +1,6 @@
 # Tanda 1b: las cajas KOP aprendidas de la exportación real (24/24 TRUE en marcha)
 
-24 pruebas, una FC por caja, con la sintaxis SD exacta de una exportación real de TIA V20. Dos nombres son deducidos por analogía y van marcados [DEDUCIDA]: `R_BitfieldCoil` (RESET_BF) y `FillBlockU` (UFILL_BLK).
+24 pruebas, una FC por caja, con la sintaxis SD exacta de una FC hecha a mano y exportada de TIA V20 (`referencia/SD/Cajas_basicas_V20`). `R_BitfieldCoil` (RESET_BF) y `FillBlockU` (UFILL_BLK) se dedujeron por analogía y también están comprobados.
 
 Usa FC 42000..42024, DB 42900/42901, OB 128 y los DB de instancia `T5_Rt_L`, `T5_Ft_L`.
 
@@ -26,11 +26,11 @@ Usa FC 42000..42024, DB 42900/42901, OB 128 y los DB de instancia `T5_Rt_L`, `T5
 | `L_F_TRIG` | F_TRIG (DB de instancia T5_Ft_L) |
 | `L_RS` | Biestable RS (S_RS) |
 | `L_SET_BF` | SET_BF (S_BitfieldCoil) |
-| `L_RESET_BF` | [DEDUCIDA] RESET_BF (R_BitfieldCoil) |
+| `L_RESET_BF` | RESET_BF (R_BitfieldCoil) |
 | `L_MOVE_BLK` | MOVE_BLK (MoveBlockI) |
 | `L_UMOVE_BLK` | UMOVE_BLK (MoveBlockU) |
 | `L_FILL_BLK` | FILL_BLK (FillBlockI) |
-| `L_UFILL_BLK` | [DEDUCIDA] UFILL_BLK (FillBlockU) |
+| `L_UFILL_BLK` | UFILL_BLK (FillBlockU) |
 | `L_MOVE_BLK_VARIANT` | MOVE_BLK_VARIANT |
 | `L_NORM_X` | NORM_X (Normalize) |
 | `L_SCALE_X` | SCALE_X (Scale_X) |

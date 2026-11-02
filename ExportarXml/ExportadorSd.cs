@@ -128,6 +128,7 @@ namespace ExportarXml
             if (m.IndexOf("mixed programming languages", StringComparison.OrdinalIgnoreCase) >= 0) return "SD no admite este bloque (varios lenguajes o SCL)";
             if (m.IndexOf("know-how", StringComparison.OrdinalIgnoreCase) >= 0) return "protegido con know-how";
             if (m.IndexOf("GRAPH", StringComparison.OrdinalIgnoreCase) >= 0) return "GRAPH";
+            if (m.IndexOf("no elements in the interface", StringComparison.OrdinalIgnoreCase) >= 0) return "DB sin variables en la interfaz";
             return "error al exportar SD";
         }
 

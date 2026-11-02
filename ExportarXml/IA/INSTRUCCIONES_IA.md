@@ -372,6 +372,88 @@ Reglas de las plantillas `{ }`:
 
 **Sintaxis desconocida** (pide exportación, caso K): CountOfElements (no existe en KOP) y todo lo de instrucciones avanzadas, comunicación y tecnología que no aparezca en `SD/` ni en esta guía.
 
+### 6.6 Visto en exportaciones reales (sintaxis de TIA, aún sin batería de pruebas propia)
+
+**Interfaz**
+```
+FUNCTION_BLOCK "Mi_FB"
+    VAR_INPUT DB_SPECIFIC          // remanencia "ajustar en el DB de instancia"
+        Indice : Int;
+    END_VAR
+    VAR_OUTPUT DB_SPECIFIC
+        {
+             S7_Access := "ReadOnly := External";
+             S7_Visibility := "Hidden := External"
+        }
+        Datos : Array[0..19] of _.Mi_UDT;
+    END_VAR
+    VAR RETAIN                     // remanente
+        Contador : DInt;
+    END_VAR
+    VAR CONSTANT
+        Error_No_Encontrado : Int := 25;
+    END_VAR
+    VAR 
+        {
+             InstructionName := "GET";
+             LibVersion := "1.3";
+             S7_Setpoint := "False"
+        }
+        GET_Instance : GET;
+    END_VAR
+```
+- `S7_Access := "ReadOnly := External"` y `S7_Visibility := "Hidden := External"` son los checks *Accesible / Visible desde HMI/OPC UA* de la interfaz. `{ S7_Setpoint := "True" }` marca *Valor de ajuste*.
+- Las multiinstancias de instrucciones del sistema llevan `InstructionName` y **`LibVersion`**: **eso sí ata el bloque a la versión de la instrucción en esa CPU**. Si el bloque va a otra CPU, revisa esas versiones (o quita el bloque de atributos y deja que TIA elija, sin comprobar todavía).
+- Arrays con límite inferior distinto de 0: `Array[4000..4250] of _.Mi_UDT`.
+- Comentario de bloque: `S7_BlockComment := "MLC_x"` en la cabecera (como `S7_BlockTitle`).
+- Red vacía: `RUNG wire#powerrail` seguido directamente de `END_RUNG`.
+- OB1: cabecera `ORGANIZATION_BLOCK "Main"` (sin número ni tipo). Temporales con comillas si hace falta: `"Ret_Val" : Int;`.
+
+**DB con valores iniciales distintos del tipo** (después de las secciones `VAR`, antes de `END_DATA_BLOCK`):
+```
+    DATA_BLOCK Mi_DB
+        VAR RETAIN
+            Con : Array[4000..4250] of _.Mi_UDT;
+        END_VAR
+        Con[4007].Param.ConnId := 16#0BBF;
+        Con[4007].Param.CommPort := 4007;
+        Con[4007].Param.DataLen := 1700;
+    END_DATA_BLOCK
+```
+
+**Instrucciones de comunicación (multiinstancia en un FB)**
+```
+#GET_Instance.GET{
+    remote_type := Remote; 
+    local_type := Variant
+}(
+    REQ := #Pedir, 
+    ID := 16#100, 
+    NDR => #GET_Instance.NDR, 
+    ERROR => #GET_Instance.ERROR, 
+    STATUS => #GET_Instance.STATUS, 
+    ADDR_1 := #Origen_Remoto, 
+    ADDR_2 :=  , 
+    ADDR_3 :=  , 
+    ADDR_4 :=  , 
+    RD_1 := #Destino_Local, 
+    RD_2 :=  , 
+    RD_3 :=  , 
+    RD_4 :=  
+)
+
+#T_DIAG_Instance.T_DIAG(
+    REQ := #Pedir, 
+    ID := 16#100, 
+    DONE => #T_DIAG_Instance.DONE, 
+    BUSY => #T_DIAG_Instance.BUSY, 
+    ERROR => #T_DIAG_Instance.ERROR, 
+    STATUS => #T_DIAG_Instance.STATUS, 
+    RESULT := #Resultado
+)
+```
+Entradas sin conectar: `PARAM :=  ,`. Versiones vistas en S7-1500 V4.0: GET 1.3, T_DIAG 1.2, IEC_TIMER 1.0.
+
 ---
 
 ## 7. Referencia de fuentes (`.scl`, `.db`, `.udt`) — comprobada
@@ -449,7 +531,7 @@ END_DATA_BLOCK
 - `<Document>` con `<Engineering version="V20" />` y **un solo** objeto `SW.*`.
 - Interfaz: `xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5"`.
 - `ID` de `ObjectList` en hexadecimal y **únicos** en todo el documento.
-- Textos en los **idiomas del proyecto** (`_info.md`). Si sobra alguno, el Add-In lo adapta, pero mejor generarlo bien.
+- Textos en los **idiomas del proyecto** (`_info.md`), **todos**: TIA enseña cada comentario en el idioma de edición, y si solo lo pones en `es-ES` y el usuario edita en inglés, la columna *Comment* sale vacía. Si sobra algún idioma, el Add-In lo quita.
 - Tipos de UDT: `Datatype="&quot;Mi_UDT&quot;"`. Arrays: `Array[0..9] of Int`. Struct: `Datatype="Struct"` con los miembros dentro.
 - Instrucciones con versión en la interfaz: `Datatype="IEC_TIMER" Version="1.0"`.
 - **SCL en XML** (evitar): una sola `CompileUnit`, tokens con `UId` únicos, índices con `<Token Text="["/>`/`"]"` y **sin** `AccessModifier`.
