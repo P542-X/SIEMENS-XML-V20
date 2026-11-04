@@ -1,0 +1,49 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "43020";
+    S7_BlockTitle := "MLC_43020_0"
+}
+FUNCTION "T6_L_ATH" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43020_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            ATH{
+                n_type := Int; 
+                in_out_type := Variant
+            }(
+                IN := "T6_Datos".S_1A2B, 
+                N := "T6_Datos".Int_4, 
+                RET_VAL => "T6_Datos".W_Ret, 
+                OUT => "T6_Datos".Bytes
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43020_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Byte }(
+                IN1 := "T6_Datos".Bytes[0], 
+                IN2 := 16#1A
+            )
+            Eq{ SrcType := Byte }(
+                IN1 := "T6_Datos".Bytes[1], 
+                IN2 := 16#2B
+            )
+            Coil( "T6_Resultado".L_ATH )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

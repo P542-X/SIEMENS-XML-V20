@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_43001_1">
+    <MultiLanguageText Lang="en-US">T_CONV</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">T_CONV</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43001_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43001_0">
+    <MultiLanguageText Lang="en-US">Tanda 2 KOP: T_CONV Time -&gt; DInt</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 2 KOP: T_CONV Time -&gt; DInt</MultiLanguageText>
+  </Comment>
+</root>

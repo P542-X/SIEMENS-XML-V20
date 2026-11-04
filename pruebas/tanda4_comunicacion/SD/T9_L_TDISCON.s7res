@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46004_1">
+    <MultiLanguageText Lang="en-US">TDISCON</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TDISCON</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46004_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): TDISCON</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): TDISCON</MultiLanguageText>
+  </Comment>
+</root>

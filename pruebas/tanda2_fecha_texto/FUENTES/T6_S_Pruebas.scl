@@ -1,0 +1,60 @@
+﻿FUNCTION "T6_S_Pruebas" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      di : DInt;
+      t : Time;
+      t2 : Time;
+      dtA : DTL;
+      dtB : DTL;
+      dtC : DTL;
+      r : Int;
+      r2 : Int;
+      r3 : Int;
+      r4 : Int;
+      s : String;
+      i : Int;
+      ok : Bool;
+      w : Word;
+      w2 : Word;
+      b : Array[0..9] of Byte;
+   END_VAR
+
+BEGIN
+	// [SCL] TIME_TO_DINT, DINT_TO_TIME, T_ADD, T_SUB, T_DIFF, CONCAT_DATE_TOD (T_COMBINE en KOP)
+	#di := TIME_TO_DINT("T6_Datos".T_1500ms);
+	#t := DINT_TO_TIME(2000);
+	#dtA := T_ADD(IN1 := "T6_Datos".Dtl_1, IN2 := T#1H);
+	#dtB := T_SUB(IN1 := "T6_Datos".Dtl_1, IN2 := T#1H);
+	#t2 := T_DIFF(IN1 := #dtA, IN2 := "T6_Datos".Dtl_1);
+	#dtC := CONCAT_DATE_TOD(IN1 := "T6_Datos".Fecha, IN2 := "T6_Datos".Hora);
+	"T6_Resultado".S_Fecha := #di = 1500 AND #t = T#2S AND #dtA.HOUR = 11 AND #dtB.HOUR = 9 AND #t2 = T#1H AND #dtC.MONTH = 3 AND #dtC.HOUR = 12;
+
+	// [SCL] RD_LOC_T, RD_SYS_T, WR_LOC_T y WR_SYS_T (una vez)
+	#r := RD_LOC_T(OUT => #dtA);
+	#r2 := RD_SYS_T(OUT => #dtB);
+	IF NOT "T6_Datos".Escrito_S THEN
+	    #r3 := WR_LOC_T(LOCTIME := #dtA, DST := FALSE);
+	    #r4 := WR_SYS_T(IN := #dtB);
+	    "T6_Datos".Escrito_S := TRUE;
+	    "T6_Resultado".S_Reloj := #r = 0 AND #r2 = 0 AND #r3 = 0 AND #r4 = 0 AND #dtA.YEAR > 2000;
+	END_IF;
+
+	// [SCL] INT_TO_STRING, STRING_TO_INT, LEFT, RIGHT, MID, DELETE, INSERT, REPLACE, FIND
+	#s := INT_TO_STRING(123);
+	#i := STRING_TO_INT('456');
+	#ok := STRING_TO_INT(#s) = 123 AND #i = 456;   // INT_TO_STRING deja el signo delante (' 123')
+	#ok := #ok AND LEFT(IN := "T6_Datos".S_ABCDEF, L := 3) = 'ABC' AND RIGHT(IN := "T6_Datos".S_ABCDEF, L := 3) = 'DEF';
+	#ok := #ok AND MID(IN := "T6_Datos".S_ABCDEF, L := 2, P := 2) = 'BC' AND DELETE(IN := "T6_Datos".S_ABCDEF, L := 2, P := 1) = 'CDEF';
+	#ok := #ok AND INSERT(IN1 := 'ABEF', IN2 := 'CD', P := 2) = 'ABCDEF' AND REPLACE(IN1 := "T6_Datos".S_ABCDEF, IN2 := 'XY', L := 2, P := 3) = 'ABXYEF';
+	#ok := #ok AND FIND(IN1 := "T6_Datos".S_ABCDEF, IN2 := 'CD') = 3;
+	"T6_Resultado".S_Texto := #ok;
+
+	// [SCL] ATH y HTA
+	#w := ATH(IN := "T6_Datos".S_1A2B, N := 4, OUT => #b);
+	#w2 := HTA(IN := #b, N := 2, OUT => #s);
+	"T6_Resultado".S_Hex := #b[0] = 16#1A AND #b[1] = 16#2B AND #s = '1A2B';
+
+	// [SCL] comparar DTL y Char
+	"T6_Resultado".S_Comparar := "T6_Datos".Dtl_1 = "T6_Datos".Dtl_1_Copia AND "T6_Datos".Char_A = "T6_Datos".Char_A2;
+END_FUNCTION

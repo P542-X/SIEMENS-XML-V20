@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_43016_1">
+    <MultiLanguageText Lang="en-US">DELETE</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">DELETE</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43016_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43016_0">
+    <MultiLanguageText Lang="en-US">Tanda 2 KOP: DELETE</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 2 KOP: DELETE</MultiLanguageText>
+  </Comment>
+</root>

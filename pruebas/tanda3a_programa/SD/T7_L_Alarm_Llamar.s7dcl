@@ -1,0 +1,21 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44018";
+    S7_BlockTitle := "MLC_44018_0"
+}
+FUNCTION "T7_L_Alarm_Llamar" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44018_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "T7_L_Alarm_DB"()
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

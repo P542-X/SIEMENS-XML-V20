@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="Falso" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><StartValue>false</StartValue></Member>
+          <Member Name="Verdadero" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><StartValue>true</StartValue></Member>
+          <Member Name="Jmp_Fallo" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Jmp_Llega" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Jmpn_Fallo" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Jmpn_Llega" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="UInt_1" Datatype="UInt" Remanence="NonRetain" Accessibility="Public"><StartValue>1</StartValue></Member>
+          <Member Name="JL_Fallo" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="JL_Llega" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Int_5" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>5</StartValue></Member>
+          <Member Name="Int_3" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>3</StartValue></Member>
+          <Member Name="SW_Fallo" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="SW_Llega" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Int_10" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>10</StartValue></Member>
+          <Member Name="VarGet_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="VarPut_Dst" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Int_7" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>7</StartValue></Member>
+          <Member Name="DInt_3" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><StartValue>3</StartValue></Member>
+          <Member Name="Int_42" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>42</StartValue></Member>
+          <Member Name="Ret_Write" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="Ret_Read" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="ArrDB_Leido" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_Attr" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="DB_Longitud" Datatype="UDInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="DB_Atributos" Datatype="Byte" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_DIS_AIRT" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="Ret_EN_AIRT" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="SrtDint_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_SRT_DINT" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="T_100ms" Datatype="Time" Remanence="NonRetain" Accessibility="Public"><StartValue>T#100MS</StartValue></Member>
+          <Member Name="Word_0" Datatype="Word" Remanence="NonRetain" Accessibility="Public"><StartValue>16#0</StartValue></Member>
+          <Member Name="OB20_Cuenta" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Lo incrementa el OB20 (alarma de retardo)</MultiLanguageText></Comment></Member>
+          <Member Name="Ret_QRY_DINT" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="St_QRY_DINT" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_QRY_CINT" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="Ciclo_OB30" Datatype="UDInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Fase_OB30" Datatype="UDInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="St_QRY_CINT" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="OB30_Cuenta" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Lo incrementa el OB30 (alarma cíclica)</MultiLanguageText></Comment></Member>
+          <Member Name="Ret_RTM" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="RTM_CQ" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="RTM_CV" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Byte_0" Datatype="Byte" Remanence="NonRetain" Accessibility="Public"><StartValue>16#0</StartValue></Member>
+          <Member Name="DInt_0" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><StartValue>0</StartValue></Member>
+          <Member Name="Tog" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T7_Datos</Name>
+      <Namespace />
+      <Number>44900</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Tanda 3: datos</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Tanda 3: datos</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

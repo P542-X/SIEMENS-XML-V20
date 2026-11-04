@@ -1,0 +1,37 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45018";
+    S7_BlockTitle := "MLC_45018_0"
+}
+FUNCTION "T8_L_GEO2LOG" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        hw : HW_ANY;
+        {
+             InstructionName := "GEOADDR";
+             LibVersion := "1.0"
+        }
+        geo : GEOADDR;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45018_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            GEO2LOG(
+                GEOADDR := #geo, 
+                RET_VAL => #ret, 
+                LADDR => #hw
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

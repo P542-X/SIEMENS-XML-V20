@@ -1,0 +1,23 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44007";
+    S7_BlockTitle := "MLC_44007_0"
+}
+FUNCTION "T7_L_WAIT" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44007_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            WAIT(WT := "T7_Datos".Int_10)
+            Coil( "T7_Resultado".L_WAIT )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

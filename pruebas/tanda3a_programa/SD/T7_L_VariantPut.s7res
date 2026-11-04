@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_44011_1">
+    <MultiLanguageText Lang="en-US">Llamar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Llamar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44011_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44011_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: VariantPut</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: VariantPut</MultiLanguageText>
+  </Comment>
+</root>

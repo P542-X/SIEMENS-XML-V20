@@ -1,0 +1,45 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "43016";
+    S7_BlockTitle := "MLC_43016_0"
+}
+FUNCTION "T6_L_DELETE" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43016_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            DELETE{
+                str_type := String; 
+                DisableENO := TRUE
+            }(
+                IN := "T6_Datos".S_ABCDEF, 
+                L := "T6_Datos".Int_2b, 
+                P := "T6_Datos".Int_1, 
+                OUT => "T6_Datos".DELETE_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43016_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := String }(
+                IN1 := "T6_Datos".DELETE_Out, 
+                IN2 := 'CDEF'
+            )
+            Coil( "T6_Resultado".L_DELETE )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

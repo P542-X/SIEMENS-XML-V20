@@ -1,0 +1,46 @@
+﻿<root>
+  <Comment Id="MLC_48013_1">
+    <MultiLanguageText Lang="en-US">FB con constante</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">FB con constante</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_2">
+    <MultiLanguageText Lang="en-US">Comprobar constante</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar constante</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_3">
+    <MultiLanguageText Lang="en-US">FB con Variant</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">FB con Variant</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_4">
+    <MultiLanguageText Lang="en-US">Comprobar Variant</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Variant</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_5">
+    <MultiLanguageText Lang="en-US">Array[*] con 5</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Array[*] con 5</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_6">
+    <MultiLanguageText Lang="en-US">Array[*] con 3</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Array[*] con 3</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_7">
+    <MultiLanguageText Lang="en-US">Comprobar Array[*]</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar Array[*]</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_8">
+    <MultiLanguageText Lang="en-US">Comprobar OB100</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar OB100</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_9">
+    <MultiLanguageText Lang="en-US">Comprobar OB121</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar OB121</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_10">
+    <MultiLanguageText Lang="en-US">Vida</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Vida</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48013_0">
+    <MultiLanguageText Lang="en-US">Tanda 7: llamadas y comprobaciones</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 7: llamadas y comprobaciones</MultiLanguageText>
+  </Comment>
+</root>

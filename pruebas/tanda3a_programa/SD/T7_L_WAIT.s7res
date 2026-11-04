@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_44007_1">
+    <MultiLanguageText Lang="en-US">WAIT 10 µs</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">WAIT 10 µs</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44007_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: WAIT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: WAIT</MultiLanguageText>
+  </Comment>
+</root>

@@ -1,0 +1,97 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44004";
+    S7_BlockTitle := "MLC_44004_0"
+}
+FUNCTION "T7_L_SWITCH" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44004_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Switch{
+                Card := 2; 
+                CASE0 := "=="; 
+                CASE1 := "=="; 
+                SrcType := Int
+            }(
+                K := "T7_Datos".Int_5, 
+                CASE0 := "T7_Datos".Int_3, 
+                CASE1 := "T7_Datos".Int_5, 
+                ELSE => SE, 
+                DEST0 => S0, 
+                DEST1 => S1
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44004_2"
+    }
+    NETWORK
+        Label(SE)
+        RUNG wire#powerrail
+            Contact( True )
+            S_Coil( "T7_Datos".SW_Fallo )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44004_3"
+    }
+    NETWORK
+        Label(S0)
+        RUNG wire#powerrail
+            Contact( True )
+            S_Coil( "T7_Datos".SW_Fallo )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44004_4"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            JumpCoil( S1 )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44004_5"
+    }
+    NETWORK
+        Label(S1)
+        RUNG wire#powerrail
+            Contact( True )
+            Coil( "T7_Datos".SW_Llega )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44004_6"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( "T7_Datos".SW_Llega )
+            I_Contact( "T7_Datos".SW_Fallo )
+            Coil( "T7_Resultado".L_SWITCH )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

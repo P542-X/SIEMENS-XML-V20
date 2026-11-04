@@ -1,0 +1,32 @@
+﻿FUNCTION "T7_Contar" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      n : Int;
+   END_VAR
+
+BEGIN
+	#n := 0;
+	IF "T7_Resultado".L_JMP THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_JMPN THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_JMP_LIST THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_SWITCH THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_RE_TRIGR THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_GET_ERROR THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_WAIT THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_VariantGet THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_VariantPut THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_ArrayDB THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_ATTR_DB THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_AIRT THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_SRT_DINT THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_QRY_CINT THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_Program_Alarm THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".L_RTM THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".S_PEEK_POKE THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".S_BIG_LITTLE THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".S_ArrayDB THEN #n := #n + 1; END_IF;
+	IF "T7_Resultado".S_Variant THEN #n := #n + 1; END_IF;
+	"T7_Resultado".OK := #n;
+	"T7_Resultado".Todo_OK := #n = "T7_Resultado".Total;
+END_FUNCTION

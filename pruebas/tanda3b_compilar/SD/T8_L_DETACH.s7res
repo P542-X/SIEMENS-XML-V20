@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45007_1">
+    <MultiLanguageText Lang="en-US">DETACH</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">DETACH</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45007_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): DETACH</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): DETACH</MultiLanguageText>
+  </Comment>
+</root>

@@ -1,0 +1,34 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "48010";
+    S7_BlockTitle := "MLC_48010_0"
+}
+FUNCTION_BLOCK "T12_FB_Const"
+    VAR_OUTPUT 
+        Salida : UInt;
+    END_VAR
+    VAR CONSTANT 
+        LIMITE : Int := 10;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48010_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 1; 
+                DisableENO := TRUE
+            }(
+                IN := #LIMITE, 
+                OUT1 => #Salida
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION_BLOCK

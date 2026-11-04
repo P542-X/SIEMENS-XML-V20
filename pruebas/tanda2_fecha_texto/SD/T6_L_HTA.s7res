@@ -1,0 +1,18 @@
+﻿<root>
+  <Comment Id="MLC_43021_1">
+    <MultiLanguageText Lang="en-US">Preparar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Preparar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43021_2">
+    <MultiLanguageText Lang="en-US">HTA</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">HTA</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43021_3">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43021_0">
+    <MultiLanguageText Lang="en-US">Tanda 2 KOP: HTA (bytes a texto hexadecimal)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 2 KOP: HTA (bytes a texto hexadecimal)</MultiLanguageText>
+  </Comment>
+</root>

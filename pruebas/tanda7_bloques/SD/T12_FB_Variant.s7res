@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_48011_1">
+    <MultiLanguageText Lang="en-US">VariantGet</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">VariantGet</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48011_0">
+    <MultiLanguageText Lang="en-US">Tanda 7: Variant de entrada</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 7: Variant de entrada</MultiLanguageText>
+  </Comment>
+</root>

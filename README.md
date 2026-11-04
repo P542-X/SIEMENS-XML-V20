@@ -79,6 +79,9 @@ Es la forma recomendada de **generar KOP**: las instrucciones se escriben por no
 
 | Carpeta / fichero | Qué es |
 |---|---|
+| `CLAUDE.md` / `AGENTS.md` | Punto de entrada para una IA: qué leer y qué hacer según lo que se pida |
+| `GUIA_PRUEBAS.md` | Método para comprobar instrucciones nuevas (aprender, generar, importar, comprobar en marcha, documentar) |
+| `herramientas/` | Generadores de las baterías de prueba (`simatic.py` + `tanda*.py`) |
 | `ExportarXml/` | Código del Add-In |
 | `ExportarXml/IA/INSTRUCCIONES_IA.md` | Instrucciones para la IA (van dentro de la DLL y se copian a cada exportación) |
 | `SimaticML_V20_lecciones.md` | Lo aprendido generando e importando bloques |
@@ -122,6 +125,7 @@ Después, en TIA Portal: task card **Add-Ins** → activar "Exportar e importar 
 | `Cpu.cs` | CPU y firmware de un PLC, y `_info.txt` del paquete |
 | `Deshacer.cs` | Copias antes de importar y menú *Deshacer última importación* |
 | `Idiomas.cs` | Adapta los textos de los XML a los idiomas del proyecto |
+| `Hmi.cs` | Exportar e importar HMI clásico (Comfort/Advanced) en XML |
 | `Progreso.cs` | `Import_XML\progreso.txt`: paso a paso, para localizar un cierre de TIA |
 | `Importador.cs` | Importación (XML, SD, fuentes, zip), elección XML/SD según la CPU y compilación |
 | `Validador.cs` | Comprobación previa de los XML: reglas propias y XSD de TIA |

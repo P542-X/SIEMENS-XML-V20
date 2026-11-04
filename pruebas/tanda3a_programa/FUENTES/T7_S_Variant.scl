@@ -1,0 +1,33 @@
+﻿FUNCTION "T7_S_Variant_Sub" : Int
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_IN_OUT
+      v : Variant;
+   END_VAR
+   VAR_TEMP
+      x : Int;
+   END_VAR
+
+BEGIN
+	IF TypeOf(#v) = Int THEN
+	    VariantGet(SRC := #v, DST => #x);
+	    #T7_S_Variant_Sub := #x;
+	ELSE
+	    #T7_S_Variant_Sub := -1;
+	END_IF;
+END_FUNCTION
+
+FUNCTION "T7_S_Variant" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      w : Word;
+      i : Int;
+      r : Int;
+      buf : Array[0..9] of Byte;
+      pos : DInt;
+   END_VAR
+
+BEGIN
+	"T7_Resultado".S_Variant := "T7_S_Variant_Sub"(v := "T7_Datos".Int_5) = 5;
+END_FUNCTION

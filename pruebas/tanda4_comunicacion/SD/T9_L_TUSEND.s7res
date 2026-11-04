@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46007_1">
+    <MultiLanguageText Lang="en-US">TUSEND</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TUSEND</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46007_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): TUSEND</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): TUSEND</MultiLanguageText>
+  </Comment>
+</root>

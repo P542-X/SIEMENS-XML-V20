@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45005_1">
+    <MultiLanguageText Lang="en-US">WRIT_DBL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">WRIT_DBL</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45005_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): WRIT_DBL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): WRIT_DBL</MultiLanguageText>
+  </Comment>
+</root>

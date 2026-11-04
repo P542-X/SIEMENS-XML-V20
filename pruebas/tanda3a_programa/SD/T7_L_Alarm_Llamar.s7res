@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_44018_1">
+    <MultiLanguageText Lang="en-US">Llamar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Llamar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44018_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: llamar al FB de Program_Alarm</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: llamar al FB de Program_Alarm</MultiLanguageText>
+  </Comment>
+</root>

@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_44013_1">
+    <MultiLanguageText Lang="en-US">ATTR_DB</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">ATTR_DB</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44013_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44013_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: ATTR_DB</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: ATTR_DB</MultiLanguageText>
+  </Comment>
+</root>

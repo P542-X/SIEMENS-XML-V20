@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_43010_1">
+    <MultiLanguageText Lang="en-US">Eq DTL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Eq DTL</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43010_0">
+    <MultiLanguageText Lang="en-US">Tanda 2 KOP: comparar dos DTL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 2 KOP: comparar dos DTL</MultiLanguageText>
+  </Comment>
+</root>

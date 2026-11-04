@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_44008_1">
+    <MultiLanguageText Lang="en-US">VariantGet</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">VariantGet</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44008_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: VariantGet dentro de una FC con Variant</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: VariantGet dentro de una FC con Variant</MultiLanguageText>
+  </Comment>
+</root>

@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_44010_1">
+    <MultiLanguageText Lang="en-US">VariantPut</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">VariantPut</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44010_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: VariantPut dentro de una FC con Variant</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: VariantPut dentro de una FC con Variant</MultiLanguageText>
+  </Comment>
+</root>

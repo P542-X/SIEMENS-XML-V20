@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="L_JMP" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">JMP + LABEL (JumpCoil, Label)</MultiLanguageText></Comment></Member>
+          <Member Name="L_JMPN" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">JMPN (I_JumpCoil)</MultiLanguageText></Comment></Member>
+          <Member Name="L_JMP_LIST" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">JMP_LIST (JumpList), K = 1</MultiLanguageText></Comment></Member>
+          <Member Name="L_SWITCH" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SWITCH (Switch), K = 5 → caso 1</MultiLanguageText></Comment></Member>
+          <Member Name="L_RE_TRIGR" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">RE_TRIGR</MultiLanguageText></Comment></Member>
+          <Member Name="L_GET_ERROR" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">GET_ERROR (GetError) y GET_ERR_ID (GetErrorID) sin error</MultiLanguageText></Comment></Member>
+          <Member Name="L_WAIT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">WAIT</MultiLanguageText></Comment></Member>
+          <Member Name="L_VariantGet" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">VariantGet (Variant → Int)</MultiLanguageText></Comment></Member>
+          <Member Name="L_VariantPut" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">VariantPut (Int → Variant)</MultiLanguageText></Comment></Member>
+          <Member Name="L_ArrayDB" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">WriteToArrayDB + ReadFromArrayDB</MultiLanguageText></Comment></Member>
+          <Member Name="L_ATTR_DB" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">ATTR_DB sobre T7_Std (longitud &gt; 0)</MultiLanguageText></Comment></Member>
+          <Member Name="L_AIRT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">DIS_AIRT + EN_AIRT</MultiLanguageText></Comment></Member>
+          <Member Name="L_SRT_DINT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">SRT_DINT + QRY_DINT: el OB20 se ha ejecutado</MultiLanguageText></Comment></Member>
+          <Member Name="L_QRY_CINT" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">QRY_CINT y el OB30 se ejecuta</MultiLanguageText></Comment></Member>
+          <Member Name="L_Program_Alarm" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Program_Alarm sin error</MultiLanguageText></Comment></Member>
+          <Member Name="L_RTM" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">RTM modo 0 (leer)</MultiLanguageText></Comment></Member>
+          <Member Name="S_PEEK_POKE" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] POKE + PEEK en un DB de acceso estándar</MultiLanguageText></Comment></Member>
+          <Member Name="S_BIG_LITTLE" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] WRITE_BIG/READ_BIG y WRITE_LITTLE/READ_LITTLE</MultiLanguageText></Comment></Member>
+          <Member Name="S_ArrayDB" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] WriteToArrayDB / ReadFromArrayDB</MultiLanguageText></Comment></Member>
+          <Member Name="S_Variant" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">[SCL] VariantGet / VariantPut, TypeOf</MultiLanguageText></Comment></Member>
+          <Member Name="Vida" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Sube cada ciclo</MultiLanguageText></Comment></Member>
+          <Member Name="OK" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Correctas</MultiLanguageText></Comment></Member>
+          <Member Name="Total" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Pruebas</MultiLanguageText></Comment><StartValue>20</StartValue></Member>
+          <Member Name="Todo_OK" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><Comment><MultiLanguageText Lang="es-ES">Todas correctas</MultiLanguageText></Comment></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T7_Resultado</Name>
+      <Namespace />
+      <Number>44901</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Tanda 3: un Bool por prueba</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Tanda 3: un Bool por prueba</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

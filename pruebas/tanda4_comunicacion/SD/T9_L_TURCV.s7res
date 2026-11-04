@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46008_1">
+    <MultiLanguageText Lang="en-US">TURCV (plantillas deducidas de TUSEND)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TURCV (plantillas deducidas de TUSEND)</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46008_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): TURCV (plantillas deducidas de TUSEND)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): TURCV (plantillas deducidas de TUSEND)</MultiLanguageText>
+  </Comment>
+</root>

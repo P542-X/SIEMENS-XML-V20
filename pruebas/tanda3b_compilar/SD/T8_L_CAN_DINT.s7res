@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45009_1">
+    <MultiLanguageText Lang="en-US">CAN_DINT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">CAN_DINT</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45009_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): CAN_DINT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): CAN_DINT</MultiLanguageText>
+  </Comment>
+</root>

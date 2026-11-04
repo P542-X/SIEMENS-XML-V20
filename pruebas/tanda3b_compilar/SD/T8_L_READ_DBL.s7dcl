@@ -1,0 +1,38 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45004";
+    S7_BlockTitle := "MLC_45004_0"
+}
+FUNCTION "T8_L_READ_DBL" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        a : Array[0..9] of Byte;
+        b : Array[0..9] of Byte;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45004_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            READ_DBL{
+                src_type := Variant; 
+                dest_type := Variant
+            }(
+                REQ := #req, 
+                SRCBLK := #a, 
+                RET_VAL => #ret, 
+                BUSY => #busy, 
+                DSTBLK => #b
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

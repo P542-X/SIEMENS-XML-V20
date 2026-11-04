@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_44017_1">
+    <MultiLanguageText Lang="en-US">Program_Alarm</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Program_Alarm</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44017_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44017_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: Program_Alarm (FB)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: Program_Alarm (FB)</MultiLanguageText>
+  </Comment>
+</root>

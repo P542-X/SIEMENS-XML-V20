@@ -1,0 +1,18 @@
+﻿<root>
+  <Comment Id="MLC_43009_1">
+    <MultiLanguageText Lang="en-US">Leer</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Leer</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43009_2">
+    <MultiLanguageText Lang="en-US">Escribir una vez</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Escribir una vez</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43009_3">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43009_0">
+    <MultiLanguageText Lang="en-US">Tanda 2 KOP: WR_SYS_T (una vez, con la hora leída)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 2 KOP: WR_SYS_T (una vez, con la hora leída)</MultiLanguageText>
+  </Comment>
+</root>

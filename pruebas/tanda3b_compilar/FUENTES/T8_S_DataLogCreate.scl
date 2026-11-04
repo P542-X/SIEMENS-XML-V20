@@ -1,0 +1,24 @@
+﻿DATA_BLOCK "T8_DataLogCreate_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+DataLogCreate
+
+BEGIN
+
+END_DATA_BLOCK
+
+FUNCTION "T8_S_DataLogCreate" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      id : DWord;
+      nom : String;
+      cab : String;
+      dat : Array[0..9] of Int;
+   END_VAR
+
+BEGIN
+	// Solo compilar: necesita hardware real o tarjeta de memoria
+	"T8_DataLogCreate_DB"(REQ := FALSE, RECORDS := 10, FORMAT := 1, TIMESTAMP := 1, NAME := #nom, ID := #id, HEADER := #cab, DATA := #dat);
+END_FUNCTION

@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_44005_1">
+    <MultiLanguageText Lang="en-US">RE_TRIGR</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">RE_TRIGR</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44005_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: RE_TRIGR</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: RE_TRIGR</MultiLanguageText>
+  </Comment>
+</root>

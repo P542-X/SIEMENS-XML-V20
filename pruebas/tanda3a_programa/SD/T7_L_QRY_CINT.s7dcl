@@ -1,0 +1,51 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44016";
+    S7_BlockTitle := "MLC_44016_0"
+}
+FUNCTION "T7_L_QRY_CINT" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44016_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            QRY_CINT(
+                OB_NR := 30, 
+                RET_VAL => "T7_Datos".Ret_QRY_CINT, 
+                CYCLE => "T7_Datos".Ciclo_OB30, 
+                PHASE => "T7_Datos".Fase_OB30, 
+                STATUS => "T7_Datos".St_QRY_CINT
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44016_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T7_Datos".Ret_QRY_CINT, 
+                IN2 := 0
+            )
+            Gt{ SrcType := UDInt }(
+                IN1 := "T7_Datos".Ciclo_OB30, 
+                IN2 := 0
+            )
+            Gt{ SrcType := DInt }(
+                IN1 := "T7_Datos".OB30_Cuenta, 
+                IN2 := 0
+            )
+            Coil( "T7_Resultado".L_QRY_CINT )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

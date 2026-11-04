@@ -1,0 +1,30 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "46017";
+    S7_BlockTitle := "MLC_46017_0"
+}
+FUNCTION "T9_L_WWW" : Void
+    VAR_TEMP 
+        req : Bool;
+        ret : Int;
+        dbw : DB_WWW;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_46017_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            WWW{ value_type := DB_WWW }(
+                CTRL_DB := #dbw, 
+                RET_VAL => #ret
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

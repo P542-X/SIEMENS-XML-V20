@@ -1,0 +1,74 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "43021";
+    S7_BlockTitle := "MLC_43021_0"
+}
+FUNCTION "T6_L_HTA" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43021_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 1; 
+                DisableENO := TRUE
+            }(
+                IN := 16#1A, 
+                OUT1 => "T6_Datos".Bytes_HTA[0]
+            )
+        END_RUNG
+        RUNG wire#powerrail
+            Contact( True )
+            Move{
+                Card := 1; 
+                DisableENO := TRUE
+            }(
+                IN := 16#2B, 
+                OUT1 => "T6_Datos".Bytes_HTA[1]
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43021_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            HTA{
+                n_type := UInt; 
+                in_out_type := Variant; 
+                card := 1
+            }(
+                IN := "T6_Datos".Bytes_HTA, 
+                N := "T6_Datos".UInt_2, 
+                RET_VAL => "T6_Datos".W_Ret2, 
+                OUT => "T6_Datos".HTA_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43021_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := String }(
+                IN1 := "T6_Datos".HTA_Out, 
+                IN2 := '1A2B'
+            )
+            Coil( "T6_Resultado".L_HTA )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

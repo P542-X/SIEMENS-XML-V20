@@ -1,0 +1,49 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "46006";
+    S7_BlockTitle := "MLC_46006_0"
+}
+FUNCTION "T9_L_TRCV" : Void
+    VAR_TEMP 
+        req : Bool;
+        done : Bool;
+        busy : Bool;
+        err : Bool;
+        st : Word;
+        data : Array[0..99] of Byte;
+        len : UDInt;
+        id : CONN_OUC;
+        rlen : UDInt;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_46006_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            "T9_TRCV_DB".TRCV{
+                ptr_type := Variant; 
+                value_type := UDInt; 
+                id_type := CONN_OUC; 
+                card := 1
+            }(
+                EN_R := #req, 
+                ID := #id, 
+                LEN := #len, 
+                ADHOC := #req, 
+                NDR => #done, 
+                BUSY => #busy, 
+                ERROR => #err, 
+                STATUS => #st, 
+                RCVD_LEN => #rlen, 
+                DATA := #data
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

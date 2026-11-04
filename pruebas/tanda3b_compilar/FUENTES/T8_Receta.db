@@ -1,0 +1,9 @@
+﻿DATA_BLOCK "T8_Receta"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   ARRAY[0..2] OF Int
+
+BEGIN
+
+END_DATA_BLOCK

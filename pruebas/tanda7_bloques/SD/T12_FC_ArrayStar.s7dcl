@@ -1,0 +1,98 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "48012";
+    S7_BlockTitle := "MLC_48012_0"
+}
+FUNCTION "T12_FC_ArrayStar" : Void
+    VAR_OUTPUT 
+        n : DInt;
+    END_VAR
+    VAR_IN_OUT 
+        lista : Array[*] of Int;
+    END_VAR
+    VAR_TEMP 
+        hi : DInt;
+        lo : DInt;
+        d : DInt;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48012_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Upper_Bound{
+                src_type := Variant; 
+                DisableENO := FALSE
+            }(
+                ARR := #lista, 
+                DIM := 1, 
+                OUT => #hi
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48012_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Lower_Bound{
+                src_type := Variant; 
+                DisableENO := FALSE
+            }(
+                ARR := #lista, 
+                DIM := 1, 
+                OUT => #lo
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48012_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Sub{
+                Type := AUTO; 
+                DisableENO := TRUE
+            }(
+                IN1 := #hi, 
+                IN2 := #lo, 
+                OUT => #d
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48012_4"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Add{
+                Card := 2; 
+                Type := AUTO; 
+                DisableENO := TRUE
+            }(
+                IN1 := #d, 
+                IN2 := 1, 
+                OUT => #n
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

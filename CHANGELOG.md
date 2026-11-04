@@ -1,5 +1,39 @@
 # Cambios
 
+## 2.4.8
+- `CLAUDE.md` / `AGENTS.md`: punto de entrada para cualquier IA (qué leer y qué hacer en cada caso, reglas, cómo publicar).
+- `GUIA_PRUEBAS.md`: el método de las baterías de prueba paso a paso.
+- `herramientas/`: librería `simatic.py` y los generadores de todas las tandas (regeneran exactamente lo que hay en `pruebas/`).
+
+## 2.4.7
+- Tanda 7 (bloques, interfaz, OB) comprobada en marcha: 6/6 (`pruebas/tanda7_bloques/`). OB de número fijo sin `AutoNumber`; `Array[*]` en SD; una caja por red si falla.
+
+## 2.4.6
+- Un `.s7dcl` con RET (`Return(`) sale como NO VÁLIDO con explicación: TIA V20 no importa RET en SD (ni el suyo). Usar XML, salto o SCL.
+- Guía 6.5d: cómo crear cada tipo de OB en XML (`SecondaryType` y entradas), interfaz especial (`Array[*]`, Variant, constantes), Get_AlarmState, T_RESET, T_CONFIG, TMAIL_C. Lecciones 24.
+
+## 2.4.5
+- Comunicación en marcha: TCP (compacta y por partes) y Modbus TCP, 4/4 en PLCSIM (`pruebas/tanda4b_com_marcha/`). Patrón de conexión en la guía. Trampa del temporizador que se reinicia solo en SCL. Lecciones 23.
+
+## 2.4.4
+- Tanda 3B (27) y tanda 4, comunicación (17): importan y compilan (`pruebas/tanda3b_compilar/`, `pruebas/tanda4_comunicacion/`). Guía: tipos de `LADDR`, sintaxis de comunicación y la regla de **todos los parámetros** en las llamadas SD a FB del sistema. Lecciones 22.
+
+## 2.4.3
+- Tanda 3A comprobada en marcha: 20/20 (`pruebas/tanda3a_programa/`). Guía 6.5c y lecciones 21.
+
+## 2.4.2
+- El resumen de importación pone el **bloque** delante de cada error de compilación (`T7_S_Pruebas (FC44003) › 22: …`), no solo la línea.
+
+## 2.4.1
+- Tanda 2 (fecha/hora y texto) comprobada en marcha: 27/27 (`pruebas/tanda2_fecha_texto/`). Sintaxis en `INSTRUCCIONES_IA.md` 6.5b, con los nombres a evitar (`D1` en SD, `db` en SCL), `CONCAT_DATE_TOD` en SCL y el signo delante en Int → String.
+- El HMI clásico de la 2.4.0 sigue **en prueba**.
+
+## 2.4.0 — HMI clásico (en prueba)
+- **Exportar selección** sobre un dispositivo con HMI clásico (Basic/Comfort/Advanced) exporta también el panel a `HMI/<panel>/`: pantallas (con sus carpetas), plantillas, emergentes, deslizantes, tablas de variables HMI, scripts VB, listas de textos y de gráficos, conexiones y ciclos. `_info.md` añade el modelo de panel y el recuento.
+- **Importar ficheros / carpeta** con un panel HMI seleccionado importa los XML de HMI (`Hmi.*`) en orden de dependencias (conexiones y ciclos → listas → variables → scripts → plantillas → emergentes → pantallas), con pasadas, copia previa de lo que se sobrescribe (`Import_XML\copia_hmi_<fecha>`), adaptación de idiomas y compilación del HMI. Resumen en `Import_XML\resumen_hmi_<fecha>.txt`.
+- WinCC Unified todavía no (fase 4): se avisa.
+- Acceso a la API de HMI por reflexión: si algo no existe en un panel o en la versión de TIA, se apunta y se sigue.
+
 ## 2.3.9
 - `INSTRUCCIONES_IA.md` 6.6: sintaxis vista en una segunda exportación real (GET, T_DIAG, `VAR RETAIN`, `VAR CONSTANT`, `DB_SPECIFIC`, `S7_Access`/`S7_Visibility`, valores iniciales de DB en SD, arrays con límite inferior ≠ 0, `S7_BlockComment`). Las multiinstancias del sistema llevan `LibVersion`.
 - Comentarios en **todos** los idiomas del proyecto (si solo van en es-ES y se edita en inglés, la columna *Comment* sale vacía).

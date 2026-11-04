@@ -1,0 +1,30 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45001";
+    S7_BlockTitle := "MLC_45001_0"
+}
+FUNCTION "T8_L_INIT_RD" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45001_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            INIT_RD(
+                REQ := #req, 
+                Ret_Val => #ret
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

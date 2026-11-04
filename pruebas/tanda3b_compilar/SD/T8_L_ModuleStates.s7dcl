@@ -1,0 +1,35 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45016";
+    S7_BlockTitle := "MLC_45016_0"
+}
+FUNCTION "T8_L_ModuleStates" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        hw : HW_DEVICE;
+        mode : UInt;
+        states : Array[0..127] of Bool;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45016_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            ModuleStates(
+                LADDR := #hw, 
+                MODE := #mode, 
+                Ret_Val => #ret, 
+                STATE := #states
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

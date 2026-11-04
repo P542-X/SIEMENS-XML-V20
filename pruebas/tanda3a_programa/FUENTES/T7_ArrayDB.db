@@ -1,0 +1,9 @@
+﻿DATA_BLOCK "T7_ArrayDB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+   ARRAY[0..9] OF Int
+
+BEGIN
+
+END_DATA_BLOCK

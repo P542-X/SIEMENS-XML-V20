@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46009_1">
+    <MultiLanguageText Lang="en-US">PUT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">PUT</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46009_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): PUT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): PUT</MultiLanguageText>
+  </Comment>
+</root>

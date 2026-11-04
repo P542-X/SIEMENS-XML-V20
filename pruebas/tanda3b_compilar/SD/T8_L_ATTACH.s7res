@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45006_1">
+    <MultiLanguageText Lang="en-US">ATTACH</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">ATTACH</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45006_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): ATTACH</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): ATTACH</MultiLanguageText>
+  </Comment>
+</root>

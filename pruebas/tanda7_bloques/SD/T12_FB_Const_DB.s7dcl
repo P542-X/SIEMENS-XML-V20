@@ -1,0 +1,6 @@
+﻿        {
+           S7_Optimized := "TRUE";
+           S7_StandardRetain := "FALSE"
+        }
+    DATA_BLOCK T12_FB_Const_DB : T12_FB_Const
+    END_DATA_BLOCK

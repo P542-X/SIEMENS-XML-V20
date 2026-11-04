@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45004_1">
+    <MultiLanguageText Lang="en-US">READ_DBL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">READ_DBL</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45004_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): READ_DBL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): READ_DBL</MultiLanguageText>
+  </Comment>
+</root>

@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_44009_1">
+    <MultiLanguageText Lang="en-US">Llamar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Llamar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44009_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44009_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: VariantGet</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: VariantGet</MultiLanguageText>
+  </Comment>
+</root>

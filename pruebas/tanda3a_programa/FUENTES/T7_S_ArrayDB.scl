@@ -1,0 +1,20 @@
+﻿FUNCTION "T7_S_ArrayDB" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      w : Word;
+      i : Int;
+      r : Int;
+      buf : Array[0..9] of Byte;
+      pos : DInt;
+   END_VAR
+
+BEGIN
+	// value es Variant: una variable, no una constante
+	#i := 77;
+	#pos := 5;
+	#r := WriteToArrayDB(db := "T7_ArrayDB", index := #pos, value := #i);
+	#i := 0;
+	#r := ReadFromArrayDB(db := "T7_ArrayDB", index := #pos, value => #i);
+	"T7_Resultado".S_ArrayDB := #i = 77;
+END_FUNCTION

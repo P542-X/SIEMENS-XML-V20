@@ -1,0 +1,17 @@
+﻿FUNCTION "T7_S_Memoria" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      w : Word;
+      i : Int;
+      r : Int;
+      buf : Array[0..9] of Byte;
+      pos : DInt;
+   END_VAR
+
+BEGIN
+	// POKE / PEEK sobre el DB estándar T7_Std (número 44902), byte 0
+	POKE(AREA := 16#84, DBNUMBER := 44902, BYTEOFFSET := 0, VALUE := WORD#16#1234);
+	#w := PEEK_WORD(AREA := 16#84, DBNUMBER := 44902, BYTEOFFSET := 0);
+	"T7_Resultado".S_PEEK_POKE := #w = WORD#16#1234 AND "T7_Std".W = WORD#16#1234;
+END_FUNCTION

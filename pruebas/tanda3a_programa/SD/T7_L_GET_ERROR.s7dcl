@@ -1,0 +1,61 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44006";
+    S7_BlockTitle := "MLC_44006_0"
+}
+FUNCTION "T7_L_GET_ERROR" : Void
+    VAR_TEMP 
+        {
+             InstructionName := "ErrorStruct";
+             LibVersion := "1.0"
+        }
+        err : ErrorStruct;
+        idErr : Word;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44006_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            GetError(ERROR => #err)
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44006_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            GetErrorID(ID => #idErr)
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44006_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Word }(
+                IN1 := #err.ERROR_ID, 
+                IN2 := 16#0
+            )
+            Eq{ SrcType := Word }(
+                IN1 := #idErr, 
+                IN2 := 16#0
+            )
+            Coil( "T7_Resultado".L_GET_ERROR )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

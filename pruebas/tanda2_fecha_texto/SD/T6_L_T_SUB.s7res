@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_43004_1">
+    <MultiLanguageText Lang="en-US">T_SUB</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">T_SUB</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43004_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43004_0">
+    <MultiLanguageText Lang="en-US">Tanda 2 KOP: T_SUB DTL - Time</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 2 KOP: T_SUB DTL - Time</MultiLanguageText>
+  </Comment>
+</root>

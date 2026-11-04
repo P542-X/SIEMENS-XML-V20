@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_44016_1">
+    <MultiLanguageText Lang="en-US">Consultar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Consultar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44016_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44016_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: QRY_CINT con el OB30</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: QRY_CINT con el OB30</MultiLanguageText>
+  </Comment>
+</root>

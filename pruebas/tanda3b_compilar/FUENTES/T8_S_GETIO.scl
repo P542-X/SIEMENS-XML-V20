@@ -1,0 +1,22 @@
+﻿DATA_BLOCK "T8_GETIO_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+GETIO
+
+BEGIN
+
+END_DATA_BLOCK
+
+FUNCTION "T8_S_GETIO" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      sub : HW_SUBMODULE;
+      buf : Array[0..9] of Byte;
+   END_VAR
+
+BEGIN
+	// Solo compilar: necesita hardware real o tarjeta de memoria
+	"T8_GETIO_DB"(ID := #sub, INPUTS := #buf);
+END_FUNCTION

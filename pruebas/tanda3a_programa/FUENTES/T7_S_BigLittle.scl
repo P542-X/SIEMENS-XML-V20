@@ -1,0 +1,23 @@
+﻿FUNCTION "T7_S_BigLittle" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      w : Word;
+      i : Int;
+      r : Int;
+      buf : Array[0..9] of Byte;
+      pos : DInt;
+   END_VAR
+
+BEGIN
+	#pos := 0;
+	#r := WRITE_BIG(SRC_VARIABLE := INT#258, DEST_ARRAY := #buf, POS := #pos);
+	#pos := 0;
+	#r := READ_BIG(SRC_ARRAY := #buf, POS := #pos, DEST_VARIABLE => #i);
+	#r := #i;
+	#pos := 0;
+	#w := INT_TO_WORD(WRITE_LITTLE(SRC_VARIABLE := INT#258, DEST_ARRAY := #buf, POS := #pos));
+	#pos := 0;
+	#w := INT_TO_WORD(READ_LITTLE(SRC_ARRAY := #buf, POS := #pos, DEST_VARIABLE => #i));
+	"T7_Resultado".S_BIG_LITTLE := #r = 258 AND #i = 258 AND #buf[0] = 16#02 AND #buf[1] = 16#01;
+END_FUNCTION

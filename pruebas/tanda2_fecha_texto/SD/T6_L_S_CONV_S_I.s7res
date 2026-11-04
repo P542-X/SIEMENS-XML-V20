@@ -1,0 +1,14 @@
+﻿<root>
+  <Comment Id="MLC_43012_1">
+    <MultiLanguageText Lang="en-US">S_CONV</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">S_CONV</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43012_2">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43012_0">
+    <MultiLanguageText Lang="en-US">Tanda 2 KOP: S_CONV String -&gt; Int</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 2 KOP: S_CONV String -&gt; Int</MultiLanguageText>
+  </Comment>
+</root>

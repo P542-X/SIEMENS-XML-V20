@@ -19,3 +19,7 @@ Import_XML/
 # Proyectos de TIA Portal
 *.ap*
 
+
+# Salida de los generadores
+herramientas/salida/
+__pycache__/

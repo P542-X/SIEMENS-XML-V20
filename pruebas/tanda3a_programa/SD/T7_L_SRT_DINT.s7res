@@ -1,0 +1,18 @@
+﻿<root>
+  <Comment Id="MLC_44015_1">
+    <MultiLanguageText Lang="en-US">Arrancar una vez</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Arrancar una vez</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44015_2">
+    <MultiLanguageText Lang="en-US">Consultar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Consultar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44015_3">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44015_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: SRT_DINT y QRY_DINT con el OB20</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: SRT_DINT y QRY_DINT con el OB20</MultiLanguageText>
+  </Comment>
+</root>

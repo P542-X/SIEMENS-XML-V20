@@ -88,7 +88,13 @@ namespace ExportarXml
 
         public static bool EsDestino(IEngineeringObject o)
         {
-            return ObtenerPlc(o) != null;
+            return ObtenerPlc(o) != null || Hmi.ObtenerHmi(o) != null || Hmi.EsUnified(o);
+        }
+
+        /// <summary>AbrirZips para el importador de HMI.</summary>
+        internal static IEnumerable<string> AbrirZipsPublico(TiaPortal tia, IEnumerable<string> rutas, StringBuilder log)
+        {
+            return AbrirZips(tia, rutas, log);
         }
 
         internal static PlcSoftware ObtenerPlc(IEngineeringObject o)
@@ -519,6 +525,13 @@ namespace ExportarXml
                 }
                 if (tipo == Tipo.Documento)
                 {
+                    if (Regex.IsMatch(texto, @"^\s*Return\s*\(", RegexOptions.Multiline))
+                    {
+                        log.AppendLine("NO VÁLIDO " + Path.GetFileName(ruta) + "  <-  " + ruta);
+                        log.AppendLine("         Contiene RET (Return): TIA V20 no importa RET en SIMATIC SD, ni siquiera el que exporta él mismo. " +
+                                       "Usa el XML del bloque o salta al final con JumpCoil/Label.");
+                        return null;
+                    }
                     Match peligro = CierraTia.Match(texto);
                     if (peligro.Success)
                     {
@@ -815,13 +828,17 @@ namespace ExportarXml
             }
         }
 
-        private static void AnadirErrores(CompilerResultMessageComposition mensajes, StringBuilder log)
+        /// <summary>
+        /// Errores de compilación con el bloque delante ("T7_S_Pruebas (FC44003) › 22: …"): los nodos sin
+        /// descripción son contenedores (PLC, carpeta, bloque) y el último es el bloque del error.
+        /// </summary>
+        private static void AnadirErrores(CompilerResultMessageComposition mensajes, StringBuilder log, string bloque = null)
         {
             foreach (CompilerResultMessage m in mensajes)
             {
                 if (m.State == CompilerResultState.Error && !string.IsNullOrEmpty(m.Description))
-                    log.AppendLine("   " + m.Path + ": " + m.Description);
-                AnadirErrores(m.Messages, log);
+                    log.AppendLine("   " + (bloque != null ? bloque + " › " : "") + m.Path + ": " + m.Description);
+                AnadirErrores(m.Messages, log, string.IsNullOrEmpty(m.Description) && !string.IsNullOrEmpty(m.Path) ? m.Path : bloque);
             }
         }
 

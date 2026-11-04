@@ -1,0 +1,18 @@
+﻿FUNCTION "T12_Contar" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      n : Int;
+   END_VAR
+
+BEGIN
+	#n := 0;
+	IF "T12_Resultado".L_Constante THEN #n := #n + 1; END_IF;
+	IF "T12_Resultado".L_Variant THEN #n := #n + 1; END_IF;
+	IF "T12_Resultado".S_ArrayStar THEN #n := #n + 1; END_IF;
+	IF "T12_Resultado".L_ArrayStar THEN #n := #n + 1; END_IF;
+	IF "T12_Resultado".L_Startup THEN #n := #n + 1; END_IF;
+	IF "T12_Resultado".L_ProgError THEN #n := #n + 1; END_IF;
+	"T12_Resultado".OK := #n;
+	"T12_Resultado".Todo_OK := #n = "T12_Resultado".Total;
+END_FUNCTION

@@ -1,0 +1,23 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44005";
+    S7_BlockTitle := "MLC_44005_0"
+}
+FUNCTION "T7_L_RE_TRIGR" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44005_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            RE_TRIGR()
+            Coil( "T7_Resultado".L_RE_TRIGR )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

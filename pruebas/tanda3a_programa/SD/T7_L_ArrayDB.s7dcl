@@ -1,0 +1,67 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44012";
+    S7_BlockTitle := "MLC_44012_0"
+}
+FUNCTION "T7_L_ArrayDB" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44012_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            WriteToArrayDB(
+                db := "T7_ArrayDB", 
+                index := "T7_Datos".DInt_3, 
+                value := "T7_Datos".Int_42, 
+                Ret_Val => "T7_Datos".Ret_Write
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44012_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            ReadFromArrayDB(
+                db := "T7_ArrayDB", 
+                index := "T7_Datos".DInt_3, 
+                Ret_Val => "T7_Datos".Ret_Read, 
+                value => "T7_Datos".ArrDB_Leido
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44012_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T7_Datos".Ret_Write, 
+                IN2 := 0
+            )
+            Eq{ SrcType := Int }(
+                IN1 := "T7_Datos".Ret_Read, 
+                IN2 := 0
+            )
+            Eq{ SrcType := Int }(
+                IN1 := "T7_Datos".ArrDB_Leido, 
+                IN2 := 42
+            )
+            Coil( "T7_Resultado".L_ArrayDB )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

@@ -1,0 +1,44 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "43005";
+    S7_BlockTitle := "MLC_43005_0"
+}
+FUNCTION "T6_L_T_DIFF" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43005_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            T_DIFF{
+                date_type := DTL; 
+                time_type := Time
+            }(
+                IN1 := "T6_Datos".Dtl_2, 
+                IN2 := "T6_Datos".Dtl_1, 
+                OUT => "T6_Datos".T_Diff
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43005_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Time }(
+                IN1 := "T6_Datos".T_Diff, 
+                IN2 := T#1H
+            )
+            Coil( "T6_Resultado".L_T_DIFF )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45002_1">
+    <MultiLanguageText Lang="en-US">CREATE_DB</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">CREATE_DB</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45002_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): CREATE_DB</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): CREATE_DB</MultiLanguageText>
+  </Comment>
+</root>

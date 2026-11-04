@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45010_1">
+    <MultiLanguageText Lang="en-US">SET_TINT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">SET_TINT</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45010_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): SET_TINT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): SET_TINT</MultiLanguageText>
+  </Comment>
+</root>

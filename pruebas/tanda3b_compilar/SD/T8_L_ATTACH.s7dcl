@@ -1,0 +1,34 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45006";
+    S7_BlockTitle := "MLC_45006_0"
+}
+FUNCTION "T8_L_ATTACH" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        ob : OB_ATT;
+        ev : EVENT_ATT;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45006_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            ATTACH(
+                OB_NR := #ob, 
+                EVENT := #ev, 
+                ADD := #req, 
+                RET_VAL => #ret
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

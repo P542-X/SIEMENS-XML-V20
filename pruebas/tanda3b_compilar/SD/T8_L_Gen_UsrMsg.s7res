@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45012_1">
+    <MultiLanguageText Lang="en-US">Gen_UsrMsg</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Gen_UsrMsg</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45012_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): Gen_UsrMsg</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): Gen_UsrMsg</MultiLanguageText>
+  </Comment>
+</root>

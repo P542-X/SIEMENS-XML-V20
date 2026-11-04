@@ -1,0 +1,33 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45014";
+    S7_BlockTitle := "MLC_45014_0"
+}
+FUNCTION "T8_L_RD_SINFO" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        top : Array[0..99] of Byte;
+        st : Array[0..99] of Byte;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45014_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            RD_SINFO{ si_type := Variant }(
+                RET_VAL => #ret, 
+                TOP_SI => #top, 
+                START_UP_SI => #st
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

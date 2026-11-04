@@ -1,0 +1,42 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "43008";
+    S7_BlockTitle := "MLC_43008_0"
+}
+FUNCTION "T6_L_WR_LOC_T" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43008_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            PBox( "T6_Datos".WrLoc_Mem )
+            WR_LOC_T{ loctime_type := DTL }(
+                LOCTIME := "T6_Datos".Dtl_Ahora, 
+                DST := "T6_Datos".Falso, 
+                Ret_Val => "T6_Datos".Ret_WrLoc
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43008_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T6_Datos".Ret_WrLoc, 
+                IN2 := 0
+            )
+            S_Coil( "T6_Resultado".L_WR_LOC_T )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

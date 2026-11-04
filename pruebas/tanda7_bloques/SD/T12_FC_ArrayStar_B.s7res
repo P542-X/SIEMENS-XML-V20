@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_48014_1">
+    <MultiLanguageText Lang="en-US">Límite superior</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Límite superior</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48014_0">
+    <MultiLanguageText Lang="en-US">Tanda 7: Array[*] escrito con asterisco (variante)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 7: Array[*] escrito con asterisco (variante)</MultiLanguageText>
+  </Comment>
+</root>

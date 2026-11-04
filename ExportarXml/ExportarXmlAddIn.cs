@@ -72,12 +72,22 @@ namespace ExportarXml
                 if (destino == null) return;
                 string[] ficheros = Dialogos.ElegirFicheros();
                 if (ficheros == null || ficheros.Length == 0) return;
-                Importador.Ejecutar(_tia, destino, ficheros);
+                ImportarEn(destino, ficheros);
             }
             catch (Exception ex)
             {
                 Dialogos.Informar("Error inesperado al importar:" + Environment.NewLine + ex.Message, "Importar XML", true);
             }
+        }
+
+        /// <summary>PLC → importador de PLC; HMI clásico → importador de HMI; Unified → aún no.</summary>
+        private void ImportarEn(IEngineeringObject destino, string[] ficheros)
+        {
+            if (Importador.ObtenerPlc(destino) != null) { Importador.Ejecutar(_tia, destino, ficheros); return; }
+            object hmi = Hmi.ObtenerHmi(destino);
+            if (hmi != null) { Hmi.Importar(_tia, hmi, ficheros); return; }
+            if (Hmi.EsUnified(destino))
+                Dialogos.Informar("WinCC Unified todavía no se puede importar con este Add-In (fase 4 de la hoja de ruta).", "Importar", true);
         }
 
         private void OnDeshacer(MenuSelectionProvider seleccion)
@@ -86,6 +96,11 @@ namespace ExportarXml
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
                 if (destino == null) return;
+                if (Importador.ObtenerPlc(destino) == null)
+                {
+                    Dialogos.Informar("El deshacer solo está disponible para el PLC. En el HMI, la copia de lo sobrescrito queda en Import_XML\\copia_hmi_<fecha>.", "Deshacer", false);
+                    return;
+                }
                 Deshacer.Ejecutar(_tia, Importador.ObtenerPlc(destino));
             }
             catch (Exception ex)
@@ -114,7 +129,7 @@ namespace ExportarXml
                     Dialogos.Informar("No hay ficheros .xml, fuentes (.scl, .udt, .db, .awl) ni documentos SIMATIC SD (.s7dcl, .s7dcf, .s7dcs, .s7dbd) en esa carpeta.", "Importar XML", true);
                     return;
                 }
-                Importador.Ejecutar(_tia, destino, ficheros);
+                ImportarEn(destino, ficheros);
             }
             catch (Exception ex)
             {
@@ -166,6 +181,10 @@ namespace ExportarXml
 
             Resultado res = new Resultado();
             ExportadorSd sd = new ExportadorSd { RaizSd = carpetaSd, RaizFuentes = carpetaFuentes };
+            List<string> paneles = new List<string>();
+            Dictionary<string, int> recuentoHmi = new Dictionary<string, int>();
+            StringBuilder logHmi = new StringBuilder();
+            int okHmi = 0, errHmi = 0;
             List<string> info = new List<string>();
             List<Cpu> cpus = new List<Cpu>();
 
@@ -184,12 +203,22 @@ namespace ExportarXml
                     Procesar(obj, carpetaXml, ea, res);
                     if (ExportadorSd.EsExportable(obj))
                         sd.Procesar(obj, carpetaSd, ea);
+
+                    // HMI clásico del objeto seleccionado (dispositivo o panel)
+                    object hmi = Hmi.ObtenerHmi(obj);
+                    if (hmi != null && !paneles.Contains(Hmi.Panel(hmi)))
+                    {
+                        paneles.Add(Hmi.Panel(hmi));
+                        Hmi.Exportar(hmi, Path.Combine(raiz, "HMI"), ea, logHmi, recuentoHmi, ref okHmi, ref errHmi);
+                    }
+                    else if (hmi == null && Hmi.EsUnified(obj))
+                        logHmi.AppendLine("WinCC Unified: aún no se exporta (fase 4 de la hoja de ruta).");
                 }
             }
 
             File.WriteAllLines(Path.Combine(raiz, Cpu.FicheroInfo), info.Distinct(), Encoding.UTF8);
             EscribirInstruccionesIa(raiz);
-            File.WriteAllText(Path.Combine(raiz, "_info.md"), InfoMd(proyecto, cpus, carpetaXml, carpetaSd, carpetaFuentes, sd), Encoding.UTF8);
+            File.WriteAllText(Path.Combine(raiz, "_info.md"), InfoMd(proyecto, cpus, carpetaXml, carpetaSd, carpetaFuentes, sd) + InfoHmi(paneles, recuentoHmi), Encoding.UTF8);
             File.WriteAllText(Path.Combine(raiz, "_resumen.txt"),
                 "XML     exportados: " + res.Ok + "   errores: " + res.Errores + Environment.NewLine +
                 "SD      exportados: " + sd.Ok + Environment.NewLine +
@@ -197,7 +226,8 @@ namespace ExportarXml
                 "Solo XML: " + sd.Errores + " bloques (ver _info.md, columna Texto)" + Environment.NewLine +
                 "Carpeta: " + raiz + Environment.NewLine + Environment.NewLine +
                 "---- XML ----" + Environment.NewLine + res.Log + Environment.NewLine +
-                "---- SD / FUENTES ----" + Environment.NewLine + sd.Log, Encoding.UTF8);
+                "---- SD / FUENTES ----" + Environment.NewLine + sd.Log + Environment.NewLine +
+                "---- HMI ----" + Environment.NewLine + "Exportados: " + okHmi + "   errores: " + errHmi + Environment.NewLine + logHmi, Encoding.UTF8);
 
             // El paquete en un solo fichero
             string zip = Path.Combine(export, Limpiar(proyecto.Name) + "_" + fecha + ".zip");
@@ -214,13 +244,27 @@ namespace ExportarXml
 
             Dialogos.Informar(
                 "XML: " + res.Ok + " (errores " + res.Errores + ")    SD: " + sd.Ok + "    Fuentes SCL: " + sd.Fuentes +
-                "    Solo XML: " + sd.Errores + Environment.NewLine +
+                "    Solo XML: " + sd.Errores + (paneles.Count > 0 ? "    HMI: " + okHmi + " (errores " + errHmi + ")" : "") + Environment.NewLine +
                 string.Join(Environment.NewLine, cpus.Select(c => "CPU " + c)) + Environment.NewLine + Environment.NewLine +
                 (zip != null ? "Paquete:" + Environment.NewLine + zip : "Carpeta:" + Environment.NewLine + raiz) + avisoZip +
                 Environment.NewLine + Environment.NewLine +
                 "Para trabajar con una IA: pásale el .zip y dile que lea primero INSTRUCCIONES_IA.md.",
                 "Exportar",
                 res.Errores > 0);
+        }
+
+        private static string InfoHmi(List<string> paneles, Dictionary<string, int> recuento)
+        {
+            if (paneles.Count == 0) return "";
+            StringBuilder md = new StringBuilder();
+            md.AppendLine();
+            md.AppendLine("## HMI clásico (" + paneles.Count + ")");
+            md.AppendLine();
+            foreach (string p in paneles) md.AppendLine("- " + p);
+            md.AppendLine();
+            md.AppendLine("En `HMI/<panel>/`: " + string.Join(", ", recuento.Select(k => k.Key + " " + k.Value)) + ".");
+            md.AppendLine("Para importar algo en el HMI, se elige el panel (no el PLC) en *Importar ficheros*.");
+            return md.ToString();
         }
 
         /// <summary>

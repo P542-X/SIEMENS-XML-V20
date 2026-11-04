@@ -1,0 +1,52 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "46009";
+    S7_BlockTitle := "MLC_46009_0"
+}
+FUNCTION "T9_L_PUT" : Void
+    VAR_IN_OUT 
+        remoto : Remote;
+    END_VAR
+    VAR_TEMP 
+        req : Bool;
+        done : Bool;
+        busy : Bool;
+        err : Bool;
+        st : Word;
+        data : Array[0..99] of Byte;
+        len : UDInt;
+        id : CONN_PRG;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_46009_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            "T9_PUT_DB".PUT{
+                remote_type := Remote; 
+                local_type := Variant
+            }(
+                REQ := #req, 
+                ID := #id, 
+                DONE => #done, 
+                ERROR => #err, 
+                STATUS => #st, 
+                ADDR_1 := #remoto, 
+                ADDR_2 :=  , 
+                ADDR_3 :=  , 
+                ADDR_4 :=  , 
+                SD_1 := #data, 
+                SD_2 :=  , 
+                SD_3 :=  , 
+                SD_4 :=  
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

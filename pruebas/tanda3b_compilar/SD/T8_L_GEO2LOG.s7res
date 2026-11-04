@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45018_1">
+    <MultiLanguageText Lang="en-US">GEO2LOG</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">GEO2LOG</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45018_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): GEO2LOG</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): GEO2LOG</MultiLanguageText>
+  </Comment>
+</root>

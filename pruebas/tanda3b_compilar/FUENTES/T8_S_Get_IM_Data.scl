@@ -1,0 +1,22 @@
+﻿DATA_BLOCK "T8_Get_IM_Data_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+Get_IM_Data
+
+BEGIN
+
+END_DATA_BLOCK
+
+FUNCTION "T8_S_Get_IM_Data" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      hw : HW_IO;
+      buf : Array[0..99] of Byte;
+   END_VAR
+
+BEGIN
+	// Solo compilar: necesita hardware real o tarjeta de memoria
+	"T8_Get_IM_Data_DB"(LADDR := #hw, IM_TYPE := 0, DATA := #buf);
+END_FUNCTION

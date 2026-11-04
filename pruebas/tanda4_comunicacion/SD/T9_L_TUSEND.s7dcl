@@ -1,0 +1,52 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "46007";
+    S7_BlockTitle := "MLC_46007_0"
+}
+FUNCTION "T9_L_TUSEND" : Void
+    VAR_TEMP 
+        req : Bool;
+        done : Bool;
+        busy : Bool;
+        err : Bool;
+        st : Word;
+        data : Array[0..99] of Byte;
+        len : UDInt;
+        id : CONN_OUC;
+        {
+             InstructionName := "TADDR_Param";
+             LibVersion := "1.0"
+        }
+        dir : TADDR_Param;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_46007_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            "T9_TUSEND_DB".TUSEND{
+                ptr_type := Variant; 
+                value_type := UDInt; 
+                id_type := CONN_OUC; 
+                addr_type := Variant
+            }(
+                REQ := #req, 
+                ID := #id, 
+                LEN := #len, 
+                DONE => #done, 
+                BUSY => #busy, 
+                ERROR => #err, 
+                STATUS => #st, 
+                DATA := #data, 
+                ADDR := #dir
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

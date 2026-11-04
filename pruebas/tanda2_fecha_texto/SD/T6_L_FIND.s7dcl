@@ -1,0 +1,44 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "43019";
+    S7_BlockTitle := "MLC_43019_0"
+}
+FUNCTION "T6_L_FIND" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43019_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            FIND{
+                str_type := String; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T6_Datos".S_ABCDEF, 
+                IN2 := "T6_Datos".S_CD, 
+                OUT => "T6_Datos".FIND_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43019_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T6_Datos".FIND_Out, 
+                IN2 := 3
+            )
+            Coil( "T6_Resultado".L_FIND )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

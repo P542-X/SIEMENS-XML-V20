@@ -13,12 +13,12 @@ Método en cada tanda:
 | Tanda | Contenido | Estado |
 |---|---|---|
 | 1 | Instrucciones básicas (bits, tiempo, contadores, comparación, matemáticas, mover, conversión, palabras, desplazamiento, control) | **Hecha: 120/120** |
-| 2 | Fecha y hora; String y Char | Pendiente (`Aprender_T2`) |
-| 3 | Gestión de datos y de bloques, direccionamiento, interrupciones, diagnóstico, avisos, recetas | Pendiente |
-| 4 | Comunicación (OUC, S7, Modbus TCP, OPC UA) | Pendiente (sobre todo importar y compilar) |
+| 2 | Fecha y hora; String y Char | **Hecha: 27/27** |
+| 3 | Gestión de datos y de bloques, direccionamiento, interrupciones, diagnóstico, avisos, recetas | **3A hecha: 20/20**; **3B: 27 instrucciones importan y compilan** (falta RET y Get_AlarmState) |
+| 4 | Comunicación (OUC, S7, Modbus TCP, OPC UA) | **Hecha: 17/17 importan y compilan; TCP (TSEND_C/TRCV_C, TCON/TSEND/TRCV/TDISCON) y Modbus TCP comprobados en marcha (4/4)** |
 | 5 | Tecnología (PID, contaje, Motion) | Pendiente (necesita objetos tecnológicos) |
-| 6 | FUP (`.s7dcf`) | Pendiente |
-| 7 | Tipos de bloque e interfaz (Variant, Array[*], constantes, remanencia, DB de array, OB de cada tipo) | Pendiente |
+| 6 | FUP (`.s7dcf`) | Aplazada (el usuario no trabaja en FUP); opcional para quien lo use |
+| 7 | Tipos de bloque e interfaz (Variant, Array[*], constantes, remanencia, DB de array, OB de cada tipo) | **Hecha: 6/6 en marcha** + tabla de tipos de OB |
 
 ## Fase 2. Exportación ampliada
 
@@ -31,14 +31,14 @@ Método en cada tanda:
 
 Openness exporta e importa en XML: variables HMI y tablas, pantallas, plantillas, pantallas emergentes, listas de textos y de gráficos, scripts VB, conexiones y ciclos.
 
-| Tanda | Contenido |
-|---|---|
-| H1 | Exportar el HMI en el Add-In (junto al PLC, en `HMI/`), `_info.md` con panel, tamaño y conexiones |
-| H2 | Variables HMI (internas y conectadas al PLC) y tablas |
-| H3 | Pantallas: objetos básicos (campos E/S, botones, textos, rectángulos), eventos y animaciones |
-| H4 | Plantillas, pantallas emergentes, navegación, listas de textos y de gráficos |
-| H5 | Scripts VB, ciclos, recetas |
-| H6 | Avisos: Openness no exporta en XML los avisos de usuario de Basic/Comfort/Advanced → buscar otra vía (listas de textos, avisos de PLC) |
+| Tanda | Contenido | Estado |
+|---|---|---|
+| H1 | Exportar e importar el HMI en el Add-In (`HMI/`), `_info.md` con el panel | **v2.4.0, en prueba** |
+| H2 | Variables HMI (internas y conectadas al PLC) y tablas | Pendiente |
+| H3 | Pantallas: objetos básicos (campos E/S, botones, textos, rectángulos), eventos y animaciones | Pendiente |
+| H4 | Plantillas, pantallas emergentes, navegación, listas de textos y de gráficos | Pendiente |
+| H5 | Scripts VB, ciclos, recetas | Pendiente |
+| H6 | Avisos: Openness no exporta en XML los avisos de usuario de Basic/Comfort/Advanced → buscar otra vía (listas de textos, avisos de PLC) | Pendiente |
 
 Riesgos conocidos: importar una pantalla con un faceplate que no está en la librería del proyecto cierra TIA → comprobar librerías antes de importar. Verificación: compilar el HMI y abrirlo en la simulación de runtime.
 

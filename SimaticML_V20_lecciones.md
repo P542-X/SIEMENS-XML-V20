@@ -321,3 +321,23 @@ Las 24 cajas que fallaban en la tanda 1 tenían otro nombre interno en SD. Con u
 ## 19. Segunda exportación real (otro PLC MES, 125 objetos)
 
 Nada contradice la guía. Nuevo: `GET` (`remote_type := Remote; local_type := Variant`) y `T_DIAG` como multiinstancia; secciones `VAR RETAIN`, `VAR CONSTANT` (con valores), `VAR_INPUT/VAR_OUTPUT/VAR DB_SPECIFIC`; atributos `S7_Access`/`S7_Visibility` (accesible/visible desde HMI); `S7_BlockComment`; arrays con límite inferior distinto de 0; valores iniciales de un DB escritos tras las secciones `VAR`; red vacía; cabecera `ORGANIZATION_BLOCK "Main"`. Las multiinstancias de instrucciones del sistema llevan `LibVersion` en la interfaz (dependen de la CPU). Un GRAPH protegido sale como *solo XML: protegido*. Un DB de instancia de un FB sin interfaz no sale en SD (*"there are no elements in the interface"*): solo XML.
+
+## 20. Tanda 2 (fecha/hora y texto): 27/27
+
+Sintaxis de una FC hecha a mano (`INSTRUCCIONES_IA.md` 6.5b). Tropiezos: un miembro de DB llamado `D1` en SD se lee como dirección absoluta (renombrar a `Dtl_1`); `db` no vale como nombre de variable en SCL; en SCL `T_COMBINE` se llama `CONCAT_DATE_TOD`; Int → String deja el carácter del signo delante (`' 123'`). `MID` usa la plantilla `value_type`, el resto de cadenas `str_type`.
+
+## 21. Tanda 3A (control, datos, interrupciones, avisos): 20/20
+
+Nombres SD distintos de TIA (JumpCoil, Label(X), JumpList, Switch, GetError…; ver la guía 6.5c). OB de interrupción en XML: OB20 `TimeDelayInterrupt` y OB30 `CyclicInterrupt` entran (OB30 sin `CyclicTime`/`PhaseShift`). DB de array desde fuente: entra. SD exporta bloques inconsistentes (XML no), pero entonces las cajas pueden salir incompletas (`Return()` sin operando no se puede importar). Program_Alarm con SIG cambiando cada ciclo da error intermitente. ATTR_DB sobre DB de array falla. Al corregir un bloque hay que mantener su número (si no: *ambiguous addresses*). Desde la 2.4.2 el resumen dice en qué bloque está cada error de compilación.
+
+## 22. Tandas 3B y 4: importan y compilan (sin ejecutar)
+
+3B (27: bloques de datos, interrupciones, avisos, diagnóstico, periferia, DataLog, recetas) y 4 (17: comunicación OUC, S7, Modbus, web). Lecciones: tipo de `LADDR` según la instrucción (`HW_IOSYSTEM` en DeviceStates/Get_Name, `HW_DEVICE` en ModuleStates); FB del sistema con DB de instancia desde fuente funciona para todos; **en SD la llamada a un FB del sistema tiene que llevar todos sus parámetros** (los vacíos como `PARAM :=  ,`), si no, *Failure*; un parámetro InOut no puede recibir un `VAR_INPUT`.
+
+## 23. Comunicación en marcha (tanda 4B): 4/4
+
+PLCSIM deja que el PLC se conecte a sí mismo por TCP: TSEND_C/TRCV_C, TCON/TSEND/TRCV/TDISCON y Modbus TCP funcionan con la IP de su propia interfaz X1. El fallo del primer intento no era de comunicación: el pulso de envío con `#T(IN := NOT #T.Q)` no sale nunca en S7-1500 (leer `.Q` actualiza el temporizador). Patrón en la guía y en `pruebas/tanda4b_com_marcha/`.
+
+## 24. Tanda 7 y RET
+
+Exportación compilada de un FB con interfaz especial y 7 OB de tipos distintos: tipos de OB (`SecondaryType` + entradas) en la guía 6.5d; en SD un OB no lleva número ni tipo (crear OB nuevos: XML). `Array[*]` sale como `Array[] of Int` en SD. **RET no se importa en SD en V20**, ni el exportado por el propio TIA desde un bloque compilado; el mismo bloque en XML sí entra. El Add-In 2.4.6 frena esos SD con un mensaje claro. Tanda 7 en marcha: 6/6 (OB100 y OB121 por XML, VAR CONSTANT, Variant de entrada, Array[*] en KOP y SCL). OB de número fijo: sin `<AutoNumber>`. `Array[*]` en SD se escribe con asterisco. Una red KOP con Upper_Bound + Lower_Bound encadenados y Calculate con resta no se importó; por separado sí.

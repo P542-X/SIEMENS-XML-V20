@@ -1,0 +1,22 @@
+﻿<root>
+  <Comment Id="MLC_48012_1">
+    <MultiLanguageText Lang="en-US">Límite superior</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Límite superior</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48012_2">
+    <MultiLanguageText Lang="en-US">Límite inferior</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Límite inferior</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48012_3">
+    <MultiLanguageText Lang="en-US">hi - lo</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">hi - lo</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48012_4">
+    <MultiLanguageText Lang="en-US">+ 1</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">+ 1</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48012_0">
+    <MultiLanguageText Lang="en-US">Tanda 7: Array[*] en KOP</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 7: Array[*] en KOP</MultiLanguageText>
+  </Comment>
+</root>

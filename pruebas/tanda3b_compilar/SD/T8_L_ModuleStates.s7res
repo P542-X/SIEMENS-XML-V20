@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45016_1">
+    <MultiLanguageText Lang="en-US">ModuleStates</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">ModuleStates</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45016_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): ModuleStates</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): ModuleStates</MultiLanguageText>
+  </Comment>
+</root>

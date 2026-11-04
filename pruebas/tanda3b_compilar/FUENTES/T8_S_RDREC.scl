@@ -1,0 +1,22 @@
+﻿DATA_BLOCK "T8_RDREC_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+RDREC
+
+BEGIN
+
+END_DATA_BLOCK
+
+FUNCTION "T8_S_RDREC" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      hw : HW_IO;
+      buf : Array[0..9] of Byte;
+   END_VAR
+
+BEGIN
+	// Solo compilar: necesita hardware real o tarjeta de memoria
+	"T8_RDREC_DB"(REQ := FALSE, ID := #hw, INDEX := 1, MLEN := 10, RECORD := #buf);
+END_FUNCTION

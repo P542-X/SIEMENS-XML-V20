@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_48010_1">
+    <MultiLanguageText Lang="en-US">Usar la constante</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Usar la constante</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_48010_0">
+    <MultiLanguageText Lang="en-US">Tanda 7: VAR CONSTANT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 7: VAR CONSTANT</MultiLanguageText>
+  </Comment>
+</root>

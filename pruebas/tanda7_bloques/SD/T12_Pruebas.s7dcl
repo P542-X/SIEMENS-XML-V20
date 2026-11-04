@@ -1,0 +1,164 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "48013";
+    S7_BlockTitle := "MLC_48013_0"
+}
+FUNCTION "T12_Pruebas" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "T12_FB_Const_DB"(
+                Salida => "T12_Datos".Const_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := UInt }(
+                IN1 := "T12_Datos".Const_Out, 
+                IN2 := 10
+            )
+            Coil( "T12_Resultado".L_Constante )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "T12_FB_Variant_DB"(
+                entrada := "T12_Datos".Int_5, 
+                Salida => "T12_Datos".Var_Out
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_4"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T12_Datos".Var_Out, 
+                IN2 := 5
+            )
+            Coil( "T12_Resultado".L_Variant )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_5"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "T12_FC_ArrayStar"(
+                n => "T12_Datos".Num5, 
+                lista := "T12_Datos".A5
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_6"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "T12_FC_ArrayStar"(
+                n => "T12_Datos".Num3, 
+                lista := "T12_Datos".A3
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_7"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := DInt }(
+                IN1 := "T12_Datos".Num5, 
+                IN2 := 5
+            )
+            Eq{ SrcType := DInt }(
+                IN1 := "T12_Datos".Num3, 
+                IN2 := 3
+            )
+            Coil( "T12_Resultado".L_ArrayStar )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_8"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Gt{ SrcType := DInt }(
+                IN1 := "T12_Datos".Arranques, 
+                IN2 := 0
+            )
+            Coil( "T12_Resultado".L_Startup )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_9"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Gt{ SrcType := DInt }(
+                IN1 := "T12_Datos".ErroresProg, 
+                IN2 := 0
+            )
+            Coil( "T12_Resultado".L_ProgError )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_48013_10"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            Add{
+                Card := 2; 
+                Type := AUTO; 
+                DisableENO := TRUE
+            }(
+                IN1 := "T12_Resultado".Vida, 
+                IN2 := 1, 
+                OUT => "T12_Resultado".Vida
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

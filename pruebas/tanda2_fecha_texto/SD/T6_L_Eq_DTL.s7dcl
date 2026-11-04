@@ -1,0 +1,25 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "43010";
+    S7_BlockTitle := "MLC_43010_0"
+}
+FUNCTION "T6_L_Eq_DTL" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43010_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := DTL }(
+                IN1 := "T6_Datos".Dtl_1, 
+                IN2 := "T6_Datos".Dtl_1_Copia
+            )
+            Coil( "T6_Resultado".L_Eq_DTL )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

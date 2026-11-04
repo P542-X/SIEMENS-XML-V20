@@ -1,0 +1,39 @@
+﻿FUNCTION "T12_Suma" : DInt
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_IN_OUT
+      a : Array[*] of Int;
+   END_VAR
+   VAR_TEMP
+      i : DInt;
+      s : DInt;
+   END_VAR
+
+BEGIN
+	#s := 0;
+	FOR #i := LOWER_BOUND(ARR := #a, DIM := 1) TO UPPER_BOUND(ARR := #a, DIM := 1) DO
+	    #s := #s + #a[#i];
+	END_FOR;
+	#T12_Suma := #s;
+END_FUNCTION
+
+FUNCTION "T12_S_Pruebas" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      i : Int;
+   END_VAR
+
+BEGIN
+	FOR #i := 0 TO 4 DO "T12_Datos".A5[#i] := #i + 1; END_FOR;
+	"T12_Datos".A3[1] := 10; "T12_Datos".A3[2] := 20; "T12_Datos".A3[3] := 30;
+	"T12_Datos".Suma5 := "T12_Suma"(a := "T12_Datos".A5);
+	"T12_Datos".Suma3 := "T12_Suma"(a := "T12_Datos".A3);
+	"T12_Resultado".S_ArrayStar := "T12_Datos".Suma5 = 15 AND "T12_Datos".Suma3 = 60;
+
+	// Error de programación a propósito (una vez): índice 7 en un Array[0..4] -> lo atrapa el OB121
+	IF NOT "T12_Datos".Error_Hecho THEN
+	    "T12_Datos".Error_Hecho := TRUE;
+	    "T12_Datos".A5["T12_Datos".Indice] := 0;
+	END_IF;
+END_FUNCTION

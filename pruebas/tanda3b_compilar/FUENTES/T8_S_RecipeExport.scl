@@ -1,0 +1,21 @@
+﻿DATA_BLOCK "T8_RecipeExport_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+RecipeExport
+
+BEGIN
+
+END_DATA_BLOCK
+
+FUNCTION "T8_S_RecipeExport" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      x : Int;
+   END_VAR
+
+BEGIN
+	// Solo compilar: necesita hardware real o tarjeta de memoria
+	"T8_RecipeExport_DB"(REQ := FALSE, RECIPE_DB := "T8_Receta");
+END_FUNCTION

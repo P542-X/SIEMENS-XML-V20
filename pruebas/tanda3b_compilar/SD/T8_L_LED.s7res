@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45013_1">
+    <MultiLanguageText Lang="en-US">LED</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">LED</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45013_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): LED</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): LED</MultiLanguageText>
+  </Comment>
+</root>

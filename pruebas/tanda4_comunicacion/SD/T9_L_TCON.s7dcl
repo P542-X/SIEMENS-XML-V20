@@ -1,0 +1,48 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "46003";
+    S7_BlockTitle := "MLC_46003_0"
+}
+FUNCTION "T9_L_TCON" : Void
+    VAR_TEMP 
+        req : Bool;
+        done : Bool;
+        busy : Bool;
+        err : Bool;
+        st : Word;
+        data : Array[0..99] of Byte;
+        len : UDInt;
+        id : CONN_OUC;
+        {
+             InstructionName := "TCON_IP_v4";
+             LibVersion := "1.0"
+        }
+        con : TCON_IP_v4;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_46003_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            "T9_TCON_DB".TCON{
+                con_type := Variant; 
+                id_type := CONN_OUC
+            }(
+                REQ := #req, 
+                ID := #id, 
+                DONE => #done, 
+                BUSY => #busy, 
+                ERROR => #err, 
+                STATUS => #st, 
+                CONNECT := #con
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

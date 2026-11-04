@@ -1,0 +1,44 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "43003";
+    S7_BlockTitle := "MLC_43003_0"
+}
+FUNCTION "T6_L_T_ADD" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43003_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            T_ADD{
+                date_type := DTL; 
+                time_type := Time
+            }(
+                IN1 := "T6_Datos".Dtl_1, 
+                IN2 := "T6_Datos".T_1h, 
+                OUT => "T6_Datos".Dtl_2
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_43003_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := USInt }(
+                IN1 := "T6_Datos".Dtl_2.HOUR, 
+                IN2 := 11
+            )
+            Coil( "T6_Resultado".L_T_ADD )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

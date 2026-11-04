@@ -1,0 +1,33 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45003";
+    S7_BlockTitle := "MLC_45003_0"
+}
+FUNCTION "T8_L_DELETE_DB" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        dbn : DB_ANY;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45003_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            DELETE_DB(
+                REQ := #req, 
+                DB_NUMBER := #dbn, 
+                Ret_Val => #ret, 
+                BUSY => #busy
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

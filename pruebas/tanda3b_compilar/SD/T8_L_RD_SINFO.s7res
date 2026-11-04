@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45014_1">
+    <MultiLanguageText Lang="en-US">RD_SINFO</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">RD_SINFO</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45014_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): RD_SINFO</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): RD_SINFO</MultiLanguageText>
+  </Comment>
+</root>

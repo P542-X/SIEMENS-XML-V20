@@ -1,0 +1,41 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45012";
+    S7_BlockTitle := "MLC_45012_0"
+}
+FUNCTION "T8_L_Gen_UsrMsg" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        mode : UInt;
+        txt : UInt;
+        lst : UInt;
+        {
+             InstructionName := "AssocValues";
+             LibVersion := "1.0"
+        }
+        av : AssocValues;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45012_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            Gen_UsrMsg(
+                Mode := #mode, 
+                TextID := #txt, 
+                TextListID := #lst, 
+                Ret_Val => #ret, 
+                AssocValues := #av
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_43022_1">
+    <MultiLanguageText Lang="en-US">Eq Char</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Eq Char</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_43022_0">
+    <MultiLanguageText Lang="en-US">Tanda 2 KOP: comparar dos Char</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 2 KOP: comparar dos Char</MultiLanguageText>
+  </Comment>
+</root>

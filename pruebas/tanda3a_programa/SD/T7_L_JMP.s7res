@@ -1,0 +1,22 @@
+﻿<root>
+  <Comment Id="MLC_44001_1">
+    <MultiLanguageText Lang="en-US">Saltar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Saltar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44001_2">
+    <MultiLanguageText Lang="en-US">No se ejecuta</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">No se ejecuta</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44001_3">
+    <MultiLanguageText Lang="en-US">Destino</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Destino</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44001_4">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44001_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: JMP y LABEL</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: JMP y LABEL</MultiLanguageText>
+  </Comment>
+</root>

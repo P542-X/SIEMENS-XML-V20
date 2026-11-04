@@ -1,0 +1,39 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44011";
+    S7_BlockTitle := "MLC_44011_0"
+}
+FUNCTION "T7_L_VariantPut" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44011_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            "T7_L_VarPut_Sub"(
+                i := "T7_Datos".Int_7, 
+                v := "T7_Datos".VarPut_Dst
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44011_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T7_Datos".VarPut_Dst, 
+                IN2 := 7
+            )
+            Coil( "T7_Resultado".L_VariantPut )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

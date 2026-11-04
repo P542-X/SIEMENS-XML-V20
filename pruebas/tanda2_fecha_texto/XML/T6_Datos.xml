@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <Engineering version="V20" />
+  <SW.Blocks.GlobalDB ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <HeaderAuthor>IA</HeaderAuthor>
+      <HeaderFamily>PRUEBA</HeaderFamily>
+      <HeaderName />
+      <HeaderVersion>0.1</HeaderVersion>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v5">
+        <Section Name="Static">
+          <Member Name="Dtl_1" Datatype="DTL" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Dtl_2" Datatype="DTL" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Dtl_3" Datatype="DTL" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Dtl_Ahora" Datatype="DTL" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="T_1500ms" Datatype="Time" Remanence="NonRetain" Accessibility="Public"><StartValue>T#1500MS</StartValue></Member>
+          <Member Name="T_Out" Datatype="Time" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="DI_Out" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="DInt_2000" Datatype="DInt" Remanence="NonRetain" Accessibility="Public"><StartValue>2000</StartValue></Member>
+          <Member Name="T_1h" Datatype="Time" Remanence="NonRetain" Accessibility="Public"><StartValue>T#1H</StartValue></Member>
+          <Member Name="Fecha" Datatype="Date" Remanence="NonRetain" Accessibility="Public"><StartValue>D#2026-03-04</StartValue></Member>
+          <Member Name="Hora" Datatype="Time_Of_Day" Remanence="NonRetain" Accessibility="Public"><StartValue>TOD#12:30:00</StartValue></Member>
+          <Member Name="Ret_Leer" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_Escribir" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Falso" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"><StartValue>false</StartValue></Member>
+          <Member Name="S_ABCDEF" Datatype="String" Remanence="NonRetain" Accessibility="Public"><StartValue>'ABCDEF'</StartValue></Member>
+          <Member Name="S_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Int_123" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>123</StartValue></Member>
+          <Member Name="S_456" Datatype="String" Remanence="NonRetain" Accessibility="Public"><StartValue>'456'</StartValue></Member>
+          <Member Name="Int_3" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>3</StartValue></Member>
+          <Member Name="Int_2" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>2</StartValue></Member>
+          <Member Name="Int_2b" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>2</StartValue></Member>
+          <Member Name="Int_1" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>1</StartValue></Member>
+          <Member Name="Int_3b" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>3</StartValue></Member>
+          <Member Name="S_ABEF" Datatype="String" Remanence="NonRetain" Accessibility="Public"><StartValue>'ABEF'</StartValue></Member>
+          <Member Name="S_CD" Datatype="String" Remanence="NonRetain" Accessibility="Public"><StartValue>'CD'</StartValue></Member>
+          <Member Name="S_XY" Datatype="String" Remanence="NonRetain" Accessibility="Public"><StartValue>'XY'</StartValue></Member>
+          <Member Name="S_1A2B" Datatype="String" Remanence="NonRetain" Accessibility="Public"><StartValue>'1A2B'</StartValue></Member>
+          <Member Name="Int_4" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>4</StartValue></Member>
+          <Member Name="UInt_2" Datatype="UInt" Remanence="NonRetain" Accessibility="Public"><StartValue>2</StartValue></Member>
+          <Member Name="Bytes" Datatype="Array[0..9] of Byte" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="W_Ret" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Char_A" Datatype="Char" Remanence="NonRetain" Accessibility="Public"><StartValue>'A'</StartValue></Member>
+          <Member Name="Char_A2" Datatype="Char" Remanence="NonRetain" Accessibility="Public"><StartValue>'A'</StartValue></Member>
+          <Member Name="T_desde_DInt" Datatype="Time" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="T_Diff" Datatype="Time" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="D_Comb" Datatype="DTL" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="WrLoc_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_WrLoc" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="WrSys_Mem" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Ret_WrSys" Datatype="Int" Remanence="NonRetain" Accessibility="Public"><StartValue>-1</StartValue></Member>
+          <Member Name="D_Sys" Datatype="DTL" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Dtl_1_Copia" Datatype="DTL" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="S_desde_Int" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Int_vuelta" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="I_desde_S" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="LEFT_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="RIGHT_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="MID_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="DELETE_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="INSERT_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="REPLACE_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="FIND_Out" Datatype="Int" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="HTA_Out" Datatype="String" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="W_Ret2" Datatype="Word" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Bytes_HTA" Datatype="Array[0..9] of Byte" Remanence="NonRetain" Accessibility="Public"></Member>
+          <Member Name="Escrito_S" Datatype="Bool" Remanence="NonRetain" Accessibility="Public"></Member>
+        </Section>
+      </Sections></Interface>
+      <MemoryLayout>Optimized</MemoryLayout>
+      <Name>T6_Datos</Name>
+      <Namespace />
+      <Number>43900</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+    </AttributeList>
+    <ObjectList>
+      <MultilingualText ID="1" CompositionName="Comment">
+        <ObjectList>
+          <MultilingualTextItem ID="2" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text>Tanda 2: datos</Text></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="3" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text>Tanda 2: datos</Text></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+      <MultilingualText ID="4" CompositionName="Title">
+        <ObjectList>
+          <MultilingualTextItem ID="5" CompositionName="Items"><AttributeList><Culture>es-ES</Culture><Text /></AttributeList></MultilingualTextItem>
+          <MultilingualTextItem ID="6" CompositionName="Items"><AttributeList><Culture>en-US</Culture><Text /></AttributeList></MultilingualTextItem>
+        </ObjectList>
+      </MultilingualText>
+    </ObjectList>
+  </SW.Blocks.GlobalDB>
+</Document>

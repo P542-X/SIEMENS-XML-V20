@@ -1,0 +1,39 @@
+﻿FUNCTION "T6_Contar" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      n : Int;
+   END_VAR
+
+BEGIN
+	#n := 0;
+	IF "T6_Resultado".L_T_CONV_T_DI THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_T_CONV_DI_T THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_T_ADD THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_T_SUB THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_T_DIFF THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_T_COMBINE THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_RD_LOC_T THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_WR_LOC_T THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_WR_SYS_T THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_Eq_DTL THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_S_CONV_I_S THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_S_CONV_S_I THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_LEFT THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_RIGHT THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_MID THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_DELETE THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_INSERT THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_REPLACE THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_FIND THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_ATH THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_HTA THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".L_Eq_Char THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".S_Fecha THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".S_Reloj THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".S_Texto THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".S_Hex THEN #n := #n + 1; END_IF;
+	IF "T6_Resultado".S_Comparar THEN #n := #n + 1; END_IF;
+	"T6_Resultado".OK := #n;
+	"T6_Resultado".Todo_OK := #n = "T6_Resultado".Total;
+END_FUNCTION

@@ -1,0 +1,30 @@
+﻿<root>
+  <Comment Id="MLC_44004_1">
+    <MultiLanguageText Lang="en-US">Switch</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Switch</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44004_2">
+    <MultiLanguageText Lang="en-US">ELSE (no)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">ELSE (no)</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44004_3">
+    <MultiLanguageText Lang="en-US">Caso 0 (no)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Caso 0 (no)</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44004_4">
+    <MultiLanguageText Lang="en-US">Ir a caso 1</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Ir a caso 1</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44004_5">
+    <MultiLanguageText Lang="en-US">Caso 1 (sí)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Caso 1 (sí)</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44004_6">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44004_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: SWITCH</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: SWITCH</MultiLanguageText>
+  </Comment>
+</root>

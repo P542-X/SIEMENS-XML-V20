@@ -1,0 +1,18 @@
+﻿<root>
+  <Comment Id="MLC_44006_1">
+    <MultiLanguageText Lang="en-US">GetError</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">GetError</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44006_2">
+    <MultiLanguageText Lang="en-US">GetErrorID</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">GetErrorID</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44006_3">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44006_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: GET_ERROR y GET_ERR_ID</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: GET_ERROR y GET_ERR_ID</MultiLanguageText>
+  </Comment>
+</root>

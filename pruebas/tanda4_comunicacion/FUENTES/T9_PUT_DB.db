@@ -1,0 +1,9 @@
+﻿DATA_BLOCK "T9_PUT_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+PUT
+
+BEGIN
+
+END_DATA_BLOCK

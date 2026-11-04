@@ -1,0 +1,188 @@
+﻿FUNCTION_BLOCK "T10_Com"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR
+      IP : Array[1..4] of Byte := [192, 168, 0, 1];   // IP de la interfaz PROFINET X1 del PLC (cambiar si es otra)
+      Iniciado : Bool;
+      Reloj : TON_TIME;
+      Pulso : Bool;
+      // --- 1) TSEND_C / TRCV_C (compactas): servidor puerto 2001
+      cSrvC : TCON_IP_v4;
+      cCliC : TCON_IP_v4;
+      sendC : TSEND_C;
+      rcvC : TRCV_C;
+      rstS : Bool;
+      rstR : Bool;
+      txC : Array[0..3] of Byte;
+      rxC : Array[0..3] of Byte;
+      // --- 2) TCON + TSEND / TRCV + TDISCON: servidor puerto 2002
+      cSrv : TCON_IP_v4;
+      cCli : TCON_IP_v4;
+      tconS : TCON;
+      tconC : TCON;
+      tsend : TSEND;
+      trcv : TRCV;
+      tdis : TDISCON;
+      ConS_OK : Bool;
+      ConC_OK : Bool;
+      Desconectado : Bool;
+      tx : Array[0..3] of Byte;
+      rx : Array[0..3] of Byte;
+      // --- 3) Modbus TCP: servidor puerto 502
+      cMbS : TCON_IP_v4;
+      cMbC : TCON_IP_v4;
+      mbS : MB_SERVER;
+      mbC : MB_CLIENT;
+      Registros : Array[0..9] of Word;
+      Leidos : Array[0..1] of Word;
+      // --- Último estado de cada instrucción (para diagnóstico)
+      St_SendC : Word;
+      St_RcvC : Word;
+      St_TconS : Word;
+      St_TconC : Word;
+      St_Tsend : Word;
+      St_Trcv : Word;
+      St_Tdis : Word;
+      St_MbS : Word;
+      St_MbC : Word;
+   END_VAR
+
+BEGIN
+	IF NOT #Iniciado THEN
+	#cSrvC.InterfaceId := "Local~PROFINET_interface_1";
+	#cSrvC.ID := 1;
+	#cSrvC.ConnectionType := 16#0B;          // TCP
+	#cSrvC.ActiveEstablished := FALSE;
+	#cSrvC.RemoteAddress.ADDR[1] := 0;
+	#cSrvC.RemoteAddress.ADDR[2] := 0;
+	#cSrvC.RemoteAddress.ADDR[3] := 0;
+	#cSrvC.RemoteAddress.ADDR[4] := 0;
+	#cSrvC.RemotePort := 0;
+	#cSrvC.LocalPort := 2001;
+	#cCliC.InterfaceId := "Local~PROFINET_interface_1";
+	#cCliC.ID := 2;
+	#cCliC.ConnectionType := 16#0B;          // TCP
+	#cCliC.ActiveEstablished := TRUE;
+	#cCliC.RemoteAddress.ADDR[1] := #IP[1];
+	#cCliC.RemoteAddress.ADDR[2] := #IP[2];
+	#cCliC.RemoteAddress.ADDR[3] := #IP[3];
+	#cCliC.RemoteAddress.ADDR[4] := #IP[4];
+	#cCliC.RemotePort := 2001;
+	#cCliC.LocalPort := 0;
+	#cSrv.InterfaceId := "Local~PROFINET_interface_1";
+	#cSrv.ID := 3;
+	#cSrv.ConnectionType := 16#0B;          // TCP
+	#cSrv.ActiveEstablished := FALSE;
+	#cSrv.RemoteAddress.ADDR[1] := 0;
+	#cSrv.RemoteAddress.ADDR[2] := 0;
+	#cSrv.RemoteAddress.ADDR[3] := 0;
+	#cSrv.RemoteAddress.ADDR[4] := 0;
+	#cSrv.RemotePort := 0;
+	#cSrv.LocalPort := 2002;
+	#cCli.InterfaceId := "Local~PROFINET_interface_1";
+	#cCli.ID := 4;
+	#cCli.ConnectionType := 16#0B;          // TCP
+	#cCli.ActiveEstablished := TRUE;
+	#cCli.RemoteAddress.ADDR[1] := #IP[1];
+	#cCli.RemoteAddress.ADDR[2] := #IP[2];
+	#cCli.RemoteAddress.ADDR[3] := #IP[3];
+	#cCli.RemoteAddress.ADDR[4] := #IP[4];
+	#cCli.RemotePort := 2002;
+	#cCli.LocalPort := 0;
+	#cMbS.InterfaceId := "Local~PROFINET_interface_1";
+	#cMbS.ID := 5;
+	#cMbS.ConnectionType := 16#0B;          // TCP
+	#cMbS.ActiveEstablished := FALSE;
+	#cMbS.RemoteAddress.ADDR[1] := 0;
+	#cMbS.RemoteAddress.ADDR[2] := 0;
+	#cMbS.RemoteAddress.ADDR[3] := 0;
+	#cMbS.RemoteAddress.ADDR[4] := 0;
+	#cMbS.RemotePort := 0;
+	#cMbS.LocalPort := 502;
+	#cMbC.InterfaceId := "Local~PROFINET_interface_1";
+	#cMbC.ID := 6;
+	#cMbC.ConnectionType := 16#0B;          // TCP
+	#cMbC.ActiveEstablished := TRUE;
+	#cMbC.RemoteAddress.ADDR[1] := #IP[1];
+	#cMbC.RemoteAddress.ADDR[2] := #IP[2];
+	#cMbC.RemoteAddress.ADDR[3] := #IP[3];
+	#cMbC.RemoteAddress.ADDR[4] := #IP[4];
+	#cMbC.RemotePort := 502;
+	#cMbC.LocalPort := 0;
+
+	    #txC[0] := 16#12; #txC[1] := 16#34; #txC[2] := 16#56; #txC[3] := 16#78;
+	    #tx[0] := 16#A1; #tx[1] := 16#B2; #tx[2] := 16#C3; #tx[3] := 16#D4;
+	    #Registros[0] := 1234; #Registros[1] := 5678;
+	    #Iniciado := TRUE;
+	END_IF;
+
+	// Pulso de un ciclo cada segundo (REQ de envíos y lecturas).
+	// OJO: no usar #Reloj(IN := NOT #Reloj.Q): en S7-1500 leer .Q actualiza el temporizador,
+	// así que IN pasa a FALSE justo cuando vence y el pulso no sale nunca.
+	#Reloj(IN := TRUE, PT := T#1S);
+	#Pulso := #Reloj.Q;
+	IF #Pulso THEN
+	    #Reloj(IN := FALSE, PT := T#1S);   // reinicia: vuelve a contar en el ciclo siguiente
+	END_IF;
+
+	// ---------- 1) TSEND_C / TRCV_C
+	#rcvC(EN_R := TRUE, CONT := TRUE, LEN := 4, CONNECT := #cSrvC, DATA := #rxC, COM_RST := #rstR);
+	#sendC(REQ := #Pulso, CONT := TRUE, LEN := 4, CONNECT := #cCliC, DATA := #txC, COM_RST := #rstS);
+	IF #rcvC.STATUS <> 16#7000 THEN #St_RcvC := #rcvC.STATUS; END_IF;
+	IF #sendC.STATUS <> 16#7000 THEN #St_SendC := #sendC.STATUS; END_IF;
+	IF #rcvC.DONE AND #rxC[0] = 16#12 AND #rxC[1] = 16#34 AND #rxC[2] = 16#56 AND #rxC[3] = 16#78 THEN
+	    "T10_Resultado".S_TSEND_C_TRCV_C := TRUE;
+	END_IF;
+
+	// ---------- 2) TCON / TSEND / TRCV / TDISCON
+	#tconS(REQ := #Pulso AND NOT #ConS_OK, ID := 3, CONNECT := #cSrv);
+	IF #tconS.DONE THEN #ConS_OK := TRUE; END_IF;
+	IF #tconS.ERROR THEN #St_TconS := #tconS.STATUS; END_IF;
+	#tconC(REQ := #Pulso AND NOT #ConC_OK AND NOT #Desconectado, ID := 4, CONNECT := #cCli);
+	IF #tconC.DONE THEN #ConC_OK := TRUE; END_IF;
+	IF #tconC.ERROR THEN #St_TconC := #tconC.STATUS; END_IF;
+	#trcv(EN_R := #ConS_OK, ID := 3, LEN := 4, DATA := #rx);
+	IF #trcv.ERROR THEN #St_Trcv := #trcv.STATUS; END_IF;
+	#tsend(REQ := #Pulso AND #ConC_OK AND NOT "T10_Resultado".S_TCON_TSEND_TRCV, ID := 4, LEN := 4, DATA := #tx);
+	IF #tsend.ERROR THEN #St_Tsend := #tsend.STATUS; END_IF;
+	IF #trcv.NDR AND #rx[0] = 16#A1 AND #rx[1] = 16#B2 AND #rx[2] = 16#C3 AND #rx[3] = 16#D4 THEN
+	    "T10_Resultado".S_TCON_TSEND_TRCV := TRUE;
+	END_IF;
+	// Cuando ha llegado, se cierra la conexión del cliente con TDISCON (una vez)
+	#tdis(REQ := "T10_Resultado".S_TCON_TSEND_TRCV AND #ConC_OK AND NOT #Desconectado, ID := 4);
+	IF #tdis.DONE THEN
+	    #Desconectado := TRUE;
+	    #ConC_OK := FALSE;
+	    "T10_Resultado".S_TDISCON := TRUE;
+	END_IF;
+	IF #tdis.ERROR THEN #St_Tdis := #tdis.STATUS; END_IF;
+
+	// ---------- 3) Modbus TCP: el cliente lee 2 registros del servidor (40001 = Registros[0])
+	#mbS(DISCONNECT := FALSE, MB_HOLD_REG := #Registros, CONNECT := #cMbS);
+	IF #mbS.ERROR THEN #St_MbS := #mbS.STATUS; END_IF;
+	#mbC(REQ := #Pulso, DISCONNECT := FALSE, MB_MODE := 0, MB_DATA_ADDR := 40001, MB_DATA_LEN := 2, MB_DATA_PTR := #Leidos, CONNECT := #cMbC);
+	IF #mbC.ERROR THEN #St_MbC := #mbC.STATUS; END_IF;
+	IF #mbC.DONE AND #Leidos[0] = 1234 AND #Leidos[1] = 5678 THEN
+	    "T10_Resultado".S_Modbus := TRUE;
+	END_IF;
+END_FUNCTION_BLOCK
+
+DATA_BLOCK "T10_Com_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+"T10_Com"
+
+BEGIN
+
+END_DATA_BLOCK
+
+FUNCTION "T10_Llamar" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+BEGIN
+	"T10_Com_DB"();
+	"T10_Resultado".Vida := "T10_Resultado".Vida + 1;
+	"T10_Resultado".OK := BOOL_TO_INT("T10_Resultado".S_TSEND_C_TRCV_C) + BOOL_TO_INT("T10_Resultado".S_TCON_TSEND_TRCV) + BOOL_TO_INT("T10_Resultado".S_TDISCON) + BOOL_TO_INT("T10_Resultado".S_Modbus);
+	"T10_Resultado".Todo_OK := "T10_Resultado".OK = "T10_Resultado".Total;
+END_FUNCTION

@@ -1,0 +1,9 @@
+﻿FUNCTION "T6_S_Base" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+BEGIN
+	// DTL de partida (literal DTL# en SCL)
+	"T6_Datos".Dtl_1 := DTL#2026-01-01-10:00:00;
+	"T6_Datos".Dtl_1_Copia := DTL#2026-01-01-10:00:00;
+	"T6_Resultado".Vida := "T6_Resultado".Vida + 1;
+END_FUNCTION

@@ -1,0 +1,43 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45002";
+    S7_BlockTitle := "MLC_45002_0"
+}
+FUNCTION "T8_L_CREATE_DB" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        lo : DB_ANY;
+        hi : DB_ANY;
+        cnt : UDInt;
+        attr : Byte;
+        src : Array[0..9] of Byte;
+        dbn : DB_ANY;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45002_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            CREATE_DB(
+                REQ := #req, 
+                LOW_LIMIT := #lo, 
+                UP_LIMIT := #hi, 
+                COUNT := #cnt, 
+                ATTRIB := #attr, 
+                SRCBLK := #src, 
+                RET_VAL => #ret, 
+                BUSY => #busy, 
+                DB_NUM => #dbn
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45001_1">
+    <MultiLanguageText Lang="en-US">INIT_RD</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">INIT_RD</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45001_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): INIT_RD</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): INIT_RD</MultiLanguageText>
+  </Comment>
+</root>

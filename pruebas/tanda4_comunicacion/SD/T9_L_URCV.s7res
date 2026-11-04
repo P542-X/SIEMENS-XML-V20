@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46014_1">
+    <MultiLanguageText Lang="en-US">URCV</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">URCV</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46014_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): URCV</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): URCV</MultiLanguageText>
+  </Comment>
+</root>

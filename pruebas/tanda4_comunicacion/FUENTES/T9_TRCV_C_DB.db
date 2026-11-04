@@ -1,0 +1,9 @@
+﻿DATA_BLOCK "T9_TRCV_C_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+TRCV_C
+
+BEGIN
+
+END_DATA_BLOCK

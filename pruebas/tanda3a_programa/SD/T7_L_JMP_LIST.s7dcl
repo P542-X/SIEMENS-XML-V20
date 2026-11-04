@@ -1,0 +1,77 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44003";
+    S7_BlockTitle := "MLC_44003_0"
+}
+FUNCTION "T7_L_JMP_LIST" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44003_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            JumpList{ Card := 2 }(
+                K := "T7_Datos".UInt_1, 
+                DEST0 => LA, 
+                DEST1 => LB
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44003_2"
+    }
+    NETWORK
+        Label(LA)
+        RUNG wire#powerrail
+            Contact( True )
+            S_Coil( "T7_Datos".JL_Fallo )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44003_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            JumpCoil( LFIN )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44003_4"
+    }
+    NETWORK
+        Label(LB)
+        RUNG wire#powerrail
+            Contact( True )
+            Coil( "T7_Datos".JL_Llega )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44003_5"
+    }
+    NETWORK
+        Label(LFIN)
+        RUNG wire#powerrail
+            Contact( "T7_Datos".JL_Llega )
+            I_Contact( "T7_Datos".JL_Fallo )
+            Coil( "T7_Resultado".L_JMP_LIST )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

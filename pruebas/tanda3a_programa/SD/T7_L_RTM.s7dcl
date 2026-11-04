@@ -1,0 +1,44 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44019";
+    S7_BlockTitle := "MLC_44019_0"
+}
+FUNCTION "T7_L_RTM" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44019_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            RTM{ nr_type := RTM }(
+                NR := 1, 
+                MODE := "T7_Datos".Byte_0, 
+                PV := "T7_Datos".DInt_0, 
+                RET_VAL => "T7_Datos".Ret_RTM, 
+                CQ => "T7_Datos".RTM_CQ, 
+                CV => "T7_Datos".RTM_CV
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44019_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T7_Datos".Ret_RTM, 
+                IN2 := 0
+            )
+            Coil( "T7_Resultado".L_RTM )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

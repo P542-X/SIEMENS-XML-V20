@@ -1,0 +1,34 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44008";
+    S7_BlockTitle := "MLC_44008_0"
+}
+FUNCTION "T7_L_VarGet_Sub" : Void
+    VAR_OUTPUT 
+        o : Int;
+    END_VAR
+    VAR_IN_OUT 
+        v : Variant;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44008_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            VariantGet{
+                src_type := Variant; 
+                dst_type := Variant
+            }(
+                SRC := #v, 
+                DST => #o
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

@@ -1,0 +1,63 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "44015";
+    S7_BlockTitle := "MLC_44015_0"
+}
+FUNCTION "T7_L_SRT_DINT" : Void
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44015_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            PBox( "T7_Datos".SrtDint_Mem )
+            SRT_DINT{ obnr_type := OB_DELAY }(
+                OB_NR := 20, 
+                DTIME := "T7_Datos".T_100ms, 
+                SIGN := "T7_Datos".Word_0, 
+                RET_VAL => "T7_Datos".Ret_SRT_DINT
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44015_2"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( True )
+            QRY_DINT{ obnr_type := OB_DELAY }(
+                OB_NR := 20, 
+                RET_VAL => "T7_Datos".Ret_QRY_DINT, 
+                STATUS => "T7_Datos".St_QRY_DINT
+            )
+        END_RUNG
+
+    END_NETWORK
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_44015_3"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Eq{ SrcType := Int }(
+                IN1 := "T7_Datos".Ret_QRY_DINT, 
+                IN2 := 0
+            )
+            Gt{ SrcType := DInt }(
+                IN1 := "T7_Datos".OB20_Cuenta, 
+                IN2 := 0
+            )
+            S_Coil( "T7_Resultado".L_SRT_DINT )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

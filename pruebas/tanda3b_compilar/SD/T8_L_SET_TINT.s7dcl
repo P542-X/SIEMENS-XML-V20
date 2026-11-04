@@ -1,0 +1,35 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45010";
+    S7_BlockTitle := "MLC_45010_0"
+}
+FUNCTION "T8_L_SET_TINT" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        ob : OB_TOD;
+        sdt : Date_And_Time;
+        per : Word;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45010_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            SET_TINT{ obnr_type := OB_TOD }(
+                OB_NR := #ob, 
+                SDT := #sdt, 
+                PERIOD := #per, 
+                RET_VAL => #ret
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

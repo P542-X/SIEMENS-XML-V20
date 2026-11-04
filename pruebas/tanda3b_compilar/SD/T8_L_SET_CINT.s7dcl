@@ -1,0 +1,35 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45008";
+    S7_BlockTitle := "MLC_45008_0"
+}
+FUNCTION "T8_L_SET_CINT" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        ob : OB_CYCLIC;
+        cyc : UDInt;
+        ph : UDInt;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45008_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            SET_CINT(
+                OB_NR := #ob, 
+                CYCLE := #cyc, 
+                PHASE := #ph, 
+                RET_VAL => #ret
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

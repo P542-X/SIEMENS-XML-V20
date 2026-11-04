@@ -1,0 +1,33 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "45013";
+    S7_BlockTitle := "MLC_45013_0"
+}
+FUNCTION "T8_L_LED" : Void
+    VAR_TEMP 
+        req : Bool;
+        busy : Bool;
+        ret : Int;
+        hw : HW_IO;
+        led : UInt;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_45013_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            LED(
+                LADDR := #hw, 
+                LED := #led, 
+                Ret_Val => #ret
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

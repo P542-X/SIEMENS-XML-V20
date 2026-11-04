@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45017_1">
+    <MultiLanguageText Lang="en-US">GET_DIAG</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">GET_DIAG</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45017_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): GET_DIAG</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): GET_DIAG</MultiLanguageText>
+  </Comment>
+</root>

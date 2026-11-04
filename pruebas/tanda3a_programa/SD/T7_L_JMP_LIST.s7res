@@ -1,0 +1,26 @@
+﻿<root>
+  <Comment Id="MLC_44003_1">
+    <MultiLanguageText Lang="en-US">Lista</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Lista</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44003_2">
+    <MultiLanguageText Lang="en-US">Destino 0 (no)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Destino 0 (no)</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44003_3">
+    <MultiLanguageText Lang="en-US">Ir al final</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Ir al final</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44003_4">
+    <MultiLanguageText Lang="en-US">Destino 1 (sí)</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Destino 1 (sí)</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44003_5">
+    <MultiLanguageText Lang="en-US">Comprobar</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Comprobar</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_44003_0">
+    <MultiLanguageText Lang="en-US">Tanda 3 KOP: JMP_LIST</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3 KOP: JMP_LIST</MultiLanguageText>
+  </Comment>
+</root>

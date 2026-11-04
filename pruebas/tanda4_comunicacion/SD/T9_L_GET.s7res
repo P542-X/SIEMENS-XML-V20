@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46010_1">
+    <MultiLanguageText Lang="en-US">GET</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">GET</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46010_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): GET</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): GET</MultiLanguageText>
+  </Comment>
+</root>

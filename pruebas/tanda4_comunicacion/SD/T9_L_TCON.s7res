@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46003_1">
+    <MultiLanguageText Lang="en-US">TCON</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TCON</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46003_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): TCON</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): TCON</MultiLanguageText>
+  </Comment>
+</root>

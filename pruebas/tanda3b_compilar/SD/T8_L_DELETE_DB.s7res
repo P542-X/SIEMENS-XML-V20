@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45003_1">
+    <MultiLanguageText Lang="en-US">DELETE_DB</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">DELETE_DB</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45003_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): DELETE_DB</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): DELETE_DB</MultiLanguageText>
+  </Comment>
+</root>

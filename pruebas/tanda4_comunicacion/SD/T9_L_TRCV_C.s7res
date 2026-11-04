@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46002_1">
+    <MultiLanguageText Lang="en-US">TRCV_C</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">TRCV_C</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46002_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): TRCV_C</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): TRCV_C</MultiLanguageText>
+  </Comment>
+</root>

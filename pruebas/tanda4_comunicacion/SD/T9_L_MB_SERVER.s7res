@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_46016_1">
+    <MultiLanguageText Lang="en-US">MB_SERVER</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">MB_SERVER</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_46016_0">
+    <MultiLanguageText Lang="en-US">Tanda 4 (solo compilar): MB_SERVER</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 4 (solo compilar): MB_SERVER</MultiLanguageText>
+  </Comment>
+</root>

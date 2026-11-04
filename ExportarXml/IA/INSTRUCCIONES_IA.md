@@ -372,6 +372,133 @@ Reglas de las plantillas `{ }`:
 
 **Sintaxis desconocida** (pide exportación, caso K): CountOfElements (no existe en KOP) y todo lo de instrucciones avanzadas, comunicación y tecnología que no aparezca en `SD/` ni en esta guía.
 
+### 6.5b Fecha/hora y texto — comprobado en marcha (tanda 2: 27/27)
+
+| Caja | SD |
+|---|---|
+| T_CONV | `T_CONV{ src_type := Time; dest_type := DInt }( IN := …, OUT => … )` |
+| T_ADD / T_SUB | `T_ADD{ date_type := DTL; time_type := Time }( IN1 := dtl, IN2 := time, OUT => dtl )` |
+| T_DIFF | `T_DIFF{ date_type := DTL; time_type := Time }( IN1, IN2, OUT => time )` |
+| T_COMBINE | `T_COMBINE{ time_type := Time_Of_Day; date_type := DTL }( IN1 := date, IN2 := tod, OUT => dtl )` |
+| RD_LOC_T / RD_SYS_T | `RD_LOC_T{ date_type := DTL }( RET_VAL => …, OUT => … )` |
+| WR_LOC_T | `WR_LOC_T{ loctime_type := DTL }( LOCTIME := …, DST := …, Ret_Val => … )` |
+| WR_SYS_T | `WR_SYS_T{ date_type := DTL }( IN := …, RET_VAL => … )` |
+| S_CONV | `S_CONV{ src_type := Int; dest_type := String; DisableENO := TRUE }( IN, OUT => )` |
+| LEFT / RIGHT | `LEFT{ str_type := String; DisableENO := TRUE }( IN := …, L := …, OUT => … )` |
+| MID | `MID{ value_type := String; DisableENO := TRUE }( IN, L, P, OUT => )` (ojo: `value_type`) |
+| DELETE / INSERT / REPLACE / FIND | `DELETE{ str_type := String; … }( IN, L, P, OUT => )` · `INSERT{ … }( IN1, IN2, P, OUT => )` · `REPLACE{ … }( IN1, IN2, L, P, OUT => )` · `FIND{ … }( IN1, IN2, OUT => )` |
+| ATH / HTA | `ATH{ n_type := Int; in_out_type := Variant }( IN, N, RET_VAL =>, OUT => )` · `HTA{ n_type := UInt; in_out_type := Variant; card := 1 }( IN, N, RET_VAL =>, OUT => )` |
+| JOIN / SPLIT | `JOIN( Mode, RecSeparator, EndSeparator, SrcStruct, Count, Ret_Val =>, DstArray :=, Position := )` · `SPLIT( Mode, RecSeparator, EndSeparator, SrcArray, Ret_Val =>, Count =>, DstStruct :=, Position := )` (sin plantillas) |
+| Comparar DTL / Char | `Eq{ SrcType := DTL }` · `Eq{ SrcType := Char }` |
+
+Al pasar Int → String (`S_CONV` en KOP, `INT_TO_STRING` en SCL) el texto lleva delante el carácter del signo (un espacio si es positivo): no compares con `'123'`; vuelve a convertir a Int o usa FIND.
+
+En SD, una variable DTL de la interfaz lleva `{ InstructionName := "DTL"; LibVersion := "1.0" }` delante.
+
+**Nombres que no hay que usar:**
+- En SD, un miembro de DB llamado como una dirección absoluta (`D1`, `D2`…) se interpreta mal: `"DB".D1` llega como el DB entero (*"The data type T6_Datos of the actual parameter does not match DTL"*). Usa nombres que no parezcan direcciones (`Dtl_1`).
+- En SCL, **T_COMBINE no existe**: es `CONCAT_DATE_TOD(IN1 := fecha, IN2 := hora_del_dia)` (*"Tag 'T_COMBINE' is not declared"*). T_ADD, T_SUB y T_DIFF sí se llaman igual.
+- En SCL, `db` (y otras palabras reservadas) no vale como nombre de variable (*"The specified value "db" is invalid"*).
+
+### 6.5c Control del programa, datos, interrupciones, avisos, diagnóstico (sintaxis de una exportación real)
+
+**Comprobado en marcha (tanda 3A: 20/20):** JumpCoil/I_JumpCoil + Label, JumpList, Switch, RE_TRIGR, GetError/GetErrorID, WAIT, VariantGet/VariantPut (dentro de una FC con parámetro Variant), WriteToArrayDB/ReadFromArrayDB, ATTR_DB, DIS_AIRT/EN_AIRT, SRT_DINT + QRY_DINT (OB20), QRY_CINT (OB30), Program_Alarm, RTM; en SCL PEEK/POKE, READ/WRITE_BIG/LITTLE, DB de array, `TypeOf` + VariantGet. **RET** (`Return`) todavía no: hace falta una exportación compilada. El resto de la tabla (CREATE_DB, ATTACH, diagnóstico, periferia, DataLog, recetas) es sintaxis vista, sin probar.
+
+| En TIA | En SD |
+|---|---|
+| JMP / JMPN | `JumpCoil( ETQ )` · `I_JumpCoil( ETQ )` |
+| LABEL | `Label(ETQ)` en su propia línea, dentro de `NETWORK` y **antes** de los `RUNG` |
+| JMP_LIST | `JumpList{ Card := 2 }( K := uint, DEST0 => ETQ_A, DEST1 => ETQ_B )` |
+| SWITCH | `Switch{ Card := 2; CASE0 := "=="; CASE1 := "=="; SrcType := Int }( K := …, CASE0 := …, CASE1 := …, ELSE => E, DEST0 => A, DEST1 => B )` |
+| RET | `Return()` |
+| RE_TRIGR | `RE_TRIGR()` |
+| GET_ERROR / GET_ERR_ID | `GetError(ERROR => #err)` (`ErrorStruct`) · `GetErrorID(ID => #w)` |
+| INIT_RD / WAIT | `INIT_RD( REQ := …, Ret_Val => … )` · `WAIT(WT := int_µs)` |
+| VariantGet / VariantPut | `VariantGet{ src_type := Variant; dst_type := Variant }( SRC := #v, DST => … )` · `VariantPut{ … }( SRC := …, DST := #v )` |
+| ReadFromArrayDB / WriteToArrayDB | `ReadFromArrayDB( db := "DB_array", index := dint, Ret_Val => …, value => … )` · `WriteToArrayDB( db, index, value := …, Ret_Val => … )` |
+| CREATE_DB / ATTR_DB / DELETE_DB | `CREATE_DB( REQ, LOW_LIMIT, UP_LIMIT, COUNT, ATTRIB, SRCBLK, RET_VAL =>, BUSY =>, DB_NUM => )` · `ATTR_DB( REQ, DB_NUMBER, RET_VAL =>, DB_LENGTH =>, ATTRIB => )` · `DELETE_DB( REQ, DB_NUMBER, Ret_Val =>, BUSY => )` |
+| READ_DBL / WRIT_DBL | `READ_DBL{ src_type := Variant; dest_type := Variant }( REQ, SRCBLK, RET_VAL =>, BUSY =>, DSTBLK => )` |
+| ATTACH / DETACH | `ATTACH( OB_NR, EVENT, ADD, RET_VAL => )` · `DETACH( OB_NR, EVENT, RET_VAL => )` |
+| SET_CINT / QRY_CINT | `SET_CINT( OB_NR, CYCLE, PHASE, RET_VAL => )` · `QRY_CINT( OB_NR, RET_VAL =>, CYCLE =>, PHASE =>, STATUS => )` |
+| SRT_DINT / CAN_DINT / QRY_DINT | `SRT_DINT{ obnr_type := OB_DELAY }( OB_NR, DTIME, SIGN, RET_VAL => )` · `CAN_DINT{ ob_type := OB_DELAY }(…)` · `QRY_DINT{ obnr_type := OB_DELAY }( OB_NR, RET_VAL =>, STATUS => )` |
+| SET_TINT / CAN_TINT | `SET_TINT{ obnr_type := OB_TOD }( OB_NR, SDT, PERIOD, RET_VAL => )` · `CAN_TINT{ ob_type := OB_TOD }( OB_NR, Ret_Val => )` |
+| DIS_AIRT / EN_AIRT | `DIS_AIRT(RET_VAL => …)` · `EN_AIRT(RET_VAL => …)` |
+| Program_Alarm | En un FB, multiinstancia `{ InstructionName := "Program_Alarm"; LibVersion := "1.0" } PA : Program_Alarm;` y `#PA.Program_Alarm( SIG, TIMESTAMP, SD_1..SD_10, Error =>, Status => )` |
+| Get_AlarmState / Gen_UsrMsg | `Get_AlarmState( Alarm, AlarmState =>, Error =>, STATUS => )` · `Gen_UsrMsg( Mode, TextID, TextListID, Ret_Val =>, AssocValues := )` |
+| RD_SINFO / LED | `RD_SINFO{ si_type := Variant }( RET_VAL =>, TOP_SI =>, START_UP_SI => )` · `LED( LADDR, LED, Ret_Val => )` |
+| Get_IM_Data / Get_Name | FB con DB de instancia: `"Get_IM_Data_DB".Get_IM_Data( LADDR, IM_TYPE, DONE =>, BUSY =>, ERROR =>, STATUS =>, DATA := )` · `"Get_Name_DB".Get_Name( LADDR, STATION_NR, DONE =>, BUSY =>, ERROR =>, LEN =>, STATUS =>, DATA := )` |
+| DeviceStates / ModuleStates / GET_DIAG | `DeviceStates( LADDR, MODE, Ret_Val =>, STATE := )` · `ModuleStates( … )` · `GET_DIAG( MODE, LADDR, RET_VAL =>, CNT_DIAG =>, DIAG :=, DETAIL := )` |
+| RDREC / WRREC | `"RDREC_DB".RDREC{ ptr_type := Variant; id_type := HW_IO; index_type := DInt; len_type := UInt }( REQ, ID, INDEX, MLEN, VALID =>, BUSY =>, ERROR =>, STATUS =>, LEN =>, RECORD := )` · WRREC igual con `LEN :=` y `DONE =>` |
+| GETIO / SETIO | `"GETIO_DB".GETIO{ ptr_type := Variant; id_type := HW_SUBMODULE }( ID, STATUS =>, LEN =>, INPUTS := )` · `"SETIO_DB".SETIO{ ptr_type := Variant; id_type := HW_SUBMODULE; card := 0 }( ID, STATUS =>, OUTPUTS := )` |
+| GEO2LOG / LOG2GEO | `GEO2LOG( GEOADDR, RET_VAL =>, LADDR => )` · `LOG2GEO( LADDR, Ret_Val =>, GEOADDR := )` |
+| RTM | `RTM{ nr_type := RTM }( NR, MODE, PV, RET_VAL =>, CQ =>, CV => )` |
+| DataLogCreate / RecipeExport | `"DataLogCreate_DB".DataLogCreate( REQ, RECORDS, FORMAT, TIMESTAMP, NAME, DONE =>, BUSY =>, ERROR =>, STATUS =>, ID :=, HEADER :=, DATA := )` · `"RecipeExport_DB".RecipeExport{ recipe_type := Variant }( REQ, DONE =>, BUSY =>, ERROR =>, STATUS =>, RECIPE_DB := )` |
+
+OB de interrupción en XML: `SecondaryType` `CyclicInterrupt` (entradas `Initial_Call` Bool, `Event_Count` Int; sin `CyclicTime` ni `PhaseShift`: con ellos pide un atributo `ReadOnly` que no acepta ni con `"false"`; sin ellos, ciclo por defecto de 100 ms) o `TimeDelayInterrupt` (entrada `Sign` Word).
+
+**Importan y compilan (tanda 3B, sin ejecutar: necesitan hardware o tarjeta):** INIT_RD, CREATE_DB, DELETE_DB, READ_DBL, WRIT_DBL, ATTACH, DETACH, SET_CINT, CAN_DINT, SET_TINT, CAN_TINT, Gen_UsrMsg, LED, RD_SINFO, GET_DIAG, GEO2LOG, LOG2GEO; y en SCL con su DB de instancia en la misma fuente (`DATA_BLOCK "X_DB" … RDREC BEGIN END_DATA_BLOCK`) RDREC, WRREC, GETIO, SETIO, Get_IM_Data, DataLogCreate, RecipeExport. Tipos de `LADDR`: **DeviceStates y Get_Name → `HW_IOSYSTEM`**, **ModuleStates → `HW_DEVICE`**, LED/RDREC/Get_IM_Data → `HW_IO`, GET_DIAG/GEO2LOG/LOG2GEO → `HW_ANY`, GETIO/SETIO → `HW_SUBMODULE`.
+
+**Comunicación (tanda 4, importan y compilan):** TCON, TDISCON, TSEND, TRCV, TUSEND, TURCV, TSEND_C, TRCV_C, PUT, GET, BSEND, BRCV, USEND, URCV, MB_CLIENT, MB_SERVER, WWW. Cada FB del sistema con su DB de instancia desde fuente y llamado `"X_DB".TSEND_C( … )`. Plantillas: `TCON{ con_type := Variant; id_type := CONN_OUC }`, `TDISCON{ id_type := CONN_OUC }`, `TSEND{ data_type := Variant; len_type := UDInt; id_type := CONN_OUC }`, `TRCV{ ptr_type := Variant; value_type := UDInt; id_type := CONN_OUC; card := 1 }`, `TUSEND`/`TURCV{ ptr_type := Variant; value_type := UDInt; id_type := CONN_OUC; addr_type := Variant }`, `PUT`/`GET{ remote_type := Remote; local_type := Variant }`, `BSEND`/`BRCV`/`USEND`/`URCV{ ptr_type := Variant; id_type := CONN_PRG; r_id_type := CONN_R_ID }`, `WWW{ value_type := DB_WWW }`; TSEND_C, TRCV_C, MB_CLIENT y MB_SERVER sin plantillas. Tipos: conexión `TCON_IP_v4`, dirección `TADDR_Param`, ID `CONN_OUC`/`CONN_PRG`/`CONN_R_ID`.
+
+**Comprobado en marcha (tanda 4B, PLCSIM, el PLC conectado a sí mismo):** TSEND_C → TRCV_C, TCON ×2 + TSEND → TRCV, TDISCON y MB_CLIENT leyendo de MB_SERVER. Patrón que funciona (en SCL, multiinstancias en un FB; ver `pruebas/tanda4b_com_marcha/`):
+```
+// TCON_IP_v4, rellenar una vez
+#con.InterfaceId := "Local~PROFINET_interface_1";   // constante de sistema de la interfaz X1
+#con.ID := 1;                                        // CONN_OUC único por conexión
+#con.ConnectionType := 16#0B;                        // TCP
+#con.ActiveEstablished := TRUE;                      // cliente (FALSE = servidor)
+#con.RemoteAddress.ADDR[1] := 192; … ADDR[4] := 1;   // IP remota (0.0.0.0 en el servidor)
+#con.RemotePort := 2001;                             // 0 en el servidor
+#con.LocalPort := 0;                                 // puerto de escucha en el servidor
+// envío y recepción compactos: gestionan la conexión solos
+#rcv(EN_R := TRUE, CONT := TRUE, LEN := 4, CONNECT := #conSrv, DATA := #rx, COM_RST := #rstR);
+#send(REQ := #Pulso, CONT := TRUE, LEN := 4, CONNECT := #con, DATA := #tx, COM_RST := #rstS);
+// Modbus TCP
+#mbC(REQ := #Pulso, DISCONNECT := FALSE, MB_MODE := 0, MB_DATA_ADDR := 40001, MB_DATA_LEN := 2, MB_DATA_PTR := #leidos, CONNECT := #conMb);
+```
+`STATUS` 7004 / 7006 = conexión establecida, esperando o recibiendo. En SCL los parámetros opcionales (`ADDR`) se pueden omitir; en SD no.
+
+**En SD, la llamada a un FB del sistema tiene que llevar TODOS sus parámetros**, los que no uses como `PARAM :=  ,` (como los exporta TIA). Si falta alguno, TIA rechaza el bloque entero (*Failure*). Pasó con TSEND_C/TRCV_C sin `ADDR` y MB_CLIENT sin los `RD_`/`WR_`. Los parámetros InOut (p. ej. `ADDR_1` de PUT/GET, tipo `Remote`) tienen que ser InOut o variables escribibles, no `VAR_INPUT`.
+
+Trampas vistas en las pruebas:
+- **Program_Alarm** con `SIG` que cambia en cada ciclo da error de vez en cuando (satura los avisos): la señal tiene que cambiar despacio.
+- **ATTR_DB** sobre un **DB de array** no devuelve lo esperado; sobre un DB normal sí.
+- En SCL, el parámetro `value` de WriteToArrayDB (Variant) tiene que ser una **variable**, no una constante (*"Parameters of the function … do not match"*).
+- DB de array en fuente: `DATA_BLOCK "X" … NON_RETAIN  ARRAY[0..9] OF Int  BEGIN END_DATA_BLOCK`.
+
+En KOP **no hay** PEEK/POKE ni READ_BIG/WRITE_BIG/READ_LITTLE/WRITE_LITTLE (S7-1500 V4.0, TIA V20): úsalos en SCL. SD exporta también bloques **inconsistentes** (sin compilar), pero el XML no.
+
+### 6.5d Tipos de OB e interfaz especial — comprobado en marcha (tanda 7: 6/6)
+
+**Un OB nuevo de un tipo concreto se crea en XML**: en SD la cabecera es solo `ORGANIZATION_BLOCK "Nombre"`, sin número ni tipo, así que SD sirve para cambiar la lógica de un OB que ya existe, no para crear uno de otro tipo. En XML, `SecondaryType` y la sección `Input` (`Informative="true"`) según el tipo:
+
+| Nº típico | `SecondaryType` | Entradas (`Input`) |
+|---|---|---|
+| 1, 123+ | `ProgramCycle` | `Initial_Call` Bool, `Remanence` Bool |
+| 100 | `Startup` | `LostRetentive` Bool, `LostRTC` Bool |
+| 10 | `TimeOfDay` | `CaughtUp` Bool, `SecondTime` Bool |
+| 20 | `TimeDelayInterrupt` | `Sign` Word |
+| 30 | `CyclicInterrupt` | `Initial_Call` Bool, `Event_Count` Int (sin `CyclicTime`/`PhaseShift`: ciclo por defecto) |
+| 80 | `TimeErrorInterrupt` | `Fault_ID` Byte, `Csg_OBnr` OB_ANY, `Csg_Prio` UInt |
+| 82 | `DiagnosticErrorInterrupt` | `IO_State` Word, `LADDR` HW_ANY, `Channel` UInt, `MultiError` Bool |
+| 86 | `RackOrStationFailure` | `LADDR` HW_DEVICE, `Event_Class` Byte, `Fault_ID` Byte |
+| 121 | `ProgrammingError` | `BlockNr` UInt, `Reaction` USInt, `Fault_ID` Byte, `BlockType` USInt, `Area` USInt, `DBNr` DB_ANY, `Csg_OBNr` OB_ANY, `Csg_Prio` USInt, `Width` USInt |
+| 122 | `IOAccessError` | igual que `ProgrammingError` |
+
+**Comprobado en marcha:** OB100 (`Startup`) y OB121 (`ProgrammingError`, que atrapa un índice fuera de rango y la CPU sigue en RUN) creados por XML; FB con `VAR CONSTANT`; FB con entrada `Variant` + VariantGet; FC con `Array[*]` llamada con `Array[0..4]` y `Array[1..3]`, en KOP y en SCL. Una FC KOP con Upper_Bound y Lower_Bound encadenados en la misma rama más un `Calculate` con resta no se importó; separada en una caja por red, sí. **Si una red con varias cajas falla, sepárala en una caja por red.**
+
+**OB de número fijo** (80, 82, 86, 121, 122…): en el XML **sin `<AutoNumber>`** (TIA no lo exporta y, si se pone, *"Missing XML attribute 'ReadOnly' for attribute 'AutoNumber'"*). Startup, TimeOfDay y los de ciclo sí lo llevan. Regla general: si TIA pide un atributo `ReadOnly`, ese elemento no hay que escribirlo.
+
+**Interfaz especial:** `Array[*] of Int` — escríbelo **con asterisco** también en SD (TIA lo exporta como `Array[] of Int`, pero lo que importa bien es `Array[*]`); recorre el array con `LOWER_BOUND`/`UPPER_BOUND`, `Variant` como entrada, `VAR CONSTANT LIMITE : Int := 10; END_VAR` (se usa como `#LIMITE`).
+
+**Otras cajas de la exportación compilada:**
+- `Get_AlarmState( Alarm := db_any, AlarmState =>, Error =>, STATUS => )`
+- `"T_RESET_DB".T_RESET( REQ, ID, DONE =>, BUSY =>, ERROR =>, STATUS => )`
+- `"T_CONFIG_DB".T_CONFIG( Req, Interface, Conf_Data, Done =>, Busy =>, Error =>, Status =>, Err_Loc => )` (pines en mayúscula/minúscula tal cual)
+- `"TMAIL_C_DB".TMAIL_C( REQ, TO_S, CC, SUBJECT, TEXT, ATTACHMENT, ATTACHMENT_NAME, MAIL_ADDR_PARAM, DONE =>, BUSY =>, ERROR =>, STATUS => )`
+
+**RET: TIA V20 no importa RET en SD**, ni siquiera el `Return()` que exporta él mismo de un bloque compilado (comprobado: su propio SD falla y su propio XML entra). Un bloque KOP con RET va **en XML** (`<Part Name="Return" />`), o se sustituye por un salto (`JumpCoil`) a una etiqueta al final, o se hace en SCL (`RETURN;`). El Add-In ≥ 2.4.6 marca como NO VÁLIDO un SD con `Return(`.
+
 ### 6.6 Visto en exportaciones reales (sintaxis de TIA, aún sin batería de pruebas propia)
 
 **Interfaz**
@@ -405,6 +532,7 @@ FUNCTION_BLOCK "Mi_FB"
 - `S7_Access := "ReadOnly := External"` y `S7_Visibility := "Hidden := External"` son los checks *Accesible / Visible desde HMI/OPC UA* de la interfaz. `{ S7_Setpoint := "True" }` marca *Valor de ajuste*.
 - Las multiinstancias de instrucciones del sistema llevan `InstructionName` y **`LibVersion`**: **eso sí ata el bloque a la versión de la instrucción en esa CPU**. Si el bloque va a otra CPU, revisa esas versiones (o quita el bloque de atributos y deja que TIA elija, sin comprobar todavía).
 - Arrays con límite inferior distinto de 0: `Array[4000..4250] of _.Mi_UDT`.
+- Variables con nombres que no son identificadores (p. ej. números) van entre comillas también en SD: `"1" : Bool;` y `#"1"`.
 - Comentario de bloque: `S7_BlockComment := "MLC_x"` en la cabecera (como `S7_BlockTitle`).
 - Red vacía: `RUNG wire#powerrail` seguido directamente de `END_RUNG`.
 - OB1: cabecera `ORGANIZATION_BLOCK "Main"` (sin número ni tipo). Temporales con comillas si hace falta: `"Ret_Val" : Int;`.
@@ -454,6 +582,14 @@ FUNCTION_BLOCK "Mi_FB"
 ```
 Entradas sin conectar: `PARAM :=  ,`. Versiones vistas en S7-1500 V4.0: GET 1.3, T_DIAG 1.2, IEC_TIMER 1.0.
 
+### 6.7 HMI clásico (Comfort/Advanced) — en prueba
+
+- Si el paquete trae `HMI/<panel>/`: `Pantallas/`, `Plantillas/`, `Emergentes/`, `Deslizantes/`, `Variables/`, `Scripts/`, `Listas_texto/`, `Listas_graficos/`, `Conexiones/`, `Ciclos/`, todo en SimaticML (`Hmi.*`). `_info.md` dice el modelo de panel.
+- Para **leer** una pantalla: cada objeto lleva tipo, posición (`Left`, `Top`), tamaño (`Width`, `Height`), colores, textos por idioma, variable conectada, animaciones y eventos. Se puede reconstruir el aspecto y dibujar una vista previa.
+- Para **modificar o crear**: parte siempre del XML de una pantalla u objeto del propio paquete y cámbialo (como con el SD). Un objeto por XML, con el nombre del fichero igual al del objeto. Textos en todos los idiomas del proyecto.
+- No uses faceplates ni imágenes que no estén ya en el proyecto (un faceplate que falta en la librería puede cerrar TIA al importar). Los avisos HMI de Comfort no se exportan en XML.
+- El usuario importa eligiendo **el panel** (no el PLC) en *Importar ficheros*. El Add-In compila el HMI y deja `resumen_hmi_<fecha>.txt`. Comprobar en la simulación de runtime.
+
 ---
 
 ## 7. Referencia de fuentes (`.scl`, `.db`, `.udt`) — comprobada
@@ -500,6 +636,7 @@ Temporizadores y contadores IEC en un DB: `"DB".t.TON(IN := …, PT := T#100MS);
 R_TRIG/F_TRIG con DB de instancia: `"Mi_Rtrig_DB"(CLK := x);` y `"Mi_Rtrig_DB".Q`.
 
 Cuidado:
+- **Temporizador que se reinicia solo:** **no** uses `#T(IN := NOT #T.Q, PT := …)`. En S7-1500, leer `.Q` actualiza el temporizador: `IN` pasa a FALSE justo al vencer y el pulso no sale nunca. Hazlo así: `#T(IN := TRUE, PT := T#1S); #Pulso := #T.Q; IF #Pulso THEN #T(IN := FALSE, PT := T#1S); END_IF;`
 - Constantes con tipo en funciones genéricas: `SCALE_X(MIN := INT#0, VALUE := REAL#0.5, MAX := INT#100)`, `LIMIT(MN := INT#0, IN := x, MX := INT#4)`.
 - Guarda el resultado de funciones genéricas (MIN, MAX, SEL, MUX, DECO…) en una variable con tipo antes de comparar.
 - `x := -"DB".a = -5` → *Invalid assignment*: usa una variable intermedia.
@@ -612,6 +749,7 @@ Miembros: `<Member Name="X" Datatype="Int" Remanence="NonRetain" Accessibility="
 | No hagas | Qué pasa |
 |---|---|
 | `FILL_BLK{…}`, `MOVE_BLK{…}`, `NORM_X{ … out_type … }` en SD (los nombres buenos son `FillBlockI`, `MoveBlockI`, `Normalize`) | **TIA Portal se cierra** al importar. El Add-In bloquea esas formas (NO VÁLIDO) |
+| RET (`Return()`) en SD | No se importa nunca (limitación de TIA V20): XML, salto o SCL |
 | Nombre de caja inventado (`R_RS`, `SET_BF`, `IN_Range`…): el nombre SD suele ser otro (`S_RS`, `S_BitfieldCoil`, `InRange`) | Importa como llamada a `<Nombre>_Callee` y no compila, o no importa |
 | `RUNG wire#wN` que solo es destino | El bloque entero no importa |
 | `Type := AUTO` fuera de Add/Sub/Mul/Div | No compila (*IsAuto not supported*) |
@@ -621,6 +759,7 @@ Miembros: `<Member Name="X" Datatype="Int" Remanence="NonRetain" Accessibility="
 | SCL en XML con varias CompileUnit o `AccessModifier` | No importa |
 | XML con un idioma que el proyecto no tiene | No importa (el Add-In lo adapta) |
 | Llamar el mismo bloque desde dos OB | Se ejecuta dos veces por ciclo |
+| Al corregir un bloque, cambiarle el número (`S7_BlockNumber`) | Choca con otro bloque: *"There are objects with ambiguous addresses"*. Mantén el número del bloque original, o quita `S7_BlockNumber` para que TIA asigne uno libre |
 | Tocar bloques protegidos, GRAPH o F | Openness no los importa |
 
 ---

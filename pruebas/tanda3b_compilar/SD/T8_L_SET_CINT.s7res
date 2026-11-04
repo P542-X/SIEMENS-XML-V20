@@ -1,0 +1,10 @@
+﻿<root>
+  <Comment Id="MLC_45008_1">
+    <MultiLanguageText Lang="en-US">SET_CINT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">SET_CINT</MultiLanguageText>
+  </Comment>
+  <Comment Id="MLC_45008_0">
+    <MultiLanguageText Lang="en-US">Tanda 3B (solo compilar): SET_CINT</MultiLanguageText>
+    <MultiLanguageText Lang="es-ES">Tanda 3B (solo compilar): SET_CINT</MultiLanguageText>
+  </Comment>
+</root>

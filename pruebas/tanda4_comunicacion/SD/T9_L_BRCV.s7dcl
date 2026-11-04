@@ -1,0 +1,47 @@
+﻿{
+    S7_Optimized := "TRUE";
+    S7_Language := "LAD";
+    S7_Author := "IA";
+    S7_BlockNumber := "46012";
+    S7_BlockTitle := "MLC_46012_0"
+}
+FUNCTION "T9_L_BRCV" : Void
+    VAR_TEMP 
+        req : Bool;
+        done : Bool;
+        busy : Bool;
+        err : Bool;
+        st : Word;
+        data : Array[0..99] of Byte;
+        len : UDInt;
+        id : CONN_PRG;
+        rid : CONN_R_ID;
+        wlen : Word;
+    END_VAR
+
+    {
+      S7_Language := "LAD";
+      S7_NetworkTitle := "MLC_46012_1"
+    }
+    NETWORK
+        RUNG wire#powerrail
+            Contact( #req )
+            "T9_BRCV_DB".BRCV{
+                ptr_type := Variant; 
+                id_type := CONN_PRG; 
+                r_id_type := CONN_R_ID
+            }(
+                EN_R := #req, 
+                ID := #id, 
+                R_ID := #rid, 
+                NDR => #done, 
+                ERROR => #err, 
+                STATUS => #st, 
+                RD_1 := #data, 
+                LEN := #wlen
+            )
+        END_RUNG
+
+    END_NETWORK
+
+END_FUNCTION

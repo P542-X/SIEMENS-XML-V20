@@ -1,0 +1,22 @@
+﻿DATA_BLOCK "T8_Get_Name_DB"
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+NON_RETAIN
+Get_Name
+
+BEGIN
+
+END_DATA_BLOCK
+
+FUNCTION "T8_S_Get_Name" : Void
+{ S7_Optimized_Access := 'TRUE' }
+VERSION : 0.1
+   VAR_TEMP
+      hw : HW_IOSYSTEM;
+      s : String;
+   END_VAR
+
+BEGIN
+	// Solo compilar: necesita hardware real o tarjeta de memoria
+	"T8_Get_Name_DB"(LADDR := #hw, STATION_NR := 1, DATA := #s);
+END_FUNCTION
