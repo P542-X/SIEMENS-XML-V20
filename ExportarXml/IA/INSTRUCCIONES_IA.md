@@ -499,6 +499,16 @@ En KOP **no hay** PEEK/POKE ni READ_BIG/WRITE_BIG/READ_LITTLE/WRITE_LITTLE (S7-1
 
 **RET: TIA V20 no importa RET en SD**, ni siquiera el `Return()` que exporta él mismo de un bloque compilado (comprobado: su propio SD falla y su propio XML entra). Un bloque KOP con RET va **en XML** (`<Part Name="Return" />`), o se sustituye por un salto (`JumpCoil`) a una etiqueta al final, o se hace en SCL (`RETURN;`). El Add-In ≥ 2.4.6 marca como NO VÁLIDO un SD con `Return(`.
 
+### 6.5e GRAPH en XML (comprobado: importa y compila en V20)
+
+SD no admite GRAPH: los GRAPH y sus DB de instancia van **en XML**. Lo más seguro es partir del XML de un GRAPH exportado y rehacer su `<Sequence>` y su interfaz:
+- **Paso**: `<Step Number="n" Init="true|false" Name="…" MaximumStepTime="T#10S" WarningTime="T#7S"><Actions>…<Action /></Actions><Supervisions>…</Supervisions><Interlocks>…</Interlocks></Step>` (supervisión y enclavamiento como en la plantilla: `SvCoil` / `IlCoil` desde la barra).
+- **Acción**: `<Action Qualifier="N" Event="S1"><Token Text="#Datos.Cabecera.Codigo := 1010" /><Token Text="&#xA;" /></Action>`; también `Qualifier="S"`/`"R"` con `<Token Text="#b1" />`. Se pueden asignar estructuras y arrays enteros (`#Envio.Patron := #Datos.Patron`). **`OR`/`AND` en una acción solo valen entre enteros** (operación de bits), no entre Bool: decide con transiciones.
+- **Transición**: `<Transition IsMissing="false" Name="…" Number="n" ProgrammingLanguage="LAD"><FlgNet>…<Part Name="TrCoil" …/></FlgNet></Transition>`; cada FlgNet numera sus UId desde 21. Comparadores `Eq`/`Ge` con `pre`/`in1`/`in2`/`out`, contactos con `in`/`operand`/`out` (negado: `<Negated Name="operand" />`). Elemento de array: `<Component Name="Action" AccessModifier="Array"><Access Scope="LiteralConstant"><Constant><ConstantType>DInt</ConstantType><ConstantValue>16</ConstantValue></Constant></Access></Component>`.
+- **Ramas**: `<Branch Number="b" Type="AltBegin" Cardinality="k" />` y conexiones `StepRef → BranchRef In="0"`, `BranchRef Out="i" → TransitionRef`. **Cada paso (salvo el inicial) tiene una sola conexión `Direct` de entrada; las demás son `Jump`.**
+- **Interfaz**: en `Static`, un miembro `G7_StepPlus_V6` por paso y `G7_TransitionPlus_V6` por transición (copiados de la plantilla, con `SNO`/`TNO` = número). Los **InOut no llevan `Remanence`**. Nombres reservados: no llamar a un paso `Error`, `INIT_SQ`, `S_NO`…
+- **DB de instancia**: XML de otro DB de instancia de GRAPH con la `<Interface>` del FB nuevo (sin `Temp`/`Constant`), `InstanceOfName`, `Name` y `Number`.
+
 ### 6.6 Visto en exportaciones reales (sintaxis de TIA, aún sin batería de pruebas propia)
 
 **Interfaz**
@@ -759,6 +769,11 @@ Miembros: `<Member Name="X" Datatype="Int" Remanence="NonRetain" Accessibility="
 | SCL en XML con varias CompileUnit o `AccessModifier` | No importa |
 | XML con un idioma que el proyecto no tiene | No importa (el Add-In lo adapta) |
 | Llamar el mismo bloque desde dos OB | Se ejecuta dos veces por ciclo |
+| Validar un GRAPH con la regla de UId únicos por CompileUnit | Falso error: en GRAPH cada transición, supervisión y enclavamiento es un `FlgNet` con UId propios desde 21 (el Add-In ≥ 2.4.9 lo tiene en cuenta) |
+| Paso o transición de GRAPH llamado como un parámetro interno (`Error`, `ERROR`, `INIT_SQ`, `S_NO`…) | *"You have generated the output parameter 'ERROR'. However, the parameter is reserved"*: usar otro nombre (`E1 Error`) |
+| DB de instancia de un FB **GRAPH** en SD | No se importa (*Failure*): hacerlo en XML, copiando el XML de otro DB de instancia del mismo FB y cambiando `Name`, `Number` y `AutoNumber` |
+| Importar en el mismo paquete un FC que llama a FB y los DB de instancia de esos FB (sobre todo si cambian de FB) | El FC se importa antes y queda enlazado al DB viejo: *"Instance data block does not match called FB"*. Importar primero los DB de instancia y después el FC |
+| Número de DB ≥ 60000 en un S7-1500 | *"When automatic numbering is disabled, a valid block number must be assigned"*: los DB van de 1 a 59999 |
 | Al corregir un bloque, cambiarle el número (`S7_BlockNumber`) | Choca con otro bloque: *"There are objects with ambiguous addresses"*. Mantén el número del bloque original, o quita `S7_BlockNumber` para que TIA asigne uno libre |
 | Tocar bloques protegidos, GRAPH o F | Openness no los importa |
 

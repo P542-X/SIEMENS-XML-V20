@@ -134,3 +134,5 @@ Después, en TIA Portal: task card **Add-Ins** → activar "Exportar e importar 
 | `Config.xml` | Configuración del Add-In Publisher (permisos, versión) |
 
 Las DLL de Siemens no se incluyen en el repositorio; se referencian desde la instalación de TIA Portal.
+
+> **GRAPH**: SIMATIC SD no admite GRAPH; los bloques GRAPH y sus DB de instancia se exportan e importan en XML. Cómo generarlos: `ExportarXml/IA/INSTRUCCIONES_IA.md` §6.5e.

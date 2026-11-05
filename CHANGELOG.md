@@ -1,5 +1,14 @@
 # Cambios
 
+## 2.4.10
+- Guía `INSTRUCCIONES_IA.md`, nueva sección **6.5e GRAPH en XML** (comprobado en V20): pasos, acciones (`N` con evento `S1`, asignaciones también de estructuras y arrays), transiciones (comparadores, contactos, elementos de array), ramas alternativas, `Direct` frente a `Jump`, interfaz (`G7_StepPlus_V6` / `G7_TransitionPlus_V6`) y DB de instancia en XML.
+- Errores nuevos en la tabla: DB ≥ 60000, DB de instancia de GRAPH en SD, orden FC / DB de instancia al importar, nombres reservados en GRAPH (`ERROR`…), `Remanence` en InOut, `OR` entre Bool en una acción.
+- Lecciones 25.
+
+## 2.4.9
+- **GRAPH**: el validador ya no rechaza los XML de bloques GRAPH (cada transición, supervisión y enclavamiento es una red propia con sus UId desde 21; ahora el ámbito del UId es el FlgNet).
+- Al exportar, los GRAPH y los DB de instancia que SD no admite ya no salen como *"protegido con know-how"*.
+
 ## 2.4.8
 - `CLAUDE.md` / `AGENTS.md`: punto de entrada para cualquier IA (qué leer y qué hacer en cada caso, reglas, cómo publicar).
 - `GUIA_PRUEBAS.md`: el método de las baterías de prueba paso a paso.

@@ -341,3 +341,7 @@ PLCSIM deja que el PLC se conecte a sí mismo por TCP: TSEND_C/TRCV_C, TCON/TSEN
 ## 24. Tanda 7 y RET
 
 Exportación compilada de un FB con interfaz especial y 7 OB de tipos distintos: tipos de OB (`SecondaryType` + entradas) en la guía 6.5d; en SD un OB no lleva número ni tipo (crear OB nuevos: XML). `Array[*]` sale como `Array[] of Int` en SD. **RET no se importa en SD en V20**, ni el exportado por el propio TIA desde un bloque compilado; el mismo bloque en XML sí entra. El Add-In 2.4.6 frena esos SD con un mensaje claro. Tanda 7 en marcha: 6/6 (OB100 y OB121 por XML, VAR CONSTANT, Variant de entrada, Array[*] en KOP y SCL). OB de número fijo: sin `<AutoNumber>`. `Array[*]` en SD se escribe con asterisco. Una red KOP con Upper_Bound + Lower_Bound encadenados y Calculate con resta no se importó; por separado sí.
+
+## 25. GRAPH generado por XML
+
+Partiendo de un GRAPH exportado se pueden renombrar pasos, añadir pasos, transiciones y ramas alternativas, y escribir acciones (`N` con evento `S1` y asignaciones, incluso de estructuras). Fallos encontrados: el validador del Add-In trataba la CompileUnit como una sola red (corregido en 2.4.9); paso llamado `Error` (reservado); `Remanence` en InOut; `OR` entre Bool en una acción. Resultado: un GRAPH de 7 pasos y 13 transiciones con un protocolo de comunicación completo, 0 errores.

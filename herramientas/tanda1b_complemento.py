@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Tanda 1 (complemento): las 24 cajas KOP aprendidas de la exportación real 'palclaude' (TIA V20)."""
+"""Tanda 1 (complemento): las 24 cajas KOP aprendidas de la exportación real 'Aprender_T1b' (TIA V20)."""
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from simatic import *
@@ -136,7 +136,7 @@ w("XML/T5_Ciclo.xml", ob("T5_Ciclo", 128, ["T5_Base"] + FCS + ["T5_Contar"], "Ta
 filas = "\n".join(f"| `{n}` | {d} |" for n, d in RES)
 w("LEEME.md", f'''# Tanda 1b: las cajas KOP aprendidas de la exportación real
 
-{len(RES)} pruebas, una FC por caja, con la sintaxis SD exacta de la exportación `palclaude` (TIA V20). Dos nombres son deducidos por analogía y van marcados [DEDUCIDA]: `R_BitfieldCoil` (RESET_BF) y `FillBlockU` (UFILL_BLK).
+{len(RES)} pruebas, una FC por caja, con la sintaxis SD exacta de la exportación `Aprender_T1b` (TIA V20). Dos nombres son deducidos por analogía y van marcados [DEDUCIDA]: `R_BitfieldCoil` (RESET_BF) y `FillBlockU` (UFILL_BLK).
 
 Usa FC 42000..42024, DB 42900/42901, OB 128 y los DB de instancia `T5_Rt_L`, `T5_Ft_L`.
 

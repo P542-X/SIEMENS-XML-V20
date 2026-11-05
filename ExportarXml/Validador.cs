@@ -107,13 +107,15 @@ namespace ExportarXml
 
             foreach (XElement cu in unidades)
             {
-                // UId únicos dentro de cada red (IdentCon y NameCon no cuentan: son referencias a un UId)
+                // UId únicos dentro de cada red (IdentCon y NameCon no cuentan: son referencias a un UId).
+                // En GRAPH cada transición, supervisión y enclavamiento es un FlgNet propio con sus UId desde 21:
+                // el ámbito es el FlgNet más cercano (o la CompileUnit si no hay FlgNet).
                 foreach (IGrouping<string, XAttribute> g in cu.Descendants()
                              .Where(x => x.Name.LocalName != "IdentCon" && x.Name.LocalName != "NameCon")
                              .Select(x => x.Attribute("UId")).Where(a => a != null)
-                             .GroupBy(a => a.Value).Where(g => g.Count() > 1))
+                             .GroupBy(a => AmbitoUId(a.Parent, cu) + "|" + a.Value).Where(g => g.Count() > 1))
                 {
-                    errores.Add(Linea(g.Skip(1).First().Parent) + "UId=\"" + g.Key + "\" repetido en la misma red.");
+                    errores.Add(Linea(g.Skip(1).First().Parent) + "UId=\"" + g.First().Value + "\" repetido en la misma red.");
                 }
 
                 // En SCL tokenizado el índice de un array va con tokens [ ], sin AccessModifier
@@ -271,6 +273,20 @@ namespace ExportarXml
             candidatas.Add(@"C:\Program Files\Siemens\Automation\Portal V20\PublicAPI\V20\Schemas");
 
             return candidatas.FirstOrDefault(Directory.Exists);
+        }
+
+        /// <summary>Ámbito de un UId: el FlgNet que lo contiene (GRAPH tiene muchos por CompileUnit) o la CompileUnit.</summary>
+        private static string AmbitoUId(XElement e, XElement cu)
+        {
+            XElement f = e.AncestorsAndSelf().FirstOrDefault(x => x.Name.LocalName == "FlgNet");
+            if (f == null) return "cu";
+            int n = 0;
+            foreach (XElement x in cu.Descendants().Where(x => x.Name.LocalName == "FlgNet"))
+            {
+                if (x == f) return "f" + n;
+                n++;
+            }
+            return "cu";
         }
     }
 }

@@ -81,13 +81,21 @@ namespace ExportarXml
             }
             catch (Exception ex)
             {
-                string motivo = Motivo(ex.Message);
+                string motivo = EsGraph(bloque) ? "GRAPH: SIMATIC SD no admite GRAPH (el XML sí)"
+                              : (bloque.GetType().Name == "InstanceDB" && ex.Message.IndexOf("know-how", StringComparison.OrdinalIgnoreCase) >= 0
+                                 ? "SD no lo admite (p. ej. DB de instancia de un GRAPH; el XML sí)" : Motivo(ex.Message));
                 if (EsScl(bloque) && GenerarFuente(bloque, carpeta, motivo)) return;
 
                 Errores++;
                 Motivos[bloque.Name] = motivo;
                 Log.AppendLine("SOLO XML " + bloque.Name + " (" + motivo + ") -> " + ex.Message.Replace(Environment.NewLine, " "));
             }
+        }
+
+        private static bool EsGraph(PlcBlock b)
+        {
+            try { return string.Equals(b.ProgrammingLanguage.ToString(), "GRAPH", StringComparison.OrdinalIgnoreCase); }
+            catch { return false; }
         }
 
         private static bool EsScl(PlcBlock b)
