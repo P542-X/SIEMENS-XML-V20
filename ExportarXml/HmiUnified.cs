@@ -70,8 +70,52 @@ namespace ExportarXml
         /// El HmiSoftware de lo seleccionado. Primero subiendo por Parent; si no llega (objetos de pantalla
         /// en el árbol), busca en los dispositivos del proyecto el software Unified que contiene el objeto.
         /// </summary>
+        private static TiaPortal _tia;
+
+        /// <summary>
+        /// "HMI_RT_1: MTP1500 Unified Comfort · 6AV2…": el Parent del software Unified no siempre llega
+        /// al DeviceItem, así que se busca el dispositivo del proyecto que lo contiene.
+        /// </summary>
+        public static string Panel(object sw)
+        {
+            string p = Hmi.Panel(sw);
+            if (p.IndexOf(':') >= 0) return p;
+            try
+            {
+                Project proy = _tia?.Projects.FirstOrDefault();
+                if (proy != null)
+                    foreach (object d in Dispositivos(proy))
+                        if (Igual(Hmi.ObtenerUnified(d as IEngineeringObject), sw))
+                        {
+                            string m = Modelo(d, 0);
+                            return Texto(sw, "Name") + " (" + Texto(d, "Name") + ")" + (m.Length > 0 ? ": " + m : "");
+                        }
+            }
+            catch { }
+            return p;
+        }
+
+        private static string Modelo(object d, int nivel)
+        {
+            if (d == null || nivel > 4) return "";
+            foreach (object di in Items(Prop(d, "DeviceItems")))
+            {
+                string tipo = Texto(di, "TypeIdentifier");
+                if (tipo.StartsWith("OrderNumber:", StringComparison.OrdinalIgnoreCase))
+                {
+                    string modelo = "";
+                    try { modelo = Convert.ToString(Llamar(di, "GetAttribute", "TypeName"), CultureInfo.InvariantCulture) ?? ""; } catch { }
+                    return (modelo.Length > 0 ? modelo + " · " : "") + tipo.Substring("OrderNumber:".Length);
+                }
+                string sub = Modelo(di, nivel + 1);
+                if (sub.Length > 0) return sub;
+            }
+            return "";
+        }
+
         public static object Software(TiaPortal tia, IEngineeringObject o)
         {
+            if (tia != null) _tia = tia;
             object sw = Hmi.ObtenerUnified(o);
             if (sw != null || !EsObjetoUnified(o)) return sw;
             try
@@ -155,9 +199,9 @@ namespace ExportarXml
         /// filtro: una pantalla o un grupo de pantallas (solo eso), o null (todas).
         /// </summary>
         public static void Exportar(object sw, string carpeta, ExclusiveAccess ea, StringBuilder log, Dictionary<string, int> recuento,
-                                    ref int ok, ref int errores, object filtro = null)
+                                    ref int ok, ref int errores, object filtro = null, ICollection<string> elegidas = null)
         {
-            string panel = Hmi.Panel(sw);
+            string panel = Panel(sw);
             string raiz = Path.Combine(carpeta, Limpio(Texto(sw, "Name")));
             if (!EsComfort(panel))
                 log.AppendLine("Aviso: " + panel + " no parece un Unified Comfort Panel; esta parte del Add-In está probada en MTP1500.");
@@ -166,6 +210,7 @@ namespace ExportarXml
             string rutaFiltro = filtro != null && filtro.GetType().Name == "HmiScreenGroup" ? RutaGrupo(filtro) : null;
             foreach (var (pantalla, grupo) in Pantallas(sw))
             {
+                if (elegidas != null && !elegidas.Contains(Ruta(grupo, Texto(pantalla, "Name")))) continue;
                 if (filtro != null)
                 {
                     if (rutaFiltro == null && !string.Equals(Texto(pantalla, "Name"), Texto(filtro, "Name"), StringComparison.OrdinalIgnoreCase)) continue;
@@ -199,10 +244,13 @@ namespace ExportarXml
             if (n > 0) recuento["Pantallas"] = (recuento.TryGetValue("Pantallas", out int k) ? k : 0) + n;
 
             // Variables HMI: solo como referencia (nombres para las dinamizaciones); no se importan
-            if (filtro == null) try
+            if (filtro == null && elegidas == null) try
             {
                 List<object> vars = new List<object>();
-                foreach (object t in Items(Prop(sw, "Tags")))
+                List<object> tags = Items(Prop(sw, "Tags")).ToList();
+                if (tags.Count == 0) // en algunos paneles las variables solo cuelgan de sus tablas
+                    foreach (object tabla in Items(Prop(sw, "TagTables"))) tags.AddRange(Items(Prop(tabla, "Tags")));
+                foreach (object t in tags)
                 {
                     Dictionary<string, object> v = new Dictionary<string, object> { ["$nombre"] = Texto(t, "Name") };
                     foreach (string p in new[] { "TagTable", "DataType", "HmiDataType", "Connection", "PlcTag", "Address", "AccessMode", "AcquisitionCycle" })
@@ -213,6 +261,7 @@ namespace ExportarXml
                     }
                     vars.Add(v);
                 }
+                if (vars.Count == 0) log.AppendLine("Aviso: no se han encontrado variables HMI (Tags / TagTables) para Variables_referencia.json.");
                 if (vars.Count > 0)
                 {
                     Directory.CreateDirectory(raiz);
@@ -228,6 +277,12 @@ namespace ExportarXml
             }
             catch (Exception ex) { log.AppendLine("Aviso: variables HMI sin exportar (" + Mensaje(ex) + ")"); }
         }
+
+        /// <summary>"Grupo/Subgrupo/Pantalla" (o solo "Pantalla" en la raíz): lo que se ve en el selector.</summary>
+        public static string Ruta(string grupo, string nombre) => string.IsNullOrEmpty(grupo) ? nombre : grupo + "/" + nombre;
+
+        /// <summary>Rutas de todas las pantallas del panel, en el orden del árbol.</summary>
+        public static List<string> ListaPantallas(object sw) => Pantallas(sw).Select(x => Ruta(x.Grupo, Texto(x.Pantalla, "Name"))).ToList();
 
         /// <summary>Todas las pantallas del panel con la ruta de su grupo ("" = raíz, "A/B" = grupo B dentro de A).</summary>
         private static IEnumerable<(object Pantalla, string Grupo)> Pantallas(object sw)
@@ -297,9 +352,9 @@ namespace ExportarXml
                 }
                 else if (v is IEngineeringObject)
                 {
-                    if (p.CanWrite)
+                    if (p.CanWrite && Texto(v, "Name").Length > 0)
                         d[p.Name] = new Dictionary<string, object> { ["$ref"] = Texto(v, "Name"), ["$tipo"] = v.GetType().Name };
-                    else if (EsParte(o, v))
+                    else if (p.CanWrite || EsParte(o, v))
                     {
                         Dictionary<string, object> sub = Objeto(v, false, nivel + 1);
                         sub.Remove("$nombre");
@@ -333,7 +388,8 @@ namespace ExportarXml
         {
             Project proyecto = tia.Projects.FirstOrDefault();
             if (proyecto == null) return;
-            string panel = Hmi.Panel(sw);
+            _tia = tia;
+            string panel = Panel(sw);
             StringBuilder log = new StringBuilder();
             log.AppendLine("HMI destino: " + panel + " (WinCC Unified)");
             if (!EsComfort(panel)) log.AppendLine("Aviso: no parece un Unified Comfort Panel; esta parte del Add-In está probada en MTP1500.");

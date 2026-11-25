@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -52,6 +54,71 @@ namespace ExportarXml
                     if (dlg.ShowDialog(owner) != DialogResult.OK) return null;
                     _ultimaCarpeta = dlg.SelectedPath;
                     return dlg.SelectedPath;
+                }
+            });
+        }
+
+        /// <summary>Lista con casillas para elegir varias opciones. Devuelve las elegidas, o null si se cancela.</summary>
+        public static List<string> ElegirVarios(string titulo, string texto, IList<string> opciones)
+        {
+            return EnSta(() =>
+            {
+                using (Form owner = Propietario())
+                using (Form f = new Form())
+                {
+                    f.Text = titulo;
+                    f.StartPosition = FormStartPosition.CenterScreen;
+                    f.Size = new Size(560, 620);
+                    f.MinimizeBox = false;
+                    f.MaximizeBox = false;
+                    f.ShowInTaskbar = false;
+                    f.TopMost = true;
+
+                    Label etiqueta = new Label { Text = texto, Dock = DockStyle.Top, Height = 40, Padding = new Padding(8, 8, 8, 0) };
+                    TextBox buscar = new TextBox { Dock = DockStyle.Top };
+                    CheckedListBox lista = new CheckedListBox { Dock = DockStyle.Fill, CheckOnClick = true, IntegralHeight = false };
+                    HashSet<string> marcadas = new HashSet<string>(StringComparer.Ordinal);
+                    bool rellenando = false;
+                    Action rellenar = () =>
+                    {
+                        rellenando = true;
+                        lista.BeginUpdate();
+                        lista.Items.Clear();
+                        foreach (string o in opciones)
+                            if (buscar.Text.Length == 0 || o.IndexOf(buscar.Text, StringComparison.OrdinalIgnoreCase) >= 0)
+                                lista.Items.Add(o, marcadas.Contains(o));
+                        lista.EndUpdate();
+                        rellenando = false;
+                    };
+                    lista.ItemCheck += (s, e) =>
+                    {
+                        if (rellenando) return;
+                        string o = (string)lista.Items[e.Index];
+                        if (e.NewValue == CheckState.Checked) marcadas.Add(o); else marcadas.Remove(o);
+                    };
+                    buscar.TextChanged += (s, e) => rellenar();
+
+                    FlowLayoutPanel botones = new FlowLayoutPanel { Dock = DockStyle.Bottom, Height = 40, FlowDirection = FlowDirection.RightToLeft, Padding = new Padding(4) };
+                    Button aceptar = new Button { Text = "Exportar", DialogResult = DialogResult.OK, Width = 90 };
+                    Button cancelar = new Button { Text = "Cancelar", DialogResult = DialogResult.Cancel, Width = 90 };
+                    Button ninguna = new Button { Text = "Ninguna", Width = 90 };
+                    Button todas = new Button { Text = "Todas (visibles)", Width = 110 };
+                    todas.Click += (s, e) => { for (int i = 0; i < lista.Items.Count; i++) lista.SetItemChecked(i, true); };
+                    ninguna.Click += (s, e) => { marcadas.Clear(); rellenar(); };
+                    botones.Controls.AddRange(new Control[] { aceptar, cancelar, ninguna, todas });
+                    f.AcceptButton = aceptar;
+                    f.CancelButton = cancelar;
+
+                    Label filtro = new Label { Text = "Buscar:", Dock = DockStyle.Top, Height = 18, Padding = new Padding(8, 2, 0, 0) };
+                    f.Controls.Add(lista);
+                    f.Controls.Add(buscar);
+                    f.Controls.Add(filtro);
+                    f.Controls.Add(etiqueta);
+                    f.Controls.Add(botones);
+                    rellenar();
+
+                    if (f.ShowDialog(owner) != DialogResult.OK) return null;
+                    return opciones.Where(marcadas.Contains).ToList();
                 }
             });
         }

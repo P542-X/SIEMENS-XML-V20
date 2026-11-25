@@ -1,5 +1,11 @@
 # Cambios
 
+## 2.5.3
+- **XML → Exportar pantallas Unified…** (sobre el panel Unified): lista con casillas y buscador para elegir qué pantallas exportar. TIA V20 no pasa al Add-In las pantallas Unified seleccionadas en el árbol, así que el menú *XML* sale vacío sobre una pantalla.
+- `ValueConverter` (y cualquier objeto sin nombre en una propiedad con escritura) se exporta como parte con su contenido, no como `{"$ref": ""}`.
+- `Variables_referencia.json`: si `Tags` viene vacío, se leen las variables de cada tabla (`TagTables`).
+- El panel Unified se identifica por su dispositivo (modelo y referencia) aunque el `Parent` del software no llegue a él: desaparece el aviso falso de "no parece un Unified Comfort Panel".
+
 ## 2.5.2
 - Menú *XML*: si al decidir qué opciones se ven salta una excepción (por ejemplo, al subir por `Parent` desde un objeto Unified), ya no se ocultan todas: se apunta en `%TEMP%\ExportarXml_menu.log` y el *Diagnóstico de la selección* la muestra.
 

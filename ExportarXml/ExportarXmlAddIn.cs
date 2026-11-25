@@ -47,6 +47,7 @@ namespace ExportarXml
         protected override void BuildContextMenuItems(ContextMenuAddInRoot raizMenu)
         {
             raizMenu.Items.AddActionItem<IEngineeringObject>("Exportar selección", OnExportar, OnEstado);
+            raizMenu.Items.AddActionItem<IEngineeringObject>("Exportar pantallas Unified...", OnExportarPantallas, OnEstadoPantallas);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar ficheros (xml, sd, fuentes, zip)...", OnImportarFicheros, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar carpeta...", OnImportarCarpeta, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Deshacer última importación", OnDeshacer, OnEstadoImportar);
@@ -225,7 +226,47 @@ namespace ExportarXml
             }
         }
 
-        private void Exportar(IEngineeringObject[] objetos)
+        // ---------- Pantallas Unified elegidas ----------
+        // TIA no pasa al Add-In las pantallas Unified seleccionadas en el árbol (el menú sale vacío),
+        // así que se elige el panel y aquí se marcan las pantallas.
+
+        private object PanelUnified(MenuSelectionProvider seleccion)
+        {
+            foreach (IEngineeringObject o in seleccion.GetSelection().OfType<IEngineeringObject>())
+            {
+                try { if (Hmi.ObtenerHmi(o) == null) { object sw = HmiUnified.Software(_tia, o); if (sw != null) return sw; } }
+                catch (Exception ex) { Apuntar("Pantallas " + o?.GetType().FullName, ex); }
+            }
+            return null;
+        }
+
+        private MenuStatus OnEstadoPantallas(MenuSelectionProvider seleccion)
+        {
+            try { return PanelUnified(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
+            catch (Exception ex) { Apuntar("Pantallas", ex); return MenuStatus.Hidden; }
+        }
+
+        private void OnExportarPantallas(MenuSelectionProvider seleccion)
+        {
+            try
+            {
+                object sw = PanelUnified(seleccion);
+                if (sw == null) return;
+                List<string> todas = HmiUnified.ListaPantallas(sw);
+                if (todas.Count == 0) { Dialogos.Informar("El panel no tiene pantallas.", "Exportar pantallas Unified", false); return; }
+                List<string> elegidas = Dialogos.ElegirVarios("Exportar pantallas Unified · " + HmiUnified.Nombre(sw),
+                    "Marca las pantallas que quieres exportar (grupo/pantalla). Se puede filtrar escribiendo en Buscar.", todas);
+                if (elegidas == null) return;
+                if (elegidas.Count == 0) { Dialogos.Informar("No has marcado ninguna pantalla.", "Exportar pantallas Unified", false); return; }
+                Exportar(new[] { (IEngineeringObject)seleccion.GetSelection().OfType<IEngineeringObject>().First() }, new HashSet<string>(elegidas, StringComparer.Ordinal));
+            }
+            catch (Exception ex)
+            {
+                Dialogos.Informar("Error inesperado al exportar:" + Environment.NewLine + ex.Message, "Exportar pantallas Unified", true);
+            }
+        }
+
+        private void Exportar(IEngineeringObject[] objetos, ICollection<string> pantallasElegidas = null)
         {
             Project proyecto = _tia.Projects.FirstOrDefault();
             if (proyecto == null) return;
@@ -276,11 +317,12 @@ namespace ExportarXml
                     // (dispositivo o software completo, o solo la pantalla / grupo de pantallas seleccionado)
                     object unified = hmi == null ? HmiUnified.Software(_tia, obj) : null;
                     object filtro = HmiUnified.EsPantallaOGrupo(obj) ? obj : null;
-                    string clave = unified == null ? null : Hmi.Panel(unified) + (filtro != null ? " › " + HmiUnified.Nombre(filtro) : "");
-                    if (unified != null && !panelesUnified.Contains(clave) && (filtro != null || !panelesUnified.Contains(Hmi.Panel(unified))))
+                    string clave = unified == null ? null : HmiUnified.Panel(unified) + (filtro != null ? " › " + HmiUnified.Nombre(filtro) : "");
+                    if (unified != null && !panelesUnified.Contains(clave) && (filtro != null || !panelesUnified.Contains(HmiUnified.Panel(unified))))
                     {
                         panelesUnified.Add(clave);
-                        HmiUnified.Exportar(unified, Path.Combine(raiz, "HMI_Unified"), ea, logHmi, recuentoUnified, ref okHmi, ref errHmi, filtro);
+                        HmiUnified.Exportar(unified, Path.Combine(raiz, "HMI_Unified"), ea, logHmi, recuentoUnified, ref okHmi, ref errHmi, filtro,
+                                            filtro == null ? pantallasElegidas : null);
                     }
                     else if (unified == null && hmi == null && HmiUnified.EsObjetoUnified(obj))
                     {

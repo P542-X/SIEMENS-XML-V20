@@ -9,6 +9,7 @@ Clic derecho en el árbol del proyecto → **XML**. Opciones:
 | Menú | Qué hace |
 |---|---|
 | **Exportar selección** | Exporta lo seleccionado (bloque, carpeta, *Bloques de programa*, UDT, tablas o el PLC entero) y deja **un .zip** listo para compartir. |
+| **Exportar pantallas Unified…** | Solo sobre un panel WinCC Unified: eliges qué pantallas exportar. |
 | **Importar ficheros (xml, sd, fuentes, zip)…** | Importa ficheros sueltos o el .zip de una exportación. |
 | **Importar carpeta…** | Importa todo lo importable de una carpeta y sus subcarpetas (sin los `.zip`: esos, con *Importar ficheros*). |
 | **Deshacer última importación** | Deja el PLC como estaba antes de la última importación. |
@@ -80,7 +81,8 @@ Es la forma recomendada de **generar KOP**: las instrucciones se escriben por no
 
 Openness no exporta pantallas Unified en XML, así que el Add-In las lee objeto a objeto y las guarda en **JSON** (`HMI_Unified/<panel>/Pantallas/<grupo>/<pantalla>.json`), con sus objetos, propiedades, textos por idioma, dinamizaciones, eventos y scripts. Al importar las recrea con la API.
 
-- **Exportar selección** sobre el panel Unified exporta todas sus pantallas (y `Variables_referencia.json`, solo para consulta). Sobre una pantalla o un grupo de pantallas, solo eso.
+- **Exportar selección** sobre el panel Unified exporta todas sus pantallas (y `Variables_referencia.json`, solo para consulta).
+- **Exportar pantallas Unified…** sobre el panel: eliges con casillas qué pantallas exportar. (TIA V20 no pasa al Add-In las pantallas seleccionadas en el árbol: sobre una pantalla el menú *XML* sale vacío.)
 - **Importar ficheros…** eligiendo el panel Unified como destino: pregunta si sobrescribir, guarda el proyecto, copia lo sobrescrito en `Import_XML\copia_unified_<fecha>\`, compila el HMI y deja `Import_XML\resumen_unified_<fecha>.txt`.
 - No crea variables, avisos ni faceplates: tienen que existir ya en el proyecto. Formato del JSON: `ExportarXml/IA/INSTRUCCIONES_IA.md` §6.8.
 
