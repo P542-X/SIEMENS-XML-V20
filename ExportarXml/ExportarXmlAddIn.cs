@@ -37,11 +37,56 @@ namespace ExportarXml
     /// </summary>
     public class ExportarXmlAddIn : ContextMenuAddIn
     {
-        private readonly TiaPortal _tia;
+        private readonly TiaPortal _tiaInicial;
+        private TiaPortal _tiaProyecto; // se guarda en un campo para que no lo finalice el recolector de basura
 
         public ExportarXmlAddIn(TiaPortal tia) : base("XML")
         {
-            _tia = tia;
+            _tiaInicial = tia;
+        }
+
+        /// <summary>
+        /// TiaPortal para trabajar. El que llega al constructor puede estar liberado aunque la sesión siga viva
+        /// ("Access to a disposed object of type TiaPortal" en TiaPortal.Projects); entonces se usa el del
+        /// proyecto de lo seleccionado (Project.Parent), que se toma en Preparar() al principio de cada acción.
+        /// </summary>
+        private TiaPortal _tia => Vivo(_tiaInicial) ? _tiaInicial : (_tiaProyecto ?? _tiaInicial);
+
+        private static bool Vivo(TiaPortal t)
+        {
+            if (t == null) return false;
+            try { return t.Projects.Count >= 0; }
+            catch { return false; }
+        }
+
+        /// <summary>El proyecto de lo seleccionado (subiendo por Parent hasta Project, sin pasar de él).</summary>
+        private static Project ProyectoDe(IEnumerable<IEngineeringObject> objetos)
+        {
+            foreach (IEngineeringObject o in objetos)
+            {
+                try
+                {
+                    for (IEngineeringObject x = o; x != null; x = Hmi.Padre(x))
+                        if (x is Project p) return p;
+                }
+                catch { }
+            }
+            return null;
+        }
+
+        private void Preparar(MenuSelectionProvider seleccion)
+        {
+            if (Vivo(_tiaInicial)) return;
+            if (Vivo(_tiaProyecto)) return;
+            try
+            {
+                Project p = ProyectoDe(seleccion.GetSelection().OfType<IEngineeringObject>());
+                object padre = p == null ? null : ((IEngineeringObject)p).Parent;
+                _tiaProyecto = padre as TiaPortal;
+                Apuntar("TiaPortal", new Exception("el del constructor está liberado; del proyecto: " +
+                        (_tiaProyecto == null ? "no encontrado" : Vivo(_tiaProyecto) ? "vivo" : "también liberado")));
+            }
+            catch (Exception ex) { Apuntar("TiaPortal del proyecto", ex); }
         }
 
         private static string Detalle(Exception ex)
@@ -109,6 +154,7 @@ namespace ExportarXml
 
         private void OnDiagnostico(MenuSelectionProvider seleccion)
         {
+            Preparar(seleccion);
             try
             {
                 Dialogos.Informar("Lo seleccionado no se puede exportar ni importar con esta versión del Add-In." + Environment.NewLine +
@@ -131,6 +177,7 @@ namespace ExportarXml
 
         private void OnImportarFicheros(MenuSelectionProvider seleccion)
         {
+            Preparar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -157,6 +204,7 @@ namespace ExportarXml
 
         private void OnDeshacer(MenuSelectionProvider seleccion)
         {
+            Preparar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -176,6 +224,7 @@ namespace ExportarXml
 
         private void OnImportarCarpeta(MenuSelectionProvider seleccion)
         {
+            Preparar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -226,6 +275,7 @@ namespace ExportarXml
 
         private void OnExportar(MenuSelectionProvider seleccion)
         {
+            Preparar(seleccion);
             try
             {
                 Exportar(seleccion.GetSelection().OfType<IEngineeringObject>().ToArray());
@@ -258,6 +308,7 @@ namespace ExportarXml
 
         private void OnExportarPantallas(MenuSelectionProvider seleccion)
         {
+            Preparar(seleccion);
             try
             {
                 object sw = PanelUnified(seleccion);
@@ -278,7 +329,7 @@ namespace ExportarXml
 
         private void Exportar(IEngineeringObject[] objetos, ICollection<string> pantallasElegidas = null)
         {
-            Project proyecto = _tia.Projects.FirstOrDefault();
+            Project proyecto = ProyectoDe(objetos) ?? _tia.Projects.FirstOrDefault();
             if (proyecto == null) return;
 
             string fecha = DateTime.Now.ToString("yyyyMMdd_HHmmss");

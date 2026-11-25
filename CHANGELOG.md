@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.5.8
+- Si el `TiaPortal` que recibe el Add-In al cargarse está liberado (la sesión sigue viva: el PLC se lee bien, pero `TiaPortal.Projects` da *disposed*), cada acción usa el del proyecto de lo seleccionado (`Project.Parent`), guardado en un campo. El proyecto a exportar se toma de lo seleccionado. Queda apuntado en `%TEMP%\ExportarXml_menu.log`.
+
 ## 2.5.7
 - **Causa real de *Access to a disposed object of type TiaPortal***: los recorridos hacia arriba por `Parent` (buscar el HMI, el PLC o el dispositivo de lo seleccionado) llegaban hasta `Project.Parent`, que devuelve un `TiaPortal` nuevo; al finalizarlo el recolector de basura se cerraba la sesión del Add-In con TIA y todo el menú dejaba de funcionar (también en el PLC). Ahora todos los recorridos se paran en el proyecto (`Hmi.Padre`).
 - Se quita la búsqueda del `TiaPortal` por `Parent` de la 2.5.6.
