@@ -37,36 +37,11 @@ namespace ExportarXml
     /// </summary>
     public class ExportarXmlAddIn : ContextMenuAddIn
     {
-        private readonly TiaPortal _tiaInicial;
-        private TiaPortal _tiaActual;
+        private readonly TiaPortal _tia;
 
         public ExportarXmlAddIn(TiaPortal tia) : base("XML")
         {
-            _tiaInicial = tia;
-        }
-
-        /// <summary>
-        /// TiaPortal vivo. El que llega al constructor puede quedar liberado (al reactivar el Add-In o reabrir
-        /// el proyecto: "Access to a disposed object of type TiaPortal"), así que en cada clic se toma el de
-        /// la selección subiendo por Parent (objeto → … → Project → TiaPortal).
-        /// </summary>
-        private TiaPortal _tia => _tiaActual ?? _tiaInicial;
-
-        private void Tomar(MenuSelectionProvider seleccion)
-        {
-            try
-            {
-                foreach (IEngineeringObject o in seleccion.GetSelection().OfType<IEngineeringObject>())
-                {
-                    object x = o;
-                    for (int i = 0; x != null && i < 60; i++)
-                    {
-                        if (x is TiaPortal t) { _tiaActual = t; return; }
-                        x = x.GetType().GetProperty("Parent")?.GetValue(x, null);
-                    }
-                }
-            }
-            catch (Exception ex) { Apuntar("TiaPortal", ex); }
+            _tia = tia;
         }
 
         private static string Detalle(Exception ex)
@@ -96,7 +71,6 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoDiagnostico(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try
             {
                 IEngineeringObject[] sel = seleccion.GetSelection().OfType<IEngineeringObject>().ToArray();
@@ -135,7 +109,6 @@ namespace ExportarXml
 
         private void OnDiagnostico(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try
             {
                 Dialogos.Informar("Lo seleccionado no se puede exportar ni importar con esta versión del Add-In." + Environment.NewLine +
@@ -152,14 +125,12 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoImportar(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try { return DestinoImportacion(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
             catch (Exception ex) { Apuntar("Importar", ex); return MenuStatus.Hidden; }
         }
 
         private void OnImportarFicheros(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -186,7 +157,6 @@ namespace ExportarXml
 
         private void OnDeshacer(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -206,7 +176,6 @@ namespace ExportarXml
 
         private void OnImportarCarpeta(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -237,7 +206,6 @@ namespace ExportarXml
 
         private MenuStatus OnEstado(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try
             {
                 return seleccion.GetSelection().OfType<IEngineeringObject>().Any(EsExportableSeguro)
@@ -258,7 +226,6 @@ namespace ExportarXml
 
         private void OnExportar(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try
             {
                 Exportar(seleccion.GetSelection().OfType<IEngineeringObject>().ToArray());
@@ -285,14 +252,12 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoPantallas(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try { return PanelUnified(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
             catch (Exception ex) { Apuntar("Pantallas", ex); return MenuStatus.Hidden; }
         }
 
         private void OnExportarPantallas(MenuSelectionProvider seleccion)
         {
-            Tomar(seleccion);
             try
             {
                 object sw = PanelUnified(seleccion);

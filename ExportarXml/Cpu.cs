@@ -43,7 +43,7 @@ namespace ExportarXml
             if (plc == null) return c;
             try
             {
-                for (IEngineeringObject x = plc.Parent; x != null; x = x.Parent)
+                for (IEngineeringObject x = Hmi.Padre(plc); x != null; x = Hmi.Padre(x))
                 {
                     if (!(x is DeviceItem di)) continue;
 

@@ -230,7 +230,7 @@ namespace ExportarXml
         private static string Ruta(IEngineeringObject o)
         {
             List<string> partes = new List<string>();
-            for (IEngineeringObject x = o.Parent; x != null; x = x.Parent)
+            for (IEngineeringObject x = Hmi.Padre(o); x != null; x = Hmi.Padre(x))
             {
                 if (x is PlcBlockUserGroup gb) partes.Insert(0, gb.Name);
                 else if (x is PlcTypeUserGroup gt) partes.Insert(0, gt.Name);

@@ -129,7 +129,7 @@ namespace ExportarXml
 
             try
             {
-                for (IEngineeringObject x = o; x != null; x = x.Parent)
+                for (IEngineeringObject x = o; x != null; x = Hmi.Padre(x))
                 {
                     if (x is PlcSoftware plc) return plc;
                 }
@@ -140,7 +140,7 @@ namespace ExportarXml
 
         private static T Ancestro<T>(IEngineeringObject o) where T : class
         {
-            for (IEngineeringObject x = o; x != null; x = x.Parent)
+            for (IEngineeringObject x = o; x != null; x = Hmi.Padre(x))
             {
                 if (x is T encontrado) return encontrado;
             }

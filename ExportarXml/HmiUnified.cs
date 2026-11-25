@@ -176,7 +176,7 @@ namespace ExportarXml
                 try
                 {
                     int n = 0;
-                    for (IEngineeringObject x = (o as IEngineeringObject)?.Parent; x != null && n < 12; x = x.Parent, n++)
+                    for (IEngineeringObject x = Hmi.Padre(o as IEngineeringObject); x != null && n < 12; x = Hmi.Padre(x), n++)
                         sb.AppendLine("   Parent " + (n + 1) + ": " + x.GetType().FullName + " (" + Texto(x, "Name") + ")");
                 }
                 catch (Exception ex) { sb.AppendLine("   Error al leer Parent: " + Mensaje(ex)); }
@@ -297,7 +297,7 @@ namespace ExportarXml
             for (int i = 0; x != null && i < 50; i++)
             {
                 string t = x.GetType().Name;
-                if (t == "HmiSoftware") break;
+                if (t == "HmiSoftware" || x is Project || x is TiaPortal) break;
                 if (t == "HmiScreenGroup") partes.Insert(0, Texto(x, "Name"));
                 x = Prop(x, "Parent"); // grupo → composición → grupo… → software
             }
@@ -924,7 +924,7 @@ namespace ExportarXml
             if (v.GetType().Name == "HmiSoftware" || !ns.StartsWith("Siemens.Engineering.HmiUnified", StringComparison.Ordinal)) return false;
             try
             {
-                object padre = (v as IEngineeringObject)?.Parent;
+                object padre = Hmi.Padre(v as IEngineeringObject);
                 if (padre != null && (ReferenceEquals(padre, duenio) || padre.Equals(duenio))) return true;
             }
             catch { }

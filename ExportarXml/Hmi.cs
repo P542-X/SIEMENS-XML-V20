@@ -67,6 +67,18 @@ namespace ExportarXml
             return sw != null && sw.GetType().Name == "HmiSoftware";
         }
 
+        /// <summary>
+        /// Parent sin pasar del proyecto. Project.Parent da un TiaPortal nuevo; cuando el recolector de basura lo
+        /// finaliza, cierra la sesión del Add-In con TIA ("Access to a disposed object of type TiaPortal").
+        /// Ningún recorrido hacia arriba debe llegar a él.
+        /// </summary>
+        public static IEngineeringObject Padre(IEngineeringObject x)
+        {
+            if (x == null || x is Project || x is TiaPortal) return null;
+            IEngineeringObject p = x.Parent;
+            return p is TiaPortal ? null : p;
+        }
+
         /// <summary>El HmiSoftware (WinCC Unified) del objeto seleccionado, o null.</summary>
         public static object ObtenerUnified(IEngineeringObject o)
         {
@@ -102,7 +114,7 @@ namespace ExportarXml
                     }
                     return null;
                 }
-                for (IEngineeringObject x = o.Parent; x != null; x = x.Parent)
+                for (IEngineeringObject x = Padre(o); x != null; x = Padre(x))
                 {
                     string t = x.GetType().Name;
                     if (t == "HmiTarget" || t == "HmiSoftware") return x;
@@ -118,7 +130,7 @@ namespace ExportarXml
             string nombre = Texto(hmi, "Name");
             try
             {
-                for (IEngineeringObject x = (hmi as IEngineeringObject)?.Parent; x != null; x = x.Parent)
+                for (IEngineeringObject x = Padre(hmi as IEngineeringObject); x != null; x = Padre(x))
                 {
                     if (!(x is DeviceItem di)) continue;
                     string modelo = "";

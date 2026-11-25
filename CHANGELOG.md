@@ -1,5 +1,9 @@
 # Cambios
 
+## 2.5.7
+- **Causa real de *Access to a disposed object of type TiaPortal***: los recorridos hacia arriba por `Parent` (buscar el HMI, el PLC o el dispositivo de lo seleccionado) llegaban hasta `Project.Parent`, que devuelve un `TiaPortal` nuevo; al finalizarlo el recolector de basura se cerraba la sesión del Add-In con TIA y todo el menú dejaba de funcionar (también en el PLC). Ahora todos los recorridos se paran en el proyecto (`Hmi.Padre`).
+- Se quita la búsqueda del `TiaPortal` por `Parent` de la 2.5.6.
+
 ## 2.5.6
 - *Access to a disposed object of type TiaPortal*: el `TiaPortal` que recibe el Add-In al cargarse puede quedar liberado (al reactivar el Add-In o reabrir el proyecto). Ahora, en cada clic del menú, se toma el `TiaPortal` vivo subiendo por `Parent` desde lo seleccionado; el del constructor queda solo como respaldo.
 - Los errores inesperados muestran el tipo de excepción y las primeras líneas de la pila.
