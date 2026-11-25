@@ -1,5 +1,9 @@
 # Cambios
 
+## 2.5.6
+- *Access to a disposed object of type TiaPortal*: el `TiaPortal` que recibe el Add-In al cargarse puede quedar liberado (al reactivar el Add-In o reabrir el proyecto). Ahora, en cada clic del menú, se toma el `TiaPortal` vivo subiendo por `Parent` desde lo seleccionado; el del constructor queda solo como respaldo.
+- Los errores inesperados muestran el tipo de excepción y las primeras líneas de la pila.
+
 ## 2.5.5
 - `HmiUnified` ya no guarda el `TiaPortal` en un campo estático (sobrevive entre activaciones del Add-In y daba *Access to a disposed object of type TiaPortal*): se pasa por parámetro.
 
