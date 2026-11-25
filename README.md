@@ -75,6 +75,14 @@ Formato de texto de TIA V20 para bloques: `.s7dcl` (KOP), `.s7dcf` (FUP), `.s7dc
 
 Es la forma recomendada de **generar KOP**: las instrucciones se escriben por nombre, sin `Version` ni `UId`, y TIA pone la versión al importar. Las plantillas de la caja van entre `{ }` (`Card`, `DisableENO`, `Type := AUTO`…); ver `SimaticML_V20_lecciones.md` y `referencia/SD/`. Para aprender la sintaxis de cualquier instrucción, exporta a SD un bloque que la contenga.
 
+### HMI WinCC Unified (Unified Comfort, MTP1500) — en prueba
+
+Openness no exporta pantallas Unified en XML, así que el Add-In las lee objeto a objeto y las guarda en **JSON** (`HMI_Unified/<panel>/Pantallas/<grupo>/<pantalla>.json`), con sus objetos, propiedades, textos por idioma, dinamizaciones, eventos y scripts. Al importar las recrea con la API.
+
+- **Exportar selección** sobre el panel Unified exporta todas sus pantallas (y `Variables_referencia.json`, solo para consulta). Sobre una pantalla o un grupo de pantallas, solo eso.
+- **Importar ficheros…** eligiendo el panel Unified como destino: pregunta si sobrescribir, guarda el proyecto, copia lo sobrescrito en `Import_XML\copia_unified_<fecha>\`, compila el HMI y deja `Import_XML\resumen_unified_<fecha>.txt`.
+- No crea variables, avisos ni faceplates: tienen que existir ya en el proyecto. Formato del JSON: `ExportarXml/IA/INSTRUCCIONES_IA.md` §6.8.
+
 ## Carpetas del repositorio
 
 | Carpeta / fichero | Qué es |
@@ -126,6 +134,8 @@ Después, en TIA Portal: task card **Add-Ins** → activar "Exportar e importar 
 | `Deshacer.cs` | Copias antes de importar y menú *Deshacer última importación* |
 | `Idiomas.cs` | Adapta los textos de los XML a los idiomas del proyecto |
 | `Hmi.cs` | Exportar e importar HMI clásico (Comfort/Advanced) en XML |
+| `HmiUnified.cs` | Exportar e importar pantallas WinCC Unified (MTP1500) en JSON |
+| `Json.cs` | Lector y escritor JSON sin dependencias |
 | `Progreso.cs` | `Import_XML\progreso.txt`: paso a paso, para localizar un cierre de TIA |
 | `Importador.cs` | Importación (XML, SD, fuentes, zip), elección XML/SD según la CPU y compilación |
 | `Validador.cs` | Comprobación previa de los XML: reglas propias y XSD de TIA |

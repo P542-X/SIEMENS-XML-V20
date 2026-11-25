@@ -54,7 +54,7 @@ namespace ExportarXml
 
         /// <summary>Todo lo que se puede importar: XML + fuentes + documentos SD + paquetes .zip.</summary>
         public static readonly string[] ExtensionesImportables =
-            { ".xml", ".scl", ".udt", ".db", ".awl", ".s7dcl", ".s7dcf", ".s7dcs", ".s7dbd", ".zip" };
+            { ".xml", ".scl", ".udt", ".db", ".awl", ".s7dcl", ".s7dcf", ".s7dcs", ".s7dbd", ".json", ".zip" };
 
         private static bool EsFuente(string ruta)
         {

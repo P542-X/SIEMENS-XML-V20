@@ -1,5 +1,10 @@
 # Cambios
 
+## 2.5.0
+- **WinCC Unified (Unified Comfort, MTP1500), en prueba**: *Exportar selección* sobre un panel Unified, un grupo de pantallas o una pantalla guarda cada pantalla en JSON (`HMI_Unified/<panel>/Pantallas/<grupo>/<pantalla>.json`): objetos, propiedades, textos por idioma, dinamizaciones, eventos y scripts. `Variables_referencia.json` con las variables HMI (solo consulta).
+- *Importar ficheros* con un panel Unified como destino recrea las pantallas (crea los grupos que falten; al sobrescribir vacía la pantalla y la rellena), copia lo sobrescrito en `Import_XML\copia_unified_<fecha>\`, compila el HMI y deja `resumen_unified_<fecha>.txt`.
+- Nuevos `HmiUnified.cs` (lectura y escritura genérica por reflexión) y `Json.cs`. Guía `INSTRUCCIONES_IA.md` §6.8 con el formato.
+
 ## 2.4.10
 - Guía `INSTRUCCIONES_IA.md`, nueva sección **6.5e GRAPH en XML** (comprobado en V20): pasos, acciones (`N` con evento `S1`, asignaciones también de estructuras y arrays), transiciones (comparadores, contactos, elementos de array), ramas alternativas, `Direct` frente a `Jump`, interfaz (`G7_StepPlus_V6` / `G7_TransitionPlus_V6`) y DB de instancia en XML.
 - Errores nuevos en la tabla: DB ≥ 60000, DB de instancia de GRAPH en SD, orden FC / DB de instancia al importar, nombres reservados en GRAPH (`ERROR`…), `Remanence` en InOut, `OR` entre Bool en una acción.

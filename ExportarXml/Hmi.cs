@@ -17,7 +17,7 @@ namespace ExportarXml
     /// HMI clásico (Basic/Comfort/Advanced): exportar e importar en XML con Openness.
     /// Se accede por reflexión (nombres de propiedades de Siemens.Engineering.Hmi) para que un cambio
     /// de API o un tipo de panel distinto no rompa el Add-In: lo que no exista se apunta y se sigue.
-    /// WinCC Unified (HmiSoftware) no se exporta aún: no tiene XML de pantallas en Openness.
+    /// WinCC Unified (HmiSoftware) va aparte, en HmiUnified.cs (pantallas en JSON).
     /// </summary>
     internal static class Hmi
     {
@@ -65,6 +65,13 @@ namespace ExportarXml
         {
             object sw = Software(o);
             return sw != null && sw.GetType().Name == "HmiSoftware";
+        }
+
+        /// <summary>El HmiSoftware (WinCC Unified) del objeto seleccionado, o null.</summary>
+        public static object ObtenerUnified(IEngineeringObject o)
+        {
+            object sw = Software(o);
+            return sw != null && sw.GetType().Name == "HmiSoftware" ? sw : null;
         }
 
         private static object Software(IEngineeringObject o)

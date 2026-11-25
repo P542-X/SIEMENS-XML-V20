@@ -24,11 +24,12 @@ namespace ExportarXml
                 using (Form owner = Propietario())
                 {
                     dlg.Title = "Selecciona lo que quieres importar (XML, SD, fuentes o un paquete .zip)";
-                    dlg.Filter = "Todo lo importable|*.xml;*.scl;*.udt;*.db;*.awl;*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd;*.zip|" +
+                    dlg.Filter = "Todo lo importable|*.xml;*.scl;*.udt;*.db;*.awl;*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd;*.json;*.zip|" +
                                  "Paquete exportado (*.zip)|*.zip|" +
                                  "SimaticML (*.xml)|*.xml|" +
                                  "Fuentes externas (*.scl;*.udt;*.db;*.awl)|*.scl;*.udt;*.db;*.awl|" +
-                                 "SIMATIC SD (*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd)|*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd";
+                                 "SIMATIC SD (*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd)|*.s7dcl;*.s7dcf;*.s7dcs;*.s7dbd|" +
+                                 "Pantallas WinCC Unified (*.json)|*.json";
                     dlg.Multiselect = true;
                     dlg.RestoreDirectory = true; // si no, la carpeta elegida queda "en uso" mientras TIA esté abierto
                     return dlg.ShowDialog(owner) == DialogResult.OK ? dlg.FileNames : null;

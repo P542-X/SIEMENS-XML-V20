@@ -46,13 +46,15 @@ Riesgos conocidos: importar una pantalla con un faceplate que no está en la lib
 
 Openness da acceso a variables, avisos, registros, pantallas y sus objetos a través del modelo de objetos, **sin XML de pantallas**. Plan: leer cada objeto con la API y guardarlo en un formato propio (JSON) al exportar; recrearlo con la API al importar.
 
-| Tanda | Contenido |
-|---|---|
-| U1 | Exportar Unified a JSON (pantallas, objetos con sus propiedades, variables, avisos) |
-| U2 | Importar variables y avisos |
-| U3 | Importar pantallas y objetos básicos |
-| U4 | Dinamizaciones, eventos y scripts JavaScript |
-| U5 | Faceplates y librerías |
+| Tanda | Contenido | Estado |
+|---|---|---|
+| U1 | Exportar pantallas Unified a JSON (objetos con sus propiedades, textos, dinamizaciones, eventos, scripts) y variables como referencia | **v2.5.0, en prueba (MTP1500)** |
+| U2 | Importar variables y avisos | Pendiente |
+| U3 | Importar pantallas y objetos básicos | **v2.5.0, en prueba (MTP1500)** |
+| U4 | Dinamizaciones, eventos y scripts JavaScript | Incluido en v2.5.0 (genérico), sin comprobar |
+| U5 | Faceplates y librerías | Pendiente |
+
+Alcance de la v2.5.0: solo **Unified Comfort Panel MTP1500**. Serializador genérico por reflexión: lo que no se pueda aplicar sale como aviso en `resumen_unified_<fecha>.txt`. Por comprobar en TIA: tipo de los colores, formato de los textos, partes (fuente, bordes…), gráficos y ventanas de pantalla.
 
 ## Fase 5. Otras versiones de TIA (V18, V19, V21…)
 

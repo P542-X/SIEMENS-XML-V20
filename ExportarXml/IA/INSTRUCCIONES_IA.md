@@ -600,6 +600,44 @@ Entradas sin conectar: `PARAM :=  ,`. Versiones vistas en S7-1500 V4.0: GET 1.3,
 - No uses faceplates ni imágenes que no estén ya en el proyecto (un faceplate que falta en la librería puede cerrar TIA al importar). Los avisos HMI de Comfort no se exportan en XML.
 - El usuario importa eligiendo **el panel** (no el PLC) en *Importar ficheros*. El Add-In compila el HMI y deja `resumen_hmi_<fecha>.txt`. Comprobar en la simulación de runtime.
 
+### 6.8 HMI WinCC Unified (Unified Comfort, MTP1500) — en prueba
+
+Openness no tiene XML de pantallas Unified: el Add-In lee cada objeto con la API y lo guarda en **JSON**; al importar lo recrea con la API. Probado solo en **Unified Comfort Panel MTP1500**.
+
+- Si el paquete trae `HMI_Unified/<panel>/Pantallas/<grupo>/<pantalla>.json`: un fichero por pantalla. `Variables_referencia.json` lista las variables HMI con su variable de PLC: **solo para consultar**, no se importa.
+- Formato de una pantalla:
+
+```json
+{
+  "$formato": "SIEMENS-XML-V20 Unified 1",
+  "$grupo": "Proceso/Linea1",
+  "$tipo": "HmiScreen",
+  "$nombre": "Main",
+  "Width": 1280,
+  "ScreenItems": [
+    {
+      "$tipo": "HmiButton",
+      "$nombre": "Btn_Marcha",
+      "Left": 40, "Top": 60,
+      "BackColor": "#FF00A000",
+      "Text": { "$textos": { "es-ES": "<body><p>Marcha</p></body>" } },
+      "Font": { "Size": 20 },
+      "Dynamizations": [ { "$tipo": "TagDynamization", "PropertyName": "Visible", "Tag": "Modo_Auto" } ],
+      "EventHandlers": [ { "$tipo": "HmiButtonEventHandler", "EventType": "Down",
+                           "Script": { "ScriptCode": "Tags(\"Marcha\").Write(true);" } } ]
+    }
+  ]
+}
+```
+
+- Reglas del formato: `$tipo` = clase de Openness (`HmiButton`, `HmiIOField`, `HmiText`, `HmiRectangle`…); `$nombre` = nombre del objeto; `$grupo` = carpeta de pantallas con `/` (vacío = raíz). Un objeto anidado sin `$tipo` (`Font`, `Script`…) es una parte del objeto padre. Una lista (`ScreenItems`, `Dynamizations`, `EventHandlers`, `PropertyEventHandlers`) es una composición: cada elemento lleva `$tipo` y se crea con ese tipo. `{"$ref": "X"}` apunta a otro objeto por nombre (una pantalla, una variable). Colores `#AARRGGBB`. Enumeraciones por nombre (`"Down"`, `"Visible"`).
+- Textos: en **todos los idiomas del proyecto** (`_info.md`); el formato de texto enriquecido es el que trae la exportación, cópialo tal cual. Los idiomas que no existen en el proyecto se ignoran.
+- Para **modificar o crear**: parte siempre del JSON de una pantalla del propio paquete (mismos `$tipo`, mismos nombres de propiedad, mismos formatos). Para una pantalla nueva, cambia `$nombre` y el nombre del fichero. Solo propiedades que aparezcan en la exportación: una propiedad desconocida sale como aviso y no se aplica.
+- Las variables de las dinamizaciones y scripts tienen que existir ya en el HMI (`Variables_referencia.json`). Esta versión **no crea variables ni avisos**.
+- No uses faceplates ni imágenes que no estén ya en el proyecto (faceplates: pendiente, ROADMAP U5).
+- Sobrescribir una pantalla vacía sus objetos, dinamizaciones y eventos y los vuelve a crear; la pantalla se conserva (las referencias a ella siguen valiendo).
+- El usuario importa eligiendo **el panel Unified** (no el PLC) en *Importar ficheros*. El Add-In guarda el proyecto, copia lo sobrescrito en `Import_XML\copia_unified_<fecha>\`, compila el HMI y deja `resumen_unified_<fecha>.txt` (pantalla por pantalla, con avisos de propiedades no aplicadas). Comprobar en la simulación de runtime.
+
 ---
 
 ## 7. Referencia de fuentes (`.scl`, `.db`, `.udt`) — comprobada

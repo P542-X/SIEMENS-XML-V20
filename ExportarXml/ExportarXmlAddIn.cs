@@ -80,14 +80,14 @@ namespace ExportarXml
             }
         }
 
-        /// <summary>PLC → importador de PLC; HMI clásico → importador de HMI; Unified → aún no.</summary>
+        /// <summary>PLC → importador de PLC; HMI clásico → importador de HMI (XML); WinCC Unified → pantallas en JSON.</summary>
         private void ImportarEn(IEngineeringObject destino, string[] ficheros)
         {
             if (Importador.ObtenerPlc(destino) != null) { Importador.Ejecutar(_tia, destino, ficheros); return; }
             object hmi = Hmi.ObtenerHmi(destino);
             if (hmi != null) { Hmi.Importar(_tia, hmi, ficheros); return; }
-            if (Hmi.EsUnified(destino))
-                Dialogos.Informar("WinCC Unified todavía no se puede importar con este Add-In (fase 4 de la hoja de ruta).", "Importar", true);
+            object unified = Hmi.ObtenerUnified(destino);
+            if (unified != null) HmiUnified.Importar(_tia, unified, ficheros);
         }
 
         private void OnDeshacer(MenuSelectionProvider seleccion)
@@ -126,7 +126,7 @@ namespace ExportarXml
                     .ToArray();
                 if (ficheros.Length == 0)
                 {
-                    Dialogos.Informar("No hay ficheros .xml, fuentes (.scl, .udt, .db, .awl) ni documentos SIMATIC SD (.s7dcl, .s7dcf, .s7dcs, .s7dbd) en esa carpeta.", "Importar XML", true);
+                    Dialogos.Informar("No hay ficheros .xml, fuentes (.scl, .udt, .db, .awl), documentos SIMATIC SD (.s7dcl, .s7dcf, .s7dcs, .s7dbd) ni pantallas Unified (.json) en esa carpeta.", "Importar XML", true);
                     return;
                 }
                 ImportarEn(destino, ficheros);
@@ -151,7 +151,8 @@ namespace ExportarXml
             return o is PlcBlock || o is PlcBlockGroup
                 || o is PlcType || o is PlcTypeGroup
                 || o is PlcTagTable || o is PlcTagTableGroup
-                || o is PlcSoftware || o is Device || o is DeviceItem;
+                || o is PlcSoftware || o is Device || o is DeviceItem
+                || HmiUnified.EsSeleccionable(o);
         }
 
         private void OnExportar(MenuSelectionProvider seleccion)
@@ -182,6 +183,8 @@ namespace ExportarXml
             Resultado res = new Resultado();
             ExportadorSd sd = new ExportadorSd { RaizSd = carpetaSd, RaizFuentes = carpetaFuentes };
             List<string> paneles = new List<string>();
+            List<string> panelesUnified = new List<string>();
+            Dictionary<string, int> recuentoUnified = new Dictionary<string, int>();
             Dictionary<string, int> recuentoHmi = new Dictionary<string, int>();
             StringBuilder logHmi = new StringBuilder();
             int okHmi = 0, errHmi = 0;
@@ -211,14 +214,22 @@ namespace ExportarXml
                         paneles.Add(Hmi.Panel(hmi));
                         Hmi.Exportar(hmi, Path.Combine(raiz, "HMI"), ea, logHmi, recuentoHmi, ref okHmi, ref errHmi);
                     }
-                    else if (hmi == null && Hmi.EsUnified(obj))
-                        logHmi.AppendLine("WinCC Unified: aún no se exporta (fase 4 de la hoja de ruta).");
+                    // WinCC Unified: pantallas en JSON
+                    // (dispositivo o software completo, o solo la pantalla / grupo de pantallas seleccionado)
+                    object unified = hmi == null ? Hmi.ObtenerUnified(obj) : null;
+                    object filtro = HmiUnified.EsPantallaOGrupo(obj) ? obj : null;
+                    string clave = unified == null ? null : Hmi.Panel(unified) + (filtro != null ? " › " + HmiUnified.Nombre(filtro) : "");
+                    if (unified != null && !panelesUnified.Contains(clave) && (filtro != null || !panelesUnified.Contains(Hmi.Panel(unified))))
+                    {
+                        panelesUnified.Add(clave);
+                        HmiUnified.Exportar(unified, Path.Combine(raiz, "HMI_Unified"), ea, logHmi, recuentoUnified, ref okHmi, ref errHmi, filtro);
+                    }
                 }
             }
 
             File.WriteAllLines(Path.Combine(raiz, Cpu.FicheroInfo), info.Distinct(), Encoding.UTF8);
             EscribirInstruccionesIa(raiz);
-            File.WriteAllText(Path.Combine(raiz, "_info.md"), InfoMd(proyecto, cpus, carpetaXml, carpetaSd, carpetaFuentes, sd) + InfoHmi(paneles, recuentoHmi), Encoding.UTF8);
+            File.WriteAllText(Path.Combine(raiz, "_info.md"), InfoMd(proyecto, cpus, carpetaXml, carpetaSd, carpetaFuentes, sd) + InfoHmi(paneles, recuentoHmi) + InfoUnified(panelesUnified, recuentoUnified), Encoding.UTF8);
             File.WriteAllText(Path.Combine(raiz, "_resumen.txt"),
                 "XML     exportados: " + res.Ok + "   errores: " + res.Errores + Environment.NewLine +
                 "SD      exportados: " + sd.Ok + Environment.NewLine +
@@ -244,7 +255,7 @@ namespace ExportarXml
 
             Dialogos.Informar(
                 "XML: " + res.Ok + " (errores " + res.Errores + ")    SD: " + sd.Ok + "    Fuentes SCL: " + sd.Fuentes +
-                "    Solo XML: " + sd.Errores + (paneles.Count > 0 ? "    HMI: " + okHmi + " (errores " + errHmi + ")" : "") + Environment.NewLine +
+                "    Solo XML: " + sd.Errores + (paneles.Count + panelesUnified.Count > 0 ? "    HMI: " + okHmi + " (errores " + errHmi + ")" : "") + Environment.NewLine +
                 string.Join(Environment.NewLine, cpus.Select(c => "CPU " + c)) + Environment.NewLine + Environment.NewLine +
                 (zip != null ? "Paquete:" + Environment.NewLine + zip : "Carpeta:" + Environment.NewLine + raiz) + avisoZip +
                 Environment.NewLine + Environment.NewLine +
@@ -264,6 +275,21 @@ namespace ExportarXml
             md.AppendLine();
             md.AppendLine("En `HMI/<panel>/`: " + string.Join(", ", recuento.Select(k => k.Key + " " + k.Value)) + ".");
             md.AppendLine("Para importar algo en el HMI, se elige el panel (no el PLC) en *Importar ficheros*.");
+            return md.ToString();
+        }
+
+        private static string InfoUnified(List<string> paneles, Dictionary<string, int> recuento)
+        {
+            if (paneles.Count == 0) return "";
+            StringBuilder md = new StringBuilder();
+            md.AppendLine();
+            md.AppendLine("## HMI WinCC Unified (" + paneles.Count + ")");
+            md.AppendLine();
+            foreach (string p in paneles) md.AppendLine("- " + p);
+            md.AppendLine();
+            md.AppendLine("En `HMI_Unified/<panel>/`: " + string.Join(", ", recuento.Select(k => k.Key + " " + k.Value)) + ".");
+            md.AppendLine("Pantallas en JSON (`Pantallas/<grupo>/<pantalla>.json`, formato en INSTRUCCIONES_IA.md 6.8). `Variables_referencia.json` es solo para consultar nombres.");
+            md.AppendLine("Para importar pantallas, se elige el panel Unified (no el PLC) en *Importar ficheros*.");
             return md.ToString();
         }
 
