@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.5.11
+- **Causa del TiaPortal liberado en el panel Unified**: leer el software de un panel WinCC Unified (`SoftwareContainer.Software`) dentro de una función de estado del menú libera el `TiaPortal` del Add-In. Ahora, al abrir el menú, un panel se reconoce solo por su referencia (`TypeIdentifier` `6AV…`, `Hmi.EsPanel`) y su software se lee al pulsar la opción. `ObtenerPlc` ya no lee el software de los módulos de panel.
+
 ## 2.5.10
 - **Arreglo de *Access to a disposed object of type TiaPortal***: el menú vuelve a ser el de la v2.4.10, con lo mínimo para Unified (*Exportar pantallas Unified…* sobre el panel, exportar e importar pantallas en JSON). Desde la 2.5.1 las funciones de estado del menú (las que TIA llama al abrir el submenú) hacían trabajo de más (buscar el panel por todo el proyecto, subir por `Parent` hasta el `TiaPortal`, comprobar el `TiaPortal`) y TIA acababa liberando el `TiaPortal` del Add-In: fallaba todo, también en el PLC. Regla nueva: en `OnEstado*` solo comprobaciones de tipo y del propio objeto, como en la v2.4.10.
 - Se quitan el *Diagnóstico de la selección* y la traza del menú (2.5.1–2.5.9).

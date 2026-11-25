@@ -91,6 +91,17 @@ namespace ExportarXml
             return ObtenerPlc(o) != null || Hmi.ObtenerHmi(o) != null || Hmi.EsUnified(o);
         }
 
+        /// <summary>
+        /// Versión para el menú (función de estado): un dispositivo o módulo de panel HMI se da por bueno solo
+        /// por su referencia, sin leer su software (ver Hmi.EsPanel). Lo demás, como EsDestino.
+        /// </summary>
+        public static bool EsDestinoMenu(IEngineeringObject o)
+        {
+            if (o is Device || o is DeviceItem)
+                return Hmi.EsPanel(o) || ObtenerPlc(o) != null;
+            return EsDestino(o);
+        }
+
         /// <summary>AbrirZips para el importador de HMI.</summary>
         internal static IEnumerable<string> AbrirZipsPublico(TiaPortal tia, IEnumerable<string> rutas, StringBuilder log)
         {
@@ -117,6 +128,8 @@ namespace ExportarXml
 
             if (o is DeviceItem item)
             {
+                // un panel HMI no tiene PLC: no se lee su software (ver Hmi.EsPanel)
+                if ((item.TypeIdentifier ?? "").StartsWith("OrderNumber:6AV", StringComparison.OrdinalIgnoreCase)) return null;
                 SoftwareContainer contenedor = item.GetService<SoftwareContainer>();
                 if (contenedor?.Software is PlcSoftware sw) return sw;
                 foreach (DeviceItem hijo in item.DeviceItems)

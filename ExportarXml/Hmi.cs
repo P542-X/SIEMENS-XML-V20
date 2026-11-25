@@ -79,6 +79,24 @@ namespace ExportarXml
             return p is TiaPortal ? null : p;
         }
 
+        /// <summary>
+        /// true si el dispositivo (o módulo) es un panel HMI (referencia 6AV…), mirando solo el TypeIdentifier.
+        /// Es lo único que se puede usar en las funciones de estado del menú: leer el Software de un panel
+        /// WinCC Unified mientras TIA prepara el menú libera el TiaPortal del Add-In
+        /// ("Access to a disposed object of type TiaPortal") y deja de funcionar todo.
+        /// </summary>
+        public static bool EsPanel(IEngineeringObject o)
+        {
+            try
+            {
+                if (o is Device d) return d.DeviceItems.Any(EsPanel);
+                if (o is DeviceItem di)
+                    return (di.TypeIdentifier ?? "").StartsWith("OrderNumber:6AV", StringComparison.OrdinalIgnoreCase) || di.DeviceItems.Any(EsPanel);
+            }
+            catch { }
+            return false;
+        }
+
         /// <summary>El HmiSoftware (WinCC Unified) del objeto seleccionado, o null.</summary>
         public static object ObtenerUnified(IEngineeringObject o)
         {

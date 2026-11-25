@@ -60,9 +60,15 @@ namespace ExportarXml
             return seleccion.GetSelection().OfType<IEngineeringObject>().FirstOrDefault(Importador.EsDestino);
         }
 
+        /// <summary>Para las funciones de estado: sin leer el software de los paneles (ver Hmi.EsPanel).</summary>
+        private static bool HayDestinoMenu(MenuSelectionProvider seleccion)
+        {
+            return seleccion.GetSelection().OfType<IEngineeringObject>().Any(o => { try { return Importador.EsDestinoMenu(o); } catch { return false; } });
+        }
+
         private MenuStatus OnEstadoImportar(MenuSelectionProvider seleccion)
         {
-            return DestinoImportacion(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden;
+            return HayDestinoMenu(seleccion) ? MenuStatus.Enabled : MenuStatus.Hidden;
         }
 
         private void OnImportarFicheros(MenuSelectionProvider seleccion)
@@ -187,7 +193,8 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoPantallas(MenuSelectionProvider seleccion)
         {
-            try { return PanelUnified(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
+            // solo la referencia del panel; el software se lee al pulsar (ver Hmi.EsPanel)
+            try { return seleccion.GetSelection().OfType<IEngineeringObject>().Any(o => (o is Device || o is DeviceItem) && Hmi.EsPanel(o)) ? MenuStatus.Enabled : MenuStatus.Hidden; }
             catch { return MenuStatus.Hidden; }
         }
 
@@ -196,7 +203,7 @@ namespace ExportarXml
             try
             {
                 object sw = PanelUnified(seleccion);
-                if (sw == null) return;
+                if (sw == null) { Dialogos.Informar("Lo seleccionado no es un panel WinCC Unified.", "Exportar pantallas Unified", true); return; }
                 List<string> todas = HmiUnified.ListaPantallas(sw);
                 if (todas.Count == 0) { Dialogos.Informar("El panel no tiene pantallas.", "Exportar pantallas Unified", false); return; }
                 List<string> elegidas = Dialogos.ElegirVarios("Exportar pantallas Unified · " + HmiUnified.Nombre(sw),
