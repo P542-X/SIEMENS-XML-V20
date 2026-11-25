@@ -1,5 +1,9 @@
 # Cambios
 
+## 2.5.14
+- Exportar Unified más rápido y sin que TIA se quede "pensando" al terminar: no se leen las propiedades simples de solo lectura (no se exportan), y después de cada pantalla se sueltan los objetos de TIA leídos (antes se liberaban de golpe, después de exportar). El resumen dice cuánto tarda cada pantalla.
+- *Exportar selección* sobre el panel Unified exporta también las tablas de variables HMI completas (`Variables/<tabla>.json`), para preparar su importación (U2). Al importar se ignoran.
+
 ## 2.5.13
 - Importar Unified: compila el HMI aunque el software no dé el servicio de compilación (lo busca en el contenedor de software o en el módulo del panel seleccionado). Antes salía *Compilación HMI: no realizada*.
 - Guía 6.8 y hoja de ruta: importación de pantallas comprobada en MTP1500 (U3); las pantallas se exportan e importan desde el panel.

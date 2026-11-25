@@ -229,6 +229,7 @@ namespace ExportarXml
                 }
                 if (ea.IsCancellationRequested) return;
                 string nombre = Texto(pantalla, "Name");
+                System.Diagnostics.Stopwatch reloj = System.Diagnostics.Stopwatch.StartNew();
                 try
                 {
                     ea.Text = "Exportando pantalla Unified " + nombre + "...";
@@ -243,13 +244,14 @@ namespace ExportarXml
                     string f = Path.Combine(dir, Limpio(nombre) + ".json");
                     File.WriteAllText(f, Json.Escribir(d), new UTF8Encoding(false));
                     n++;
-                    log.AppendLine("OK     UNIF   " + f);
+                    log.AppendLine("OK     UNIF   " + f + "  (" + (reloj.ElapsedMilliseconds / 1000.0).ToString("0.0", CultureInfo.InvariantCulture) + " s)");
                 }
                 catch (Exception ex)
                 {
                     errores++;
                     log.AppendLine("ERROR  UNIF   " + nombre + " -> " + Mensaje(ex));
                 }
+                Liberar();
             }
             ok += n;
             if (n > 0) recuento["Pantallas"] = (recuento.TryGetValue("Pantallas", out int k) ? k : 0) + n;
@@ -287,6 +289,37 @@ namespace ExportarXml
                 }
             }
             catch (Exception ex) { log.AppendLine("Aviso: variables HMI sin exportar (" + Mensaje(ex) + ")"); }
+
+            // Tablas de variables HMI completas (todas sus propiedades, con el mismo método que las pantallas),
+            // para conocer el formato real (conexión, variable de PLC, multiplexado…) antes de importarlas (U2).
+            if (filtro == null && elegidas == null) try
+            {
+                int tablas = 0;
+                foreach (object tabla in Items(Prop(sw, "TagTables")))
+                {
+                    if (ea.IsCancellationRequested) return;
+                    string nt = Texto(tabla, "Name");
+                    ea.Text = "Exportando tabla de variables HMI " + nt + "...";
+                    Dictionary<string, object> d = new Dictionary<string, object> { ["$formato"] = Formato };
+                    foreach (var kv in Objeto(tabla, true, 0)) d[kv.Key] = kv.Value;
+                    string dir = Path.Combine(raiz, "Variables");
+                    Directory.CreateDirectory(dir);
+                    File.WriteAllText(Path.Combine(dir, Limpio(nt) + ".json"), Json.Escribir(d), new UTF8Encoding(false));
+                    tablas++;
+                    Liberar();
+                }
+                if (tablas > 0) recuento["Tablas de variables (aún no se importan)"] = tablas;
+            }
+            catch (Exception ex) { log.AppendLine("Aviso: tablas de variables HMI sin exportar (" + Mensaje(ex) + ")"); }
+        }
+
+        /// <summary>
+        /// Suelta ya los miles de objetos de TIA leídos de una pantalla. Si no, se liberan de golpe cuando el
+        /// recolector de basura quiere, después de exportar, y TIA se queda "pensando" un buen rato.
+        /// </summary>
+        public static void Liberar()
+        {
+            try { GC.Collect(); GC.WaitForPendingFinalizers(); GC.Collect(); } catch { }
         }
 
         /// <summary>"Grupo/Subgrupo/Pantalla" (o solo "Pantalla" en la raíz): lo que se ve en el selector.</summary>
@@ -340,6 +373,8 @@ namespace ExportarXml
 
             foreach (PropertyInfo p in Propiedades(o.GetType()))
             {
+                // cada lectura es una llamada a TIA: un valor simple de solo lectura no se exporta, así que ni se lee
+                if (!p.CanWrite && !Claves.Contains(p.Name) && EsEscalar(p.PropertyType)) continue;
                 object v;
                 try { v = p.GetValue(o, null); }
                 catch { continue; } // propiedad que no aplica a este objeto
@@ -418,7 +453,8 @@ namespace ExportarXml
                     if (d == null || Cad(d, "$tipo") != "HmiScreen")
                     {
                         ignorados++;
-                        if (!Path.GetFileName(ruta).StartsWith("Variables_referencia", StringComparison.OrdinalIgnoreCase))
+                        if (!Path.GetFileName(ruta).StartsWith("Variables_referencia", StringComparison.OrdinalIgnoreCase) &&
+                            (Cad(d, "$tipo") ?? "").IndexOf("TagTable", StringComparison.Ordinal) < 0) // tablas de variables: aún no se importan
                             log.AppendLine("IGNORADO " + ruta + " (no es una pantalla Unified: falta \"$tipo\": \"HmiScreen\")");
                         continue;
                     }
@@ -507,6 +543,7 @@ namespace ExportarXml
                         conError++;
                         log.AppendLine("ERROR    " + p.Nombre + " -> " + Mensaje(ex));
                     }
+                    Liberar();
                 }
 
                 // Referencias a objetos que pueden haberse creado después (pantallas de una ventana, etc.)
