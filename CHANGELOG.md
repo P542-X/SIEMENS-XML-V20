@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.5.15
+- El mensaje final de *Exportar* ya no bloquea TIA: el Add-In devuelve el control en cuanto termina y el mensaje sale aparte. Si quedaba detrás de la ventana de TIA, TIA parecía colgado esperándolo.
+
 ## 2.5.14
 - Exportar Unified más rápido y sin que TIA se quede "pensando" al terminar: no se leen las propiedades simples de solo lectura (no se exportan), y después de cada pantalla se sueltan los objetos de TIA leídos (antes se liberaban de golpe, después de exportar). El resumen dice cuánto tarda cada pantalla.
 - *Exportar selección* sobre el panel Unified exporta también las tablas de variables HMI completas (`Variables/<tabla>.json`), para preparar su importación (U2). Al importar se ignoran.

@@ -307,7 +307,8 @@ namespace ExportarXml
                 avisoZip = Environment.NewLine + "No se pudo crear el .zip: " + ex.Message;
             }
 
-            Dialogos.Informar(
+            HmiUnified.Liberar();
+            Dialogos.InformarSinEsperar(
                 "XML: " + res.Ok + " (errores " + res.Errores + ")    SD: " + sd.Ok + "    Fuentes SCL: " + sd.Fuentes +
                 "    Solo XML: " + sd.Errores + (paneles.Count + panelesUnified.Count > 0 ? "    HMI: " + okHmi + " (errores " + errHmi + ")" : "") + Environment.NewLine +
                 string.Join(Environment.NewLine, cpus.Select(c => "CPU " + c)) + Environment.NewLine + Environment.NewLine +

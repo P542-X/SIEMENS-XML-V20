@@ -152,6 +152,27 @@ namespace ExportarXml
         }
 
         /// <summary>
+        /// Como Informar, pero sin esperar a que se cierre: TIA recupera el control en cuanto termina el Add-In.
+        /// Para el mensaje final de una exportación (si queda detrás de TIA, TIA no se queda esperándolo).
+        /// </summary>
+        public static void InformarSinEsperar(string texto, string titulo, bool hayErrores)
+        {
+            HiloUi().BeginInvoke((MethodInvoker)(() =>
+            {
+                try
+                {
+                    using (Form owner = Propietario())
+                    {
+                        owner.Activate();
+                        MessageBox.Show(owner, texto, titulo, MessageBoxButtons.OK,
+                            hayErrores ? MessageBoxIcon.Warning : MessageBoxIcon.Information);
+                    }
+                }
+                catch { }
+            }));
+        }
+
+        /// <summary>
         /// Ventana propietaria mostrada de verdad (un TopMost oculto no cuenta), transparente
         /// y centrada en la pantalla del cursor; los diálogos que cuelgan de ella salen encima.
         /// </summary>
