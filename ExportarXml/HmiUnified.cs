@@ -395,7 +395,7 @@ namespace ExportarXml
             public void Aviso(string ruta, string texto) { Avisos++; Log.AppendLine("   aviso  " + ruta + ": " + texto); }
         }
 
-        public static void Importar(TiaPortal tia, object sw, IEnumerable<string> rutas)
+        public static void Importar(TiaPortal tia, object sw, IEnumerable<string> rutas, IEngineeringObject seleccionado = null)
         {
             Project proyecto = tia.Projects.FirstOrDefault();
             if (proyecto == null) return;
@@ -529,9 +529,11 @@ namespace ExportarXml
                     try
                     {
                         ea.Text = "Compilando HMI Unified...";
-                        ICompilable comp = (sw as IEngineeringServiceProvider)?.GetService<ICompilable>();
-                        if (comp != null)
+                        ICompilable comp = Compilador(sw, seleccionado, out string donde);
+                        if (comp == null) compilacion = "no realizada: no se encuentra el servicio de compilación (compila el HMI a mano)";
+                        else
                         {
+                            log.AppendLine("Compilando con " + donde + ".");
                             CompilerResult res = comp.Compile();
                             compilacion = res.State + " (errores: " + res.ErrorCount + ", avisos: " + res.WarningCount + ")";
                             foreach (CompilerResultMessage m in res.Messages) Mensajes(m, log, 1);
@@ -550,6 +552,47 @@ namespace ExportarXml
             File.WriteAllText(fichero, resumen + Environment.NewLine + Environment.NewLine + log, Encoding.UTF8);
             Dialogos.Informar(resumen + Environment.NewLine + Environment.NewLine + "Detalle en:" + Environment.NewLine + fichero,
                               "Importar HMI Unified", conError > 0);
+        }
+
+        /// <summary>
+        /// Servicio de compilación del HMI Unified: el del software; si no lo da, el del módulo del panel que
+        /// contiene el software, o el del dispositivo seleccionado.
+        /// </summary>
+        private static ICompilable Compilador(object sw, IEngineeringObject seleccionado, out string donde)
+        {
+            donde = "";
+            ICompilable c = null;
+            try { c = (sw as IEngineeringServiceProvider)?.GetService<ICompilable>(); } catch { }
+            if (c != null) { donde = "el software " + Texto(sw, "Name"); return c; }
+            try
+            {
+                List<IEngineeringObject> pendientes = new List<IEngineeringObject>();
+                if (seleccionado != null) pendientes.Add(seleccionado);
+                for (int i = 0; i < pendientes.Count && i < 200; i++)
+                {
+                    IEngineeringObject x = pendientes[i];
+                    if (x is Siemens.Engineering.HW.DeviceItem di)
+                    {
+                        Siemens.Engineering.HW.Features.SoftwareContainer sc = di.GetService<Siemens.Engineering.HW.Features.SoftwareContainer>();
+                        if (sc?.Software != null && (ReferenceEquals(sc.Software, sw) || sc.Software.Equals(sw)))
+                        {
+                            try { c = (sc as object as IEngineeringServiceProvider)?.GetService<ICompilable>(); } catch { }
+                            if (c != null) { donde = "el contenedor de software de " + Texto(di, "Name"); return c; }
+                            try { c = di.GetService<ICompilable>(); } catch { }
+                            if (c != null) { donde = "el módulo " + Texto(di, "Name"); return c; }
+                        }
+                        pendientes.AddRange(di.DeviceItems);
+                    }
+                    else if (x is Siemens.Engineering.HW.Device d) pendientes.AddRange(d.DeviceItems);
+                }
+                if (seleccionado is IEngineeringServiceProvider sp)
+                {
+                    try { c = sp.GetService<ICompilable>(); } catch { }
+                    if (c != null) { donde = "el dispositivo seleccionado"; return c; }
+                }
+            }
+            catch { }
+            return null;
         }
 
         /// <summary>Rellena un objeto de la API con un diccionario JSON (recursivo).</summary>

@@ -1,5 +1,9 @@
 # Cambios
 
+## 2.5.13
+- Importar Unified: compila el HMI aunque el software no dé el servicio de compilación (lo busca en el contenedor de software o en el módulo del panel seleccionado). Antes salía *Compilación HMI: no realizada*.
+- Guía 6.8 y hoja de ruta: importación de pantallas comprobada en MTP1500 (U3); las pantallas se exportan e importan desde el panel.
+
 ## 2.5.12
 - Importar Unified: en propiedades de tipo `object` (el `Value` de las tablas de valores de las dinamizaciones) un `"#AARRGGBB"` se escribe como color.
 - El Unified Comfort Panel se reconoce también por su referencia (`6AV2 128…`): desaparece el aviso falso con el MTP1500.

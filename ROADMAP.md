@@ -50,8 +50,8 @@ Openness da acceso a variables, avisos, registros, pantallas y sus objetos a tra
 |---|---|---|
 | U1 | Exportar pantallas Unified a JSON (objetos con sus propiedades, textos, dinamizaciones, eventos, scripts) y variables como referencia | **v2.5.0, en prueba (MTP1500)** |
 | U2 | Importar variables y avisos | Pendiente |
-| U3 | Importar pantallas y objetos básicos | **v2.5.0, en prueba (MTP1500)** |
-| U4 | Dinamizaciones, eventos y scripts JavaScript | Incluido en v2.5.0 (genérico), sin comprobar |
+| U3 | Importar pantallas y objetos básicos | **v2.5.12: comprobado en MTP1500** (pantalla nueva sin errores ni avisos) |
+| U4 | Dinamizaciones, eventos y scripts JavaScript | Variable, tabla de valores por bit y scripts de botón: importan (v2.5.12); falta comprobar en runtime |
 | U5 | Faceplates y librerías | Pendiente |
 
 Alcance de la v2.5.0: solo **Unified Comfort Panel MTP1500**. Serializador genérico por reflexión: lo que no se pueda aplicar sale como aviso en `resumen_unified_<fecha>.txt`. Por comprobar en TIA: tipo de los colores, formato de los textos, partes (fuente, bordes…), gráficos y ventanas de pantalla.

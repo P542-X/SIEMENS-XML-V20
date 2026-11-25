@@ -604,6 +604,8 @@ Entradas sin conectar: `PARAM :=  ,`. Versiones vistas en S7-1500 V4.0: GET 1.3,
 
 Openness no tiene XML de pantallas Unified: el Add-In lee cada objeto con la API y lo guarda en **JSON**; al importar lo recrea con la API. Probado solo en **Unified Comfort Panel MTP1500**.
 
+**Comprobado en MTP1500 (v2.5.12):** una pantalla nueva con rectángulos (esquinas redondeadas), textos, línea, círculo con color por bit (tabla de valores), campo E/S de solo lectura y botones con script importa sin errores ni avisos. Para generar una pantalla nueva, copia los nombres de propiedad de una exportación real del mismo panel.
+
 - Si el paquete trae `HMI_Unified/<panel>/Pantallas/<grupo>/<pantalla>.json`: un fichero por pantalla. `Variables_referencia.json` lista las variables HMI con su variable de PLC: **solo para consultar**, no se importa.
 - Formato de una pantalla:
 
@@ -636,6 +638,7 @@ Openness no tiene XML de pantallas Unified: el Add-In lee cada objeto con la API
 - Las variables de las dinamizaciones y scripts tienen que existir ya en el HMI (`Variables_referencia.json`). Esta versión **no crea variables ni avisos**.
 - No uses faceplates ni imágenes que no estén ya en el proyecto (faceplates: pendiente, ROADMAP U5).
 - Sobrescribir una pantalla vacía sus objetos, dinamizaciones y eventos y los vuelve a crear; la pantalla se conserva (las referencias a ella siguen valiendo).
+- Clic derecho sobre una pantalla Unified: el menú *XML* sale vacío (TIA V20 no pasa las pantallas al Add-In). Se exporta con *Exportar pantallas Unified…* y se importa con *Importar ficheros*, las dos sobre **el panel**.
 - El usuario importa eligiendo **el panel Unified** (no el PLC) en *Importar ficheros*. El Add-In guarda el proyecto, copia lo sobrescrito en `Import_XML\copia_unified_<fecha>\`, compila el HMI y deja `resumen_unified_<fecha>.txt` (pantalla por pantalla, con avisos de propiedades no aplicadas). Comprobar en la simulación de runtime.
 
 ---

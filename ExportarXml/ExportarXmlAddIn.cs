@@ -94,7 +94,7 @@ namespace ExportarXml
             object hmi = Hmi.ObtenerHmi(destino);
             if (hmi != null) { Hmi.Importar(_tia, hmi, ficheros); return; }
             object unified = Hmi.ObtenerUnified(destino);
-            if (unified != null) HmiUnified.Importar(_tia, unified, ficheros);
+            if (unified != null) HmiUnified.Importar(_tia, unified, ficheros, destino);
         }
 
         private void OnDeshacer(MenuSelectionProvider seleccion)
