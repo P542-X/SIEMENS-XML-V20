@@ -91,8 +91,11 @@ namespace ExportarXml
         {
             foreach (IEngineeringObject o in seleccion.GetSelection().OfType<IEngineeringObject>())
             {
-                try { if (Importador.EsDestino(o) || HmiUnified.Software(_tia, o) != null) return o; }
+                // cada comprobación por separado: si una falla (p. ej. la del PLC en un panel), se prueba la siguiente
+                try { if (Importador.EsDestino(o)) return o; }
                 catch (Exception ex) { Apuntar("Destino " + o?.GetType().FullName, ex); }
+                try { if (HmiUnified.Software(_tia, o) != null) return o; }
+                catch (Exception ex) { Apuntar("Destino Unified " + o?.GetType().FullName, ex); }
             }
             return null;
         }

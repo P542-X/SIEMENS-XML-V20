@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.5.4
+- *Importar ficheros* / *Importar carpeta* vuelven a salir sobre un panel Unified: la búsqueda del PLC fallaba con una excepción en el dispositivo HMI y ocultaba las opciones de importar. Ahora cada comprobación del destino va por separado y `ObtenerPlc` no lanza excepciones.
+
 ## 2.5.3
 - **XML → Exportar pantallas Unified…** (sobre el panel Unified): lista con casillas y buscador para elegir qué pantallas exportar. TIA V20 no pasa al Add-In las pantallas Unified seleccionadas en el árbol, así que el menú *XML* sale vacío sobre una pantalla.
 - `ValueConverter` (y cualquier objeto sin nombre en una propiedad con escritura) se exporta como parte con su contenido, no como `{"$ref": ""}`.

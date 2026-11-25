@@ -99,11 +99,17 @@ namespace ExportarXml
 
         internal static PlcSoftware ObtenerPlc(IEngineeringObject o)
         {
+            try { return BuscarPlc(o); }
+            catch { return null; } // p. ej. un dispositivo HMI cuyos módulos no dejan leer el software
+        }
+
+        private static PlcSoftware BuscarPlc(IEngineeringObject o)
+        {
             if (o is Device dispositivo)
             {
                 foreach (DeviceItem di in dispositivo.DeviceItems)
                 {
-                    PlcSoftware p = ObtenerPlc(di);
+                    PlcSoftware p = BuscarPlc(di);
                     if (p != null) return p;
                 }
                 return null;
@@ -115,7 +121,7 @@ namespace ExportarXml
                 if (contenedor?.Software is PlcSoftware sw) return sw;
                 foreach (DeviceItem hijo in item.DeviceItems)
                 {
-                    PlcSoftware p = ObtenerPlc(hijo);
+                    PlcSoftware p = BuscarPlc(hijo);
                     if (p != null) return p;
                 }
                 return null;
