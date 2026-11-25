@@ -788,7 +788,14 @@ namespace ExportarXml
         {
             t = Nullable.GetUnderlyingType(t) ?? t;
             if (v == null) return null;
-            if (t == typeof(object)) return v;
+            if (t == typeof(object))
+            {
+                // propiedad de tipo object (Value de una tabla de valores…): un "#AARRGGBB" es un color
+                if (v is string so && so.Length == 9 && so[0] == '#' &&
+                    int.TryParse(so.Substring(1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out int argb))
+                    return Color.FromArgb(argb);
+                return v;
+            }
             if (t == typeof(string)) return Convert.ToString(v, CultureInfo.InvariantCulture);
             if (t.IsEnum)
                 return v is string s ? Enum.Parse(t, s, true) : Enum.ToObject(t, Convert.ToInt64(v, CultureInfo.InvariantCulture));
@@ -946,7 +953,8 @@ namespace ExportarXml
         }
 
         private static bool EsComfort(string panel) =>
-            panel.IndexOf("MTP", StringComparison.OrdinalIgnoreCase) >= 0 || panel.IndexOf("Comfort", StringComparison.OrdinalIgnoreCase) >= 0;
+            panel.IndexOf("MTP", StringComparison.OrdinalIgnoreCase) >= 0 || panel.IndexOf("Comfort", StringComparison.OrdinalIgnoreCase) >= 0 ||
+            panel.Replace(" ", "").IndexOf("6AV2128", StringComparison.OrdinalIgnoreCase) >= 0; // Unified Comfort Panel (MTP…)
 
         private static void Mensajes(CompilerResultMessage m, StringBuilder log, int nivel)
         {

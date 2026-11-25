@@ -1,5 +1,9 @@
 # Cambios
 
+## 2.5.12
+- Importar Unified: en propiedades de tipo `object` (el `Value` de las tablas de valores de las dinamizaciones) un `"#AARRGGBB"` se escribe como color.
+- El Unified Comfort Panel se reconoce también por su referencia (`6AV2 128…`): desaparece el aviso falso con el MTP1500.
+
 ## 2.5.11
 - **Causa del TiaPortal liberado en el panel Unified**: leer el software de un panel WinCC Unified (`SoftwareContainer.Software`) dentro de una función de estado del menú libera el `TiaPortal` del Add-In. Ahora, al abrir el menú, un panel se reconoce solo por su referencia (`TypeIdentifier` `6AV…`, `Hmi.EsPanel`) y su software se lee al pulsar la opción. `ObtenerPlc` ya no lee el software de los módulos de panel.
 
