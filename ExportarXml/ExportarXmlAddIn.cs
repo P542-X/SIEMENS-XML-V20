@@ -320,12 +320,12 @@ namespace ExportarXml
                     // (dispositivo o software completo, o solo la pantalla / grupo de pantallas seleccionado)
                     object unified = hmi == null ? HmiUnified.Software(_tia, obj) : null;
                     object filtro = HmiUnified.EsPantallaOGrupo(obj) ? obj : null;
-                    string clave = unified == null ? null : HmiUnified.Panel(unified) + (filtro != null ? " › " + HmiUnified.Nombre(filtro) : "");
-                    if (unified != null && !panelesUnified.Contains(clave) && (filtro != null || !panelesUnified.Contains(HmiUnified.Panel(unified))))
+                    string clave = unified == null ? null : HmiUnified.Panel(_tia, unified) + (filtro != null ? " › " + HmiUnified.Nombre(filtro) : "");
+                    if (unified != null && !panelesUnified.Contains(clave) && (filtro != null || !panelesUnified.Contains(HmiUnified.Panel(_tia, unified))))
                     {
                         panelesUnified.Add(clave);
                         HmiUnified.Exportar(unified, Path.Combine(raiz, "HMI_Unified"), ea, logHmi, recuentoUnified, ref okHmi, ref errHmi, filtro,
-                                            filtro == null ? pantallasElegidas : null);
+                                            filtro == null ? pantallasElegidas : null, _tia);
                     }
                     else if (unified == null && hmi == null && HmiUnified.EsObjetoUnified(obj))
                     {

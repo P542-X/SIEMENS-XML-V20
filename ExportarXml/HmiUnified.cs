@@ -70,19 +70,17 @@ namespace ExportarXml
         /// El HmiSoftware de lo seleccionado. Primero subiendo por Parent; si no llega (objetos de pantalla
         /// en el árbol), busca en los dispositivos del proyecto el software Unified que contiene el objeto.
         /// </summary>
-        private static TiaPortal _tia;
-
         /// <summary>
         /// "HMI_RT_1: MTP1500 Unified Comfort · 6AV2…": el Parent del software Unified no siempre llega
         /// al DeviceItem, así que se busca el dispositivo del proyecto que lo contiene.
         /// </summary>
-        public static string Panel(object sw)
+        public static string Panel(TiaPortal tia, object sw)
         {
             string p = Hmi.Panel(sw);
             if (p.IndexOf(':') >= 0) return p;
             try
             {
-                Project proy = _tia?.Projects.FirstOrDefault();
+                Project proy = tia?.Projects.FirstOrDefault();
                 if (proy != null)
                     foreach (object d in Dispositivos(proy))
                         if (Igual(Hmi.ObtenerUnified(d as IEngineeringObject), sw))
@@ -115,7 +113,6 @@ namespace ExportarXml
 
         public static object Software(TiaPortal tia, IEngineeringObject o)
         {
-            if (tia != null) _tia = tia;
             object sw = Hmi.ObtenerUnified(o);
             if (sw != null || !EsObjetoUnified(o)) return sw;
             try
@@ -199,9 +196,9 @@ namespace ExportarXml
         /// filtro: una pantalla o un grupo de pantallas (solo eso), o null (todas).
         /// </summary>
         public static void Exportar(object sw, string carpeta, ExclusiveAccess ea, StringBuilder log, Dictionary<string, int> recuento,
-                                    ref int ok, ref int errores, object filtro = null, ICollection<string> elegidas = null)
+                                    ref int ok, ref int errores, object filtro = null, ICollection<string> elegidas = null, TiaPortal tia = null)
         {
-            string panel = Panel(sw);
+            string panel = Panel(tia, sw);
             string raiz = Path.Combine(carpeta, Limpio(Texto(sw, "Name")));
             if (!EsComfort(panel))
                 log.AppendLine("Aviso: " + panel + " no parece un Unified Comfort Panel; esta parte del Add-In está probada en MTP1500.");
@@ -388,8 +385,7 @@ namespace ExportarXml
         {
             Project proyecto = tia.Projects.FirstOrDefault();
             if (proyecto == null) return;
-            _tia = tia;
-            string panel = Panel(sw);
+            string panel = Panel(tia, sw);
             StringBuilder log = new StringBuilder();
             log.AppendLine("HMI destino: " + panel + " (WinCC Unified)");
             if (!EsComfort(panel)) log.AppendLine("Aviso: no parece un Unified Comfort Panel; esta parte del Add-In está probada en MTP1500.");

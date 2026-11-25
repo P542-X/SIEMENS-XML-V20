@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.5.5
+- `HmiUnified` ya no guarda el `TiaPortal` en un campo estático (sobrevive entre activaciones del Add-In y daba *Access to a disposed object of type TiaPortal*): se pasa por parámetro.
+
 ## 2.5.4
 - *Importar ficheros* / *Importar carpeta* vuelven a salir sobre un panel Unified: la búsqueda del PLC fallaba con una excepción en el dispositivo HMI y ocultaba las opciones de importar. Ahora cada comprobación del destino va por separado y `ObtenerPlc` no lanza excepciones.
 
