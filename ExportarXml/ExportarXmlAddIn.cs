@@ -50,13 +50,40 @@ namespace ExportarXml
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar ficheros (xml, sd, fuentes, zip)...", OnImportarFicheros, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar carpeta...", OnImportarCarpeta, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Deshacer última importación", OnDeshacer, OnEstadoImportar);
+            raizMenu.Items.AddActionItem<IEngineeringObject>("Diagnóstico de la selección", OnDiagnostico, OnEstadoDiagnostico);
         }
 
         // ---------- Importación ----------
 
-        private static IEngineeringObject DestinoImportacion(MenuSelectionProvider seleccion)
+        private IEngineeringObject DestinoImportacion(MenuSelectionProvider seleccion)
         {
-            return seleccion.GetSelection().OfType<IEngineeringObject>().FirstOrDefault(Importador.EsDestino);
+            return seleccion.GetSelection().OfType<IEngineeringObject>()
+                .FirstOrDefault(o => Importador.EsDestino(o) || HmiUnified.Software(_tia, o) != null);
+        }
+
+        // ---------- Diagnóstico ----------
+        // Sale solo cuando no sale nada más (lo seleccionado no se puede exportar ni es destino de importación):
+        // dice qué tipo de objeto da TIA y hasta dónde llega su Parent, para poder añadirlo.
+
+        private MenuStatus OnEstadoDiagnostico(MenuSelectionProvider seleccion)
+        {
+            IEngineeringObject[] sel = seleccion.GetSelection().OfType<IEngineeringObject>().ToArray();
+            if (sel.Length == 0) return MenuStatus.Hidden;
+            return sel.Any(EsExportable) || DestinoImportacion(seleccion) != null ? MenuStatus.Hidden : MenuStatus.Enabled;
+        }
+
+        private void OnDiagnostico(MenuSelectionProvider seleccion)
+        {
+            try
+            {
+                Dialogos.Informar("Lo seleccionado no se puede exportar ni importar con esta versión del Add-In." + Environment.NewLine +
+                                  "Pasa este texto (Ctrl+C copia el mensaje) para añadirlo:" + Environment.NewLine + Environment.NewLine +
+                                  HmiUnified.Diagnostico(_tia, seleccion.GetSelection().Cast<object>()), "Diagnóstico", false);
+            }
+            catch (Exception ex)
+            {
+                Dialogos.Informar("Error en el diagnóstico:" + Environment.NewLine + ex.Message, "Diagnóstico", true);
+            }
         }
 
         private MenuStatus OnEstadoImportar(MenuSelectionProvider seleccion)
@@ -86,7 +113,7 @@ namespace ExportarXml
             if (Importador.ObtenerPlc(destino) != null) { Importador.Ejecutar(_tia, destino, ficheros); return; }
             object hmi = Hmi.ObtenerHmi(destino);
             if (hmi != null) { Hmi.Importar(_tia, hmi, ficheros); return; }
-            object unified = Hmi.ObtenerUnified(destino);
+            object unified = HmiUnified.Software(_tia, destino);
             if (unified != null) HmiUnified.Importar(_tia, unified, ficheros);
         }
 
@@ -216,13 +243,18 @@ namespace ExportarXml
                     }
                     // WinCC Unified: pantallas en JSON
                     // (dispositivo o software completo, o solo la pantalla / grupo de pantallas seleccionado)
-                    object unified = hmi == null ? Hmi.ObtenerUnified(obj) : null;
+                    object unified = hmi == null ? HmiUnified.Software(_tia, obj) : null;
                     object filtro = HmiUnified.EsPantallaOGrupo(obj) ? obj : null;
                     string clave = unified == null ? null : Hmi.Panel(unified) + (filtro != null ? " › " + HmiUnified.Nombre(filtro) : "");
                     if (unified != null && !panelesUnified.Contains(clave) && (filtro != null || !panelesUnified.Contains(Hmi.Panel(unified))))
                     {
                         panelesUnified.Add(clave);
                         HmiUnified.Exportar(unified, Path.Combine(raiz, "HMI_Unified"), ea, logHmi, recuentoUnified, ref okHmi, ref errHmi, filtro);
+                    }
+                    else if (unified == null && hmi == null && HmiUnified.EsObjetoUnified(obj))
+                    {
+                        errHmi++;
+                        logHmi.AppendLine("ERROR  UNIF   " + HmiUnified.Nombre(obj) + ": no se encuentra su panel Unified. Exporta seleccionando el panel (HMI_RT_x).");
                     }
                 }
             }

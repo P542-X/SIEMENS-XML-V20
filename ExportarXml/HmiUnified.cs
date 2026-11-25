@@ -50,14 +50,102 @@ namespace ExportarXml
         /// <summary>Panel, software, pantalla o grupo de pantallas Unified (para el menú Exportar).</summary>
         public static bool EsSeleccionable(IEngineeringObject o)
         {
-            string t = o?.GetType().Name ?? "";
-            return t == "HmiSoftware" || EsPantallaOGrupo(o);
+            return o != null && (o.GetType().Name == "HmiSoftware" || EsObjetoUnified(o));
         }
 
+        /// <summary>Cualquier objeto de la API de WinCC Unified (Siemens.Engineering.HmiUnified.*).</summary>
+        public static bool EsObjetoUnified(object o)
+        {
+            return (o?.GetType().Namespace ?? "").StartsWith("Siemens.Engineering.HmiUnified", StringComparison.Ordinal);
+        }
+
+        /// <summary>Una pantalla o un grupo de pantallas (lo que tiene ScreenItems o Screens y no es el software).</summary>
         public static bool EsPantallaOGrupo(object o)
         {
-            string t = o?.GetType().Name ?? "";
-            return (t == "HmiScreen" || t == "HmiScreenGroup") && (o.GetType().Namespace ?? "").StartsWith("Siemens.Engineering.HmiUnified", StringComparison.Ordinal);
+            if (!EsObjetoUnified(o) || o.GetType().Name == "HmiSoftware") return false;
+            return Propiedad(o.GetType(), "ScreenItems") != null || Propiedad(o.GetType(), "Screens") != null;
+        }
+
+        /// <summary>
+        /// El HmiSoftware de lo seleccionado. Primero subiendo por Parent; si no llega (objetos de pantalla
+        /// en el árbol), busca en los dispositivos del proyecto el software Unified que contiene el objeto.
+        /// </summary>
+        public static object Software(TiaPortal tia, IEngineeringObject o)
+        {
+            object sw = Hmi.ObtenerUnified(o);
+            if (sw != null || !EsObjetoUnified(o)) return sw;
+            try
+            {
+                Project p = tia?.Projects.FirstOrDefault();
+                if (p == null) return null;
+                foreach (object d in Dispositivos(p))
+                {
+                    object s = Hmi.ObtenerUnified(d as IEngineeringObject);
+                    if (s != null && (Igual(s, o) || Contiene(s, o, 0))) return s;
+                }
+            }
+            catch { }
+            return null;
+        }
+
+        private static IEnumerable<object> Dispositivos(object p)
+        {
+            List<object> l = new List<object>(Items(Prop(p, "Devices")));
+            object sueltos = Prop(p, "UngroupedDevicesGroup");
+            if (sueltos != null) l.AddRange(Items(Prop(sueltos, "Devices")));
+            Pila(Items(Prop(p, "DeviceGroups")), l, 0);
+            return l;
+        }
+
+        private static void Pila(IEnumerable<object> grupos, List<object> l, int nivel)
+        {
+            if (nivel > 10) return;
+            foreach (object g in grupos)
+            {
+                l.AddRange(Items(Prop(g, "Devices")));
+                Pila(Items(Prop(g, "Groups")), l, nivel + 1);
+            }
+        }
+
+        private static bool Contiene(object contenedor, object o, int nivel)
+        {
+            if (nivel > 10) return false;
+            foreach (string c in new[] { "Screens", "ScreenGroups", "Groups" })
+                foreach (object x in Items(Prop(contenedor, c)))
+                {
+                    if (Igual(x, o)) return true;
+                    if (c != "Screens" && Contiene(x, o, nivel + 1)) return true;
+                }
+            return false;
+        }
+
+        private static bool Igual(object a, object b)
+        {
+            try { return ReferenceEquals(a, b) || (a != null && a.Equals(b)); } catch { return false; }
+        }
+
+        /// <summary>Texto para el menú de diagnóstico: tipo, ensamblado y cadena de Parent de cada objeto.</summary>
+        public static string Diagnostico(TiaPortal tia, IEnumerable<object> seleccion)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (object o in seleccion)
+            {
+                sb.AppendLine("Objeto: " + (o?.GetType().FullName ?? "null") + "  [" + (o?.GetType().Assembly.GetName().Name ?? "") + "]");
+                sb.AppendLine("   Nombre: " + Texto(o, "Name") + "   IEngineeringObject: " + (o is IEngineeringObject ? "sí" : "no"));
+                try
+                {
+                    int n = 0;
+                    for (IEngineeringObject x = (o as IEngineeringObject)?.Parent; x != null && n < 12; x = x.Parent, n++)
+                        sb.AppendLine("   Parent " + (n + 1) + ": " + x.GetType().FullName + " (" + Texto(x, "Name") + ")");
+                }
+                catch (Exception ex) { sb.AppendLine("   Error al leer Parent: " + Mensaje(ex)); }
+                object sw = null;
+                try { sw = Software(tia, o as IEngineeringObject); } catch (Exception ex) { sb.AppendLine("   Error al buscar el software: " + Mensaje(ex)); }
+                sb.AppendLine("   Software Unified: " + (sw == null ? "no encontrado" : Texto(sw, "Name")) +
+                              "   Pantalla/grupo: " + (EsPantallaOGrupo(o) ? "sí" : "no"));
+                sb.AppendLine();
+            }
+            return sb.ToString();
         }
 
         public static string Nombre(object o) => Texto(o, "Name");

@@ -1,5 +1,9 @@
 # Cambios
 
+## 2.5.1
+- WinCC Unified: el menú *XML* sale también al seleccionar una pantalla o un grupo de pantallas aunque su `Parent` no llegue al `HmiSoftware` (se busca el panel en los dispositivos del proyecto).
+- Nuevo **XML → Diagnóstico de la selección**: sale solo cuando lo seleccionado no se puede exportar ni importar; muestra el tipo de objeto que da TIA y su cadena de `Parent`.
+
 ## 2.5.0
 - **WinCC Unified (Unified Comfort, MTP1500), en prueba**: *Exportar selección* sobre un panel Unified, un grupo de pantallas o una pantalla guarda cada pantalla en JSON (`HMI_Unified/<panel>/Pantallas/<grupo>/<pantalla>.json`): objetos, propiedades, textos por idioma, dinamizaciones, eventos y scripts. `Variables_referencia.json` con las variables HMI (solo consulta).
 - *Importar ficheros* con un panel Unified como destino recrea las pantallas (crea los grupos que falten; al sobrescribir vacía la pantalla y la rellena), copia lo sobrescrito en `Import_XML\copia_unified_<fecha>\`, compila el HMI y deja `resumen_unified_<fecha>.txt`.
