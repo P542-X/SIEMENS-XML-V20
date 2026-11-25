@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.5.9
+- Traza del menú *XML*: cada opción que TIA consulta o se pulsa queda apuntada con el tipo de lo seleccionado y si el `TiaPortal` del Add-In sigue vivo, en `Documentos\ExportarXml_menu.log` (antes `%TEMP%`, que en el proceso del Add-In puede ser otro) y en los mensajes de error inesperado (últimos pasos).
+
 ## 2.5.8
 - Si el `TiaPortal` que recibe el Add-In al cargarse está liberado (la sesión sigue viva: el PLC se lee bien, pero `TiaPortal.Projects` da *disposed*), cada acción usa el del proyecto de lo seleccionado (`Project.Parent`), guardado en un campo. El proyecto a exportar se toma de lo seleccionado. Queda apuntado en `%TEMP%\ExportarXml_menu.log`.
 

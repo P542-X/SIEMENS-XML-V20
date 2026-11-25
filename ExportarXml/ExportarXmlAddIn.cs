@@ -93,7 +93,8 @@ namespace ExportarXml
         {
             Exception e = ex is System.Reflection.TargetInvocationException && ex.InnerException != null ? ex.InnerException : ex;
             string pila = string.Join(Environment.NewLine, (e.StackTrace ?? "").Split('\n').Take(8).Select(l => l.TrimEnd()));
-            return e.Message + Environment.NewLine + Environment.NewLine + "(" + e.GetType().Name + ")" + Environment.NewLine + pila;
+            return e.Message + Environment.NewLine + Environment.NewLine + "(" + e.GetType().Name + ")" + Environment.NewLine + pila +
+                   Environment.NewLine + Environment.NewLine + "Últimos pasos del menú:" + Environment.NewLine + UltimasTrazas();
         }
 
         protected override void BuildContextMenuItems(ContextMenuAddInRoot raizMenu)
@@ -116,6 +117,7 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoDiagnostico(MenuSelectionProvider seleccion)
         {
+            Traza("OnEstadoDiagnostico", seleccion);
             try
             {
                 IEngineeringObject[] sel = seleccion.GetSelection().OfType<IEngineeringObject>().ToArray();
@@ -126,12 +128,34 @@ namespace ExportarXml
         }
 
         /// <summary>Errores al decidir qué opciones del menú se ven (TIA las oculta si salta una excepción).</summary>
-        private static readonly string LogMenu = Path.Combine(Path.GetTempPath(), "ExportarXml_menu.log");
+        // En Documentos: el Add-In corre en otro proceso y su %TEMP% puede no ser el del usuario.
+        private static readonly string LogMenu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ExportarXml_menu.log");
+
+        // Traza en memoria de lo que ha hecho el menú (sale en los mensajes de error) y en LogMenu.
+        private static readonly List<string> _traza = new List<string>();
+
+        private static void Traza(string texto)
+        {
+            string linea = DateTime.Now.ToString("HH:mm:ss.fff") + "  " + texto;
+            lock (_traza) { _traza.Add(linea); if (_traza.Count > 40) _traza.RemoveAt(0); }
+            try { File.AppendAllText(LogMenu, linea + Environment.NewLine, Encoding.UTF8); } catch { }
+        }
+
+        private void Traza(string donde, MenuSelectionProvider seleccion)
+        {
+            string tipos = "";
+            try { tipos = string.Join(", ", seleccion.GetSelection().Select(o => o?.GetType().Name ?? "null").Distinct()); } catch (Exception ex) { tipos = "selección ilegible: " + ex.GetType().Name; }
+            Traza(donde + " · " + tipos + " · TiaPortal " + (Vivo(_tiaInicial) ? "vivo" : "LIBERADO"));
+        }
+
+        private static string UltimasTrazas()
+        {
+            lock (_traza) return string.Join(Environment.NewLine, _traza.Skip(Math.Max(0, _traza.Count - 15)));
+        }
 
         private static void Apuntar(string donde, Exception ex)
         {
-            try { File.AppendAllText(LogMenu, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "  " + donde + ": " + ex + Environment.NewLine + Environment.NewLine, Encoding.UTF8); }
-            catch { }
+            Traza("EXCEPCIÓN en " + donde + ": " + ex.GetType().Name + ": " + ex.Message);
         }
 
         private static bool EsExportableSeguro(IEngineeringObject o)
@@ -154,6 +178,7 @@ namespace ExportarXml
 
         private void OnDiagnostico(MenuSelectionProvider seleccion)
         {
+            Traza("OnDiagnostico", seleccion);
             Preparar(seleccion);
             try
             {
@@ -171,12 +196,14 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoImportar(MenuSelectionProvider seleccion)
         {
+            Traza("OnEstadoImportar", seleccion);
             try { return DestinoImportacion(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
             catch (Exception ex) { Apuntar("Importar", ex); return MenuStatus.Hidden; }
         }
 
         private void OnImportarFicheros(MenuSelectionProvider seleccion)
         {
+            Traza("OnImportarFicheros", seleccion);
             Preparar(seleccion);
             try
             {
@@ -204,6 +231,7 @@ namespace ExportarXml
 
         private void OnDeshacer(MenuSelectionProvider seleccion)
         {
+            Traza("OnDeshacer", seleccion);
             Preparar(seleccion);
             try
             {
@@ -224,6 +252,7 @@ namespace ExportarXml
 
         private void OnImportarCarpeta(MenuSelectionProvider seleccion)
         {
+            Traza("OnImportarCarpeta", seleccion);
             Preparar(seleccion);
             try
             {
@@ -255,6 +284,7 @@ namespace ExportarXml
 
         private MenuStatus OnEstado(MenuSelectionProvider seleccion)
         {
+            Traza("OnEstado", seleccion);
             try
             {
                 return seleccion.GetSelection().OfType<IEngineeringObject>().Any(EsExportableSeguro)
@@ -275,6 +305,7 @@ namespace ExportarXml
 
         private void OnExportar(MenuSelectionProvider seleccion)
         {
+            Traza("OnExportar", seleccion);
             Preparar(seleccion);
             try
             {
@@ -302,12 +333,14 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoPantallas(MenuSelectionProvider seleccion)
         {
+            Traza("OnEstadoPantallas", seleccion);
             try { return PanelUnified(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
             catch (Exception ex) { Apuntar("Pantallas", ex); return MenuStatus.Hidden; }
         }
 
         private void OnExportarPantallas(MenuSelectionProvider seleccion)
         {
+            Traza("OnExportarPantallas", seleccion);
             Preparar(seleccion);
             try
             {
@@ -329,7 +362,9 @@ namespace ExportarXml
 
         private void Exportar(IEngineeringObject[] objetos, ICollection<string> pantallasElegidas = null)
         {
-            Project proyecto = ProyectoDe(objetos) ?? _tia.Projects.FirstOrDefault();
+            Project proyecto = ProyectoDe(objetos);
+            Traza("Exportar: proyecto de la selección " + (proyecto == null ? "NO encontrado" : "encontrado") + " · TiaPortal " + (Vivo(_tiaInicial) ? "vivo" : "LIBERADO"));
+            if (proyecto == null) proyecto = _tia.Projects.FirstOrDefault();
             if (proyecto == null) return;
 
             string fecha = DateTime.Now.ToString("yyyyMMdd_HHmmss");
@@ -356,6 +391,7 @@ namespace ExportarXml
                 foreach (IEngineeringObject obj in objetos.Where(EsExportableSeguro))
                 {
                     if (ea.IsCancellationRequested) break;
+                    Traza("Exportar " + obj.GetType().Name + " · TiaPortal " + (Vivo(_tiaInicial) ? "vivo" : "LIBERADO"));
 
                     // CPU de origen de lo que se exporta (para el importador y para _info.md)
                     PlcSoftware plc = Importador.ObtenerPlc(obj);
