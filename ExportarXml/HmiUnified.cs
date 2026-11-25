@@ -93,6 +93,20 @@ namespace ExportarXml
             return p;
         }
 
+        /// <summary>"HMI_RT_1 (HMI_1): MTP1500 Unified Comfort · 6AV2…" a partir del dispositivo seleccionado (sin buscar en el proyecto).</summary>
+        public static string PanelDe(object seleccionado, object sw)
+        {
+            string p = Hmi.Panel(sw);
+            if (p.IndexOf(':') >= 0) return p;
+            try
+            {
+                string m = Modelo(seleccionado, 0);
+                if (m.Length > 0) return Texto(sw, "Name") + " (" + Texto(seleccionado, "Name") + "): " + m;
+            }
+            catch { }
+            return p;
+        }
+
         private static string Modelo(object d, int nivel)
         {
             if (d == null || nivel > 4) return "";
@@ -196,9 +210,9 @@ namespace ExportarXml
         /// filtro: una pantalla o un grupo de pantallas (solo eso), o null (todas).
         /// </summary>
         public static void Exportar(object sw, string carpeta, ExclusiveAccess ea, StringBuilder log, Dictionary<string, int> recuento,
-                                    ref int ok, ref int errores, object filtro = null, ICollection<string> elegidas = null, TiaPortal tia = null)
+                                    ref int ok, ref int errores, object filtro = null, ICollection<string> elegidas = null, string panel = null)
         {
-            string panel = Panel(tia, sw);
+            if (string.IsNullOrEmpty(panel)) panel = Hmi.Panel(sw);
             string raiz = Path.Combine(carpeta, Limpio(Texto(sw, "Name")));
             if (!EsComfort(panel))
                 log.AppendLine("Aviso: " + panel + " no parece un Unified Comfort Panel; esta parte del Add-In está probada en MTP1500.");

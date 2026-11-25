@@ -37,64 +37,11 @@ namespace ExportarXml
     /// </summary>
     public class ExportarXmlAddIn : ContextMenuAddIn
     {
-        private readonly TiaPortal _tiaInicial;
-        private TiaPortal _tiaProyecto; // se guarda en un campo para que no lo finalice el recolector de basura
+        private readonly TiaPortal _tia;
 
         public ExportarXmlAddIn(TiaPortal tia) : base("XML")
         {
-            _tiaInicial = tia;
-        }
-
-        /// <summary>
-        /// TiaPortal para trabajar. El que llega al constructor puede estar liberado aunque la sesión siga viva
-        /// ("Access to a disposed object of type TiaPortal" en TiaPortal.Projects); entonces se usa el del
-        /// proyecto de lo seleccionado (Project.Parent), que se toma en Preparar() al principio de cada acción.
-        /// </summary>
-        private TiaPortal _tia => Vivo(_tiaInicial) ? _tiaInicial : (_tiaProyecto ?? _tiaInicial);
-
-        private static bool Vivo(TiaPortal t)
-        {
-            if (t == null) return false;
-            try { return t.Projects.Count >= 0; }
-            catch { return false; }
-        }
-
-        /// <summary>El proyecto de lo seleccionado (subiendo por Parent hasta Project, sin pasar de él).</summary>
-        private static Project ProyectoDe(IEnumerable<IEngineeringObject> objetos)
-        {
-            foreach (IEngineeringObject o in objetos)
-            {
-                try
-                {
-                    for (IEngineeringObject x = o; x != null; x = Hmi.Padre(x))
-                        if (x is Project p) return p;
-                }
-                catch { }
-            }
-            return null;
-        }
-
-        private void Preparar(MenuSelectionProvider seleccion)
-        {
-            if (Vivo(_tiaInicial)) return;
-            if (Vivo(_tiaProyecto)) return;
-            try
-            {
-                Project p = ProyectoDe(seleccion.GetSelection().OfType<IEngineeringObject>());
-                object padre = p == null ? null : ((IEngineeringObject)p).Parent;
-                _tiaProyecto = padre as TiaPortal;
-                Apuntar("TiaPortal", new Exception("el del constructor está liberado; del proyecto: " +
-                        (_tiaProyecto == null ? "no encontrado" : Vivo(_tiaProyecto) ? "vivo" : "también liberado")));
-            }
-            catch (Exception ex) { Apuntar("TiaPortal del proyecto", ex); }
-        }
-
-        private static string Detalle(Exception ex)
-        {
-            Exception e = ex is System.Reflection.TargetInvocationException && ex.InnerException != null ? ex.InnerException : ex;
-            string pila = string.Join(Environment.NewLine, (e.StackTrace ?? "").Split('\n').Take(8).Select(l => l.TrimEnd()));
-            return e.Message + Environment.NewLine + Environment.NewLine + "(" + e.GetType().Name + ")" + Environment.NewLine + pila +
-                   Environment.NewLine + Environment.NewLine + "Últimos pasos del menú:" + Environment.NewLine + UltimasTrazas();
+            _tia = tia;
         }
 
         protected override void BuildContextMenuItems(ContextMenuAddInRoot raizMenu)
@@ -104,107 +51,22 @@ namespace ExportarXml
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar ficheros (xml, sd, fuentes, zip)...", OnImportarFicheros, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar carpeta...", OnImportarCarpeta, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Deshacer última importación", OnDeshacer, OnEstadoImportar);
-            raizMenu.Items.AddActionItem<IEngineeringObject>("Diagnóstico de la selección", OnDiagnostico, OnEstadoDiagnostico);
         }
 
         // ---------- Importación ----------
 
-        private IEngineeringObject DestinoImportacion(MenuSelectionProvider seleccion) => DestinoImportacionSegura(seleccion);
-
-        // ---------- Diagnóstico ----------
-        // Sale solo cuando no sale nada más (lo seleccionado no se puede exportar ni es destino de importación):
-        // dice qué tipo de objeto da TIA y hasta dónde llega su Parent, para poder añadirlo.
-
-        private MenuStatus OnEstadoDiagnostico(MenuSelectionProvider seleccion)
+        private static IEngineeringObject DestinoImportacion(MenuSelectionProvider seleccion)
         {
-            Traza("OnEstadoDiagnostico", seleccion);
-            try
-            {
-                IEngineeringObject[] sel = seleccion.GetSelection().OfType<IEngineeringObject>().ToArray();
-                if (sel.Length == 0) return MenuStatus.Hidden;
-                return sel.Any(EsExportableSeguro) || DestinoImportacionSegura(seleccion) != null ? MenuStatus.Hidden : MenuStatus.Enabled;
-            }
-            catch (Exception ex) { Apuntar("Diagnóstico", ex); return MenuStatus.Enabled; }
-        }
-
-        /// <summary>Errores al decidir qué opciones del menú se ven (TIA las oculta si salta una excepción).</summary>
-        // En Documentos: el Add-In corre en otro proceso y su %TEMP% puede no ser el del usuario.
-        private static readonly string LogMenu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ExportarXml_menu.log");
-
-        // Traza en memoria de lo que ha hecho el menú (sale en los mensajes de error) y en LogMenu.
-        private static readonly List<string> _traza = new List<string>();
-
-        private static void Traza(string texto)
-        {
-            string linea = DateTime.Now.ToString("HH:mm:ss.fff") + "  " + texto;
-            lock (_traza) { _traza.Add(linea); if (_traza.Count > 40) _traza.RemoveAt(0); }
-            try { File.AppendAllText(LogMenu, linea + Environment.NewLine, Encoding.UTF8); } catch { }
-        }
-
-        private void Traza(string donde, MenuSelectionProvider seleccion)
-        {
-            string tipos = "";
-            try { tipos = string.Join(", ", seleccion.GetSelection().Select(o => o?.GetType().Name ?? "null").Distinct()); } catch (Exception ex) { tipos = "selección ilegible: " + ex.GetType().Name; }
-            Traza(donde + " · " + tipos + " · TiaPortal " + (Vivo(_tiaInicial) ? "vivo" : "LIBERADO"));
-        }
-
-        private static string UltimasTrazas()
-        {
-            lock (_traza) return string.Join(Environment.NewLine, _traza.Skip(Math.Max(0, _traza.Count - 15)));
-        }
-
-        private static void Apuntar(string donde, Exception ex)
-        {
-            Traza("EXCEPCIÓN en " + donde + ": " + ex.GetType().Name + ": " + ex.Message);
-        }
-
-        private static bool EsExportableSeguro(IEngineeringObject o)
-        {
-            try { return EsExportable(o); } catch (Exception ex) { Apuntar("EsExportable " + o?.GetType().FullName, ex); return false; }
-        }
-
-        private IEngineeringObject DestinoImportacionSegura(MenuSelectionProvider seleccion)
-        {
-            foreach (IEngineeringObject o in seleccion.GetSelection().OfType<IEngineeringObject>())
-            {
-                // cada comprobación por separado: si una falla (p. ej. la del PLC en un panel), se prueba la siguiente
-                try { if (Importador.EsDestino(o)) return o; }
-                catch (Exception ex) { Apuntar("Destino " + o?.GetType().FullName, ex); }
-                try { if (HmiUnified.Software(_tia, o) != null) return o; }
-                catch (Exception ex) { Apuntar("Destino Unified " + o?.GetType().FullName, ex); }
-            }
-            return null;
-        }
-
-        private void OnDiagnostico(MenuSelectionProvider seleccion)
-        {
-            Traza("OnDiagnostico", seleccion);
-            Preparar(seleccion);
-            try
-            {
-                Dialogos.Informar("Lo seleccionado no se puede exportar ni importar con esta versión del Add-In." + Environment.NewLine +
-                                  "Pasa este texto (Ctrl+C copia el mensaje) para añadirlo:" + Environment.NewLine + Environment.NewLine +
-                                  HmiUnified.Diagnostico(_tia, seleccion.GetSelection().Cast<object>()) +
-                                  (File.Exists(LogMenu) ? "Errores del menú (" + LogMenu + "):" + Environment.NewLine +
-                                      string.Join(Environment.NewLine, File.ReadAllLines(LogMenu).Reverse().Take(30).Reverse()) : ""), "Diagnóstico", false);
-            }
-            catch (Exception ex)
-            {
-                Dialogos.Informar("Error en el diagnóstico:" + Environment.NewLine + Detalle(ex), "Diagnóstico", true);
-            }
+            return seleccion.GetSelection().OfType<IEngineeringObject>().FirstOrDefault(Importador.EsDestino);
         }
 
         private MenuStatus OnEstadoImportar(MenuSelectionProvider seleccion)
         {
-            Traza("OnEstadoImportar", seleccion);
-            try { return DestinoImportacion(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
-            catch (Exception ex) { Apuntar("Importar", ex); return MenuStatus.Hidden; }
+            return DestinoImportacion(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden;
         }
 
         private void OnImportarFicheros(MenuSelectionProvider seleccion)
         {
-            Traza("OnImportarFicheros", seleccion);
-            Preparar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -215,7 +77,7 @@ namespace ExportarXml
             }
             catch (Exception ex)
             {
-                Dialogos.Informar("Error inesperado al importar:" + Environment.NewLine + Detalle(ex), "Importar XML", true);
+                Dialogos.Informar("Error inesperado al importar:" + Environment.NewLine + ex.Message, "Importar XML", true);
             }
         }
 
@@ -225,14 +87,12 @@ namespace ExportarXml
             if (Importador.ObtenerPlc(destino) != null) { Importador.Ejecutar(_tia, destino, ficheros); return; }
             object hmi = Hmi.ObtenerHmi(destino);
             if (hmi != null) { Hmi.Importar(_tia, hmi, ficheros); return; }
-            object unified = HmiUnified.Software(_tia, destino);
+            object unified = Hmi.ObtenerUnified(destino);
             if (unified != null) HmiUnified.Importar(_tia, unified, ficheros);
         }
 
         private void OnDeshacer(MenuSelectionProvider seleccion)
         {
-            Traza("OnDeshacer", seleccion);
-            Preparar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -246,14 +106,12 @@ namespace ExportarXml
             }
             catch (Exception ex)
             {
-                Dialogos.Informar("Error inesperado al deshacer:" + Environment.NewLine + Detalle(ex), "Deshacer", true);
+                Dialogos.Informar("Error inesperado al deshacer:" + Environment.NewLine + ex.Message, "Deshacer", true);
             }
         }
 
         private void OnImportarCarpeta(MenuSelectionProvider seleccion)
         {
-            Traza("OnImportarCarpeta", seleccion);
-            Preparar(seleccion);
             try
             {
                 IEngineeringObject destino = DestinoImportacion(seleccion);
@@ -276,7 +134,7 @@ namespace ExportarXml
             }
             catch (Exception ex)
             {
-                Dialogos.Informar("Error inesperado al importar:" + Environment.NewLine + Detalle(ex), "Importar XML", true);
+                Dialogos.Informar("Error inesperado al importar:" + Environment.NewLine + ex.Message, "Importar XML", true);
             }
         }
 
@@ -284,14 +142,9 @@ namespace ExportarXml
 
         private MenuStatus OnEstado(MenuSelectionProvider seleccion)
         {
-            Traza("OnEstado", seleccion);
-            try
-            {
-                return seleccion.GetSelection().OfType<IEngineeringObject>().Any(EsExportableSeguro)
-                    ? MenuStatus.Enabled
-                    : MenuStatus.Hidden;
-            }
-            catch (Exception ex) { Apuntar("Exportar", ex); return MenuStatus.Hidden; }
+            return seleccion.GetSelection().OfType<IEngineeringObject>().Any(EsExportable)
+                ? MenuStatus.Enabled
+                : MenuStatus.Hidden;
         }
 
         private static bool EsExportable(IEngineeringObject o)
@@ -299,49 +152,47 @@ namespace ExportarXml
             return o is PlcBlock || o is PlcBlockGroup
                 || o is PlcType || o is PlcTypeGroup
                 || o is PlcTagTable || o is PlcTagTableGroup
-                || o is PlcSoftware || o is Device || o is DeviceItem
-                || HmiUnified.EsSeleccionable(o);
+                || o is PlcSoftware || o is Device || o is DeviceItem;
         }
 
         private void OnExportar(MenuSelectionProvider seleccion)
         {
-            Traza("OnExportar", seleccion);
-            Preparar(seleccion);
             try
             {
                 Exportar(seleccion.GetSelection().OfType<IEngineeringObject>().ToArray());
             }
             catch (Exception ex)
             {
-                Dialogos.Informar("Error inesperado al exportar:" + Environment.NewLine + Detalle(ex), "Exportar", true);
+                Dialogos.Informar("Error inesperado al exportar:" + Environment.NewLine + ex.Message, "Exportar", true);
             }
         }
 
         // ---------- Pantallas Unified elegidas ----------
-        // TIA no pasa al Add-In las pantallas Unified seleccionadas en el árbol (el menú sale vacío),
+        // TIA V20 no pasa al Add-In las pantallas Unified seleccionadas en el árbol (el menú sale vacío),
         // así que se elige el panel y aquí se marcan las pantallas.
+        // OJO: en las funciones de estado del menú (OnEstado*) no se toca el TiaPortal ni se hace nada pesado:
+        // solo comprobaciones como las de la v2.4.10. Si no, TIA libera el TiaPortal del Add-In
+        // ("Access to a disposed object of type TiaPortal") y deja de funcionar todo el menú.
 
-        private object PanelUnified(MenuSelectionProvider seleccion)
+        private static object PanelUnified(MenuSelectionProvider seleccion)
         {
             foreach (IEngineeringObject o in seleccion.GetSelection().OfType<IEngineeringObject>())
             {
-                try { if (Hmi.ObtenerHmi(o) == null) { object sw = HmiUnified.Software(_tia, o); if (sw != null) return sw; } }
-                catch (Exception ex) { Apuntar("Pantallas " + o?.GetType().FullName, ex); }
+                if (!(o is Device || o is DeviceItem)) continue;
+                object sw = Hmi.ObtenerUnified(o);
+                if (sw != null) return sw;
             }
             return null;
         }
 
         private MenuStatus OnEstadoPantallas(MenuSelectionProvider seleccion)
         {
-            Traza("OnEstadoPantallas", seleccion);
             try { return PanelUnified(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
-            catch (Exception ex) { Apuntar("Pantallas", ex); return MenuStatus.Hidden; }
+            catch { return MenuStatus.Hidden; }
         }
 
         private void OnExportarPantallas(MenuSelectionProvider seleccion)
         {
-            Traza("OnExportarPantallas", seleccion);
-            Preparar(seleccion);
             try
             {
                 object sw = PanelUnified(seleccion);
@@ -352,19 +203,18 @@ namespace ExportarXml
                     "Marca las pantallas que quieres exportar (grupo/pantalla). Se puede filtrar escribiendo en Buscar.", todas);
                 if (elegidas == null) return;
                 if (elegidas.Count == 0) { Dialogos.Informar("No has marcado ninguna pantalla.", "Exportar pantallas Unified", false); return; }
-                Exportar(new[] { (IEngineeringObject)seleccion.GetSelection().OfType<IEngineeringObject>().First() }, new HashSet<string>(elegidas, StringComparer.Ordinal));
+                Exportar(seleccion.GetSelection().OfType<IEngineeringObject>().Where(o => o is Device || o is DeviceItem).Take(1).ToArray(),
+                         new HashSet<string>(elegidas, StringComparer.Ordinal));
             }
             catch (Exception ex)
             {
-                Dialogos.Informar("Error inesperado al exportar:" + Environment.NewLine + Detalle(ex), "Exportar pantallas Unified", true);
+                Dialogos.Informar("Error inesperado al exportar:" + Environment.NewLine + ex.Message, "Exportar pantallas Unified", true);
             }
         }
 
         private void Exportar(IEngineeringObject[] objetos, ICollection<string> pantallasElegidas = null)
         {
-            Project proyecto = ProyectoDe(objetos);
-            Traza("Exportar: proyecto de la selección " + (proyecto == null ? "NO encontrado" : "encontrado") + " · TiaPortal " + (Vivo(_tiaInicial) ? "vivo" : "LIBERADO"));
-            if (proyecto == null) proyecto = _tia.Projects.FirstOrDefault();
+            Project proyecto = _tia.Projects.FirstOrDefault();
             if (proyecto == null) return;
 
             string fecha = DateTime.Now.ToString("yyyyMMdd_HHmmss");
@@ -388,10 +238,9 @@ namespace ExportarXml
 
             using (ExclusiveAccess ea = _tia.ExclusiveAccess("Exportando..."))
             {
-                foreach (IEngineeringObject obj in objetos.Where(EsExportableSeguro))
+                foreach (IEngineeringObject obj in objetos.Where(EsExportable))
                 {
                     if (ea.IsCancellationRequested) break;
-                    Traza("Exportar " + obj.GetType().Name + " · TiaPortal " + (Vivo(_tiaInicial) ? "vivo" : "LIBERADO"));
 
                     // CPU de origen de lo que se exporta (para el importador y para _info.md)
                     PlcSoftware plc = Importador.ObtenerPlc(obj);
@@ -410,21 +259,17 @@ namespace ExportarXml
                         paneles.Add(Hmi.Panel(hmi));
                         Hmi.Exportar(hmi, Path.Combine(raiz, "HMI"), ea, logHmi, recuentoHmi, ref okHmi, ref errHmi);
                     }
-                    // WinCC Unified: pantallas en JSON
-                    // (dispositivo o software completo, o solo la pantalla / grupo de pantallas seleccionado)
-                    object unified = hmi == null ? HmiUnified.Software(_tia, obj) : null;
-                    object filtro = HmiUnified.EsPantallaOGrupo(obj) ? obj : null;
-                    string clave = unified == null ? null : HmiUnified.Panel(_tia, unified) + (filtro != null ? " › " + HmiUnified.Nombre(filtro) : "");
-                    if (unified != null && !panelesUnified.Contains(clave) && (filtro != null || !panelesUnified.Contains(HmiUnified.Panel(_tia, unified))))
+                    // WinCC Unified: pantallas en JSON (todas, o las elegidas en "Exportar pantallas Unified...")
+                    object unified = hmi == null ? Hmi.ObtenerUnified(obj) : null;
+                    if (unified != null)
                     {
-                        panelesUnified.Add(clave);
-                        HmiUnified.Exportar(unified, Path.Combine(raiz, "HMI_Unified"), ea, logHmi, recuentoUnified, ref okHmi, ref errHmi, filtro,
-                                            filtro == null ? pantallasElegidas : null, _tia);
-                    }
-                    else if (unified == null && hmi == null && HmiUnified.EsObjetoUnified(obj))
-                    {
-                        errHmi++;
-                        logHmi.AppendLine("ERROR  UNIF   " + HmiUnified.Nombre(obj) + ": no se encuentra su panel Unified. Exporta seleccionando el panel (HMI_RT_x).");
+                        string panel = HmiUnified.PanelDe(obj, unified);
+                        if (!panelesUnified.Contains(panel))
+                        {
+                            panelesUnified.Add(panel);
+                            HmiUnified.Exportar(unified, Path.Combine(raiz, "HMI_Unified"), ea, logHmi, recuentoUnified, ref okHmi, ref errHmi,
+                                                null, pantallasElegidas, panel);
+                        }
                     }
                 }
             }

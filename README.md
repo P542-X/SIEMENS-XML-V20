@@ -13,7 +13,6 @@ Clic derecho en el árbol del proyecto → **XML**. Opciones:
 | **Importar ficheros (xml, sd, fuentes, zip)…** | Importa ficheros sueltos o el .zip de una exportación. |
 | **Importar carpeta…** | Importa todo lo importable de una carpeta y sus subcarpetas (sin los `.zip`: esos, con *Importar ficheros*). |
 | **Deshacer última importación** | Deja el PLC como estaba antes de la última importación. |
-| **Diagnóstico de la selección** | Solo sale si lo seleccionado no se puede exportar ni importar: dice qué tipo de objeto es, para poder añadirlo. |
 
 ### Pensado para trabajar con una IA
 
