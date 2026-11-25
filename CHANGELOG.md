@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.5.2
+- Menú *XML*: si al decidir qué opciones se ven salta una excepción (por ejemplo, al subir por `Parent` desde un objeto Unified), ya no se ocultan todas: se apunta en `%TEMP%\ExportarXml_menu.log` y el *Diagnóstico de la selección* la muestra.
+
 ## 2.5.1
 - WinCC Unified: el menú *XML* sale también al seleccionar una pantalla o un grupo de pantallas aunque su `Parent` no llegue al `HmiSoftware` (se busca el panel en los dispositivos del proyecto).
 - Nuevo **XML → Diagnóstico de la selección**: sale solo cuando lo seleccionado no se puede exportar ni importar; muestra el tipo de objeto que da TIA y su cadena de `Parent`.

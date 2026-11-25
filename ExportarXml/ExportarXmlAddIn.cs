@@ -55,11 +55,7 @@ namespace ExportarXml
 
         // ---------- Importación ----------
 
-        private IEngineeringObject DestinoImportacion(MenuSelectionProvider seleccion)
-        {
-            return seleccion.GetSelection().OfType<IEngineeringObject>()
-                .FirstOrDefault(o => Importador.EsDestino(o) || HmiUnified.Software(_tia, o) != null);
-        }
+        private IEngineeringObject DestinoImportacion(MenuSelectionProvider seleccion) => DestinoImportacionSegura(seleccion);
 
         // ---------- Diagnóstico ----------
         // Sale solo cuando no sale nada más (lo seleccionado no se puede exportar ni es destino de importación):
@@ -67,9 +63,37 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoDiagnostico(MenuSelectionProvider seleccion)
         {
-            IEngineeringObject[] sel = seleccion.GetSelection().OfType<IEngineeringObject>().ToArray();
-            if (sel.Length == 0) return MenuStatus.Hidden;
-            return sel.Any(EsExportable) || DestinoImportacion(seleccion) != null ? MenuStatus.Hidden : MenuStatus.Enabled;
+            try
+            {
+                IEngineeringObject[] sel = seleccion.GetSelection().OfType<IEngineeringObject>().ToArray();
+                if (sel.Length == 0) return MenuStatus.Hidden;
+                return sel.Any(EsExportableSeguro) || DestinoImportacionSegura(seleccion) != null ? MenuStatus.Hidden : MenuStatus.Enabled;
+            }
+            catch (Exception ex) { Apuntar("Diagnóstico", ex); return MenuStatus.Enabled; }
+        }
+
+        /// <summary>Errores al decidir qué opciones del menú se ven (TIA las oculta si salta una excepción).</summary>
+        private static readonly string LogMenu = Path.Combine(Path.GetTempPath(), "ExportarXml_menu.log");
+
+        private static void Apuntar(string donde, Exception ex)
+        {
+            try { File.AppendAllText(LogMenu, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "  " + donde + ": " + ex + Environment.NewLine + Environment.NewLine, Encoding.UTF8); }
+            catch { }
+        }
+
+        private static bool EsExportableSeguro(IEngineeringObject o)
+        {
+            try { return EsExportable(o); } catch (Exception ex) { Apuntar("EsExportable " + o?.GetType().FullName, ex); return false; }
+        }
+
+        private IEngineeringObject DestinoImportacionSegura(MenuSelectionProvider seleccion)
+        {
+            foreach (IEngineeringObject o in seleccion.GetSelection().OfType<IEngineeringObject>())
+            {
+                try { if (Importador.EsDestino(o) || HmiUnified.Software(_tia, o) != null) return o; }
+                catch (Exception ex) { Apuntar("Destino " + o?.GetType().FullName, ex); }
+            }
+            return null;
         }
 
         private void OnDiagnostico(MenuSelectionProvider seleccion)
@@ -78,7 +102,9 @@ namespace ExportarXml
             {
                 Dialogos.Informar("Lo seleccionado no se puede exportar ni importar con esta versión del Add-In." + Environment.NewLine +
                                   "Pasa este texto (Ctrl+C copia el mensaje) para añadirlo:" + Environment.NewLine + Environment.NewLine +
-                                  HmiUnified.Diagnostico(_tia, seleccion.GetSelection().Cast<object>()), "Diagnóstico", false);
+                                  HmiUnified.Diagnostico(_tia, seleccion.GetSelection().Cast<object>()) +
+                                  (File.Exists(LogMenu) ? "Errores del menú (" + LogMenu + "):" + Environment.NewLine +
+                                      string.Join(Environment.NewLine, File.ReadAllLines(LogMenu).Reverse().Take(30).Reverse()) : ""), "Diagnóstico", false);
             }
             catch (Exception ex)
             {
@@ -88,7 +114,8 @@ namespace ExportarXml
 
         private MenuStatus OnEstadoImportar(MenuSelectionProvider seleccion)
         {
-            return DestinoImportacion(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden;
+            try { return DestinoImportacion(seleccion) != null ? MenuStatus.Enabled : MenuStatus.Hidden; }
+            catch (Exception ex) { Apuntar("Importar", ex); return MenuStatus.Hidden; }
         }
 
         private void OnImportarFicheros(MenuSelectionProvider seleccion)
@@ -168,9 +195,13 @@ namespace ExportarXml
 
         private MenuStatus OnEstado(MenuSelectionProvider seleccion)
         {
-            return seleccion.GetSelection().OfType<IEngineeringObject>().Any(EsExportable)
-                ? MenuStatus.Enabled
-                : MenuStatus.Hidden;
+            try
+            {
+                return seleccion.GetSelection().OfType<IEngineeringObject>().Any(EsExportableSeguro)
+                    ? MenuStatus.Enabled
+                    : MenuStatus.Hidden;
+            }
+            catch (Exception ex) { Apuntar("Exportar", ex); return MenuStatus.Hidden; }
         }
 
         private static bool EsExportable(IEngineeringObject o)
@@ -220,7 +251,7 @@ namespace ExportarXml
 
             using (ExclusiveAccess ea = _tia.ExclusiveAccess("Exportando..."))
             {
-                foreach (IEngineeringObject obj in objetos.Where(EsExportable))
+                foreach (IEngineeringObject obj in objetos.Where(EsExportableSeguro))
                 {
                     if (ea.IsCancellationRequested) break;
 

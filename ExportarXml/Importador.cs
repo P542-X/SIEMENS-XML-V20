@@ -121,10 +121,14 @@ namespace ExportarXml
                 return null;
             }
 
-            for (IEngineeringObject x = o; x != null; x = x.Parent)
+            try
             {
-                if (x is PlcSoftware plc) return plc;
+                for (IEngineeringObject x = o; x != null; x = x.Parent)
+                {
+                    if (x is PlcSoftware plc) return plc;
+                }
             }
+            catch { }
             return null;
         }
 
