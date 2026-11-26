@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.7.0
+- **Alarmas HMI Unified (en prueba)**: *Exportar selección* sobre el panel deja `Alarmas/<lista>.json` por cada lista de alarmas del software (`DiscreteAlarms`, `AnalogAlarms`, `AlarmClasses`…, todas sus propiedades). *Importar ficheros* acepta esos JSON (`"$tipo": "HmiAlarmas"`, `"$nombre"` = la lista, `"Alarmas"` = los elementos): crea las que no existen y, si se elige sobrescribir, actualiza las que ya están. Se importan después de las variables y antes de las pantallas.
+
 ## 2.6.5
 - Diagnóstico de capas: al exportar pantallas Unified se deja `_capas_api.txt` con todo lo que en los ensamblados `Siemens.Engineering*` cargados tiene *Layer* en el nombre (tipos, enumeraciones, propiedades públicas o no, también de interfaces, y métodos). Para saber si la API de V20 permite asignar la capa por algún otro camino.
 

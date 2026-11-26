@@ -322,6 +322,31 @@ namespace ExportarXml
                 if (tablas > 0) recuento["Tablas de variables (aún no se importan)"] = tablas;
             }
             catch (Exception ex) { log.AppendLine("Aviso: tablas de variables HMI sin exportar (" + Mensaje(ex) + ")"); }
+
+            // Alarmas HMI (discretas, analógicas…) y clases de alarma: una lista por composición del software
+            // cuyo nombre lleva "Alarm" (DiscreteAlarms, AnalogAlarms, AlarmClasses…), para importarlas igual.
+            if (filtro == null && elegidas == null) try
+            {
+                foreach (PropertyInfo pa in sw.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                              .Where(x => x.GetIndexParameters().Length == 0 && x.Name.IndexOf("Alarm", StringComparison.Ordinal) >= 0))
+                {
+                    if (ea.IsCancellationRequested) return;
+                    object comp;
+                    try { comp = pa.GetValue(sw, null); } catch { continue; }
+                    if (comp == null || !EsComposicion(comp)) continue;
+                    ea.Text = "Exportando " + pa.Name + "...";
+                    List<object> l = Items(comp).Select(x => (object)Objeto(x, true, 0)).ToList();
+                    Liberar();
+                    string dir = Path.Combine(raiz, "Alarmas");
+                    Directory.CreateDirectory(dir);
+                    File.WriteAllText(Path.Combine(dir, pa.Name + ".json"), Json.Escribir(new Dictionary<string, object>
+                    {
+                        ["$formato"] = Formato, ["$tipo"] = "HmiAlarmas", ["$nombre"] = pa.Name, ["Alarmas"] = l
+                    }), new UTF8Encoding(false));
+                    recuento[pa.Name] = l.Count;
+                }
+            }
+            catch (Exception ex) { log.AppendLine("Aviso: alarmas HMI sin exportar (" + Mensaje(ex) + ")"); }
         }
 
         /// <summary>
@@ -583,6 +608,7 @@ namespace ExportarXml
             // Pantallas y tablas de variables en JSON; lo demás se ignora
             List<(string Ruta, string Nombre, string Grupo, Dictionary<string, object> D)> pantallas = new List<(string, string, string, Dictionary<string, object>)>();
             List<(string Ruta, string Nombre, Dictionary<string, object> D)> tablas = new List<(string, string, Dictionary<string, object>)>();
+            List<(string Ruta, string Nombre, Dictionary<string, object> D)> alarmas = new List<(string, string, Dictionary<string, object>)>();
             int ignorados = 0;
             foreach (string ruta in Importador.AbrirZipsPublico(tia, rutas, log))
             {
@@ -595,6 +621,12 @@ namespace ExportarXml
                         string nt = Cad(d, "$nombre");
                         if (string.IsNullOrEmpty(nt)) throw new Exception("falta \"$nombre\" de la tabla de variables");
                         tablas.Add((ruta, nt, d));
+                        continue;
+                    }
+                    if (d != null && Cad(d, "$tipo") == "HmiAlarmas")
+                    {
+                        if (string.IsNullOrEmpty(Cad(d, "$nombre"))) throw new Exception("falta \"$nombre\" (DiscreteAlarms, AnalogAlarms…)");
+                        alarmas.Add((ruta, Cad(d, "$nombre"), d));
                         continue;
                     }
                     if (d == null || Cad(d, "$tipo") != "HmiScreen")
@@ -613,7 +645,7 @@ namespace ExportarXml
                     log.AppendLine("ERROR    " + ruta + " -> " + Mensaje(ex));
                 }
             }
-            if (pantallas.Count == 0 && tablas.Count == 0)
+            if (pantallas.Count == 0 && tablas.Count == 0 && alarmas.Count == 0)
             {
                 Dialogos.Informar("No hay pantallas ni tablas de variables WinCC Unified (.json con \"$tipo\": \"HmiScreen\" o \"HmiTagTable\") en lo elegido." + Environment.NewLine +
                                   "Detalle:" + Environment.NewLine + log, "Importar HMI Unified", true);
@@ -623,13 +655,22 @@ namespace ExportarXml
             var existentes = pantallas.Where(p => BuscarPantalla(sw, p.Nombre) != null).ToList();
             HashSet<string> varsExistentes = new HashSet<string>(TodasLasVariables(sw).Select(Nombre), StringComparer.OrdinalIgnoreCase);
             List<string> varsRepetidas = tablas.SelectMany(x => VariablesDe(x.D)).Select(x => Cad(x, "$nombre")).Where(n => n != null && varsExistentes.Contains(n)).ToList();
+            // las alarmas que ya existen cuentan como "variables" para la pregunta de sobrescribir
+            foreach (var al in alarmas)
+                try
+                {
+                    HashSet<string> ya = new HashSet<string>(Items(Prop(sw, al.Nombre)).Select(Nombre), StringComparer.OrdinalIgnoreCase);
+                    if (al.D.TryGetValue("Alarmas", out object la) && la is List<object> ll)
+                        varsRepetidas.AddRange(ll.OfType<Dictionary<string, object>>().Select(e => Cad(e, "$nombre")).Where(n => n != null && ya.Contains(n)));
+                }
+                catch { }
             bool sobrescribir = false;
             if (existentes.Count > 0 || varsRepetidas.Count > 0)
             {
                 List<string> nombres = existentes.Select(e => e.Nombre).Concat(varsRepetidas).ToList();
                 Respuesta r = Dialogos.Preguntar((existentes.Count > 0 ? existentes.Count + " pantalla(s)" : "") +
                                                  (existentes.Count > 0 && varsRepetidas.Count > 0 ? " y " : "") +
-                                                 (varsRepetidas.Count > 0 ? varsRepetidas.Count + " variable(s) HMI" : "") + " ya existen (" +
+                                                 (varsRepetidas.Count > 0 ? varsRepetidas.Count + " variable(s) o alarma(s) HMI" : "") + " ya existen (" +
                                                  string.Join(", ", nombres.Take(6)) + (nombres.Count > 6 ? ", …" : "") + ")." +
                                                  Environment.NewLine + Environment.NewLine +
                                                  "Sí / Yes → sobrescribir (se vacían y se rellenan; la pantalla se mantiene y no se rompen las referencias a ella)" +
@@ -646,7 +687,7 @@ namespace ExportarXml
             string fecha = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string dirImport = Path.Combine(proyecto.Path.DirectoryName, "Import_XML");
             string copia = Path.Combine(dirImport, "copia_unified_" + fecha);
-            int importadas = 0, conError = 0, varsNuevas = 0, varsActualizadas = 0, varsError = 0;
+            int importadas = 0, conError = 0, varsNuevas = 0, varsActualizadas = 0, varsError = 0, alarmasHechas = 0;
             string compilacion = "no realizada";
 
             using (ExclusiveAccess ea = tia.ExclusiveAccess("Importando pantallas Unified..."))
@@ -696,6 +737,30 @@ namespace ExportarXml
                 }
                 if (tablas.Count > 0) log.AppendLine();
 
+                // Alarmas después de las variables (sus disparadores las nombran) y antes de las pantallas
+                foreach (var al in alarmas)
+                {
+                    if (ea.IsCancellationRequested) break;
+                    ea.Text = "Importando " + al.Nombre + "...";
+                    log.AppendLine("ALARMAS  " + al.Nombre + "  <-  " + al.Ruta);
+                    try
+                    {
+                        object comp = Prop(sw, al.Nombre);
+                        if (comp == null || !EsComposicion(comp)) throw new Exception("el HMI no tiene la lista " + al.Nombre);
+                        List<Dictionary<string, object>> lista = (al.D.TryGetValue("Alarmas", out object la) ? la as List<object> : null)?
+                            .OfType<Dictionary<string, object>>().ToList() ?? new List<Dictionary<string, object>>();
+                        HashSet<string> ya = new HashSet<string>(Items(comp).Select(Nombre), StringComparer.OrdinalIgnoreCase);
+                        if (!sobrescribir) lista = lista.Where(e => !ya.Contains(Cad(e, "$nombre") ?? "")).ToList();
+                        int avisos = c.Avisos;
+                        LlenarComposicion(comp, lista, c, al.Nombre);
+                        alarmasHechas += lista.Count;
+                        log.AppendLine("OK       " + lista.Count + " en " + al.Nombre + (c.Avisos > avisos ? "  (" + (c.Avisos - avisos) + " aviso/s)" : ""));
+                    }
+                    catch (Exception ex) { log.AppendLine("ERROR    " + al.Nombre + " -> " + Mensaje(ex)); }
+                    Liberar();
+                }
+                if (alarmas.Count > 0) log.AppendLine();
+
                 foreach (var p in pendientes)
                 {
                     if (ea.IsCancellationRequested) break;
@@ -739,7 +804,7 @@ namespace ExportarXml
                 if (c.IdiomasQuitados.Count > 0)
                     log.AppendLine("Textos en " + string.Join(", ", c.IdiomasQuitados) + " no importados: el proyecto no tiene ese idioma.");
 
-                if (importadas > 0 || varsNuevas + varsActualizadas > 0)
+                if (importadas > 0 || varsNuevas + varsActualizadas > 0 || alarmasHechas > 0)
                 {
                     try
                     {
@@ -762,6 +827,7 @@ namespace ExportarXml
                              "   Ignorados: " + ignorados + Environment.NewLine +
                              (tablas.Count > 0 ? "Variables HMI: " + varsNuevas + " nuevas, " + varsActualizadas + " actualizadas, " + varsError + " con error (" +
                                                  tablas.Count + " tabla/s)" + Environment.NewLine : "") +
+                             (alarmas.Count > 0 ? "Alarmas HMI: " + alarmasHechas + " creadas o actualizadas" + Environment.NewLine : "") +
                              "Compilación HMI: " + compilacion + Environment.NewLine +
                              "Volver atrás: deshacer en TIA no aplica; reimportar la copia de Import_XML\\copia_unified_<fecha> o recuperar el proyecto guardado.";
             Directory.CreateDirectory(dirImport);
