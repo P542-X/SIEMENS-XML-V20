@@ -635,7 +635,13 @@ Openness no tiene XML de pantallas Unified: el Add-In lee cada objeto con la API
 - Reglas del formato: `$tipo` = clase de Openness (`HmiButton`, `HmiIOField`, `HmiText`, `HmiRectangle`…); `$nombre` = nombre del objeto; `$grupo` = carpeta de pantallas con `/` (vacío = raíz). Un objeto anidado sin `$tipo` (`Font`, `Script`…) es una parte del objeto padre. Una lista (`ScreenItems`, `Dynamizations`, `EventHandlers`, `PropertyEventHandlers`) es una composición: cada elemento lleva `$tipo` y se crea con ese tipo. `{"$ref": "X"}` apunta a otro objeto por nombre (una pantalla, una variable). Colores `#AARRGGBB`. Enumeraciones por nombre (`"Down"`, `"Visible"`).
 - Textos: en **todos los idiomas del proyecto** (`_info.md`); el formato de texto enriquecido es el que trae la exportación, cópialo tal cual. Los idiomas que no existen en el proyecto se ignoran.
 - Para **modificar o crear**: parte siempre del JSON de una pantalla del propio paquete (mismos `$tipo`, mismos nombres de propiedad, mismos formatos). Para una pantalla nueva, cambia `$nombre` y el nombre del fichero. Solo propiedades que aparezcan en la exportación: una propiedad desconocida sale como aviso y no se aplica.
-- Las variables de las dinamizaciones y scripts tienen que existir ya en el HMI (`Variables_referencia.json`). Esta versión **no crea variables ni avisos**.
+- Las variables de las dinamizaciones y scripts tienen que existir en el HMI (`Variables_referencia.json`) o venir en el mismo paquete como tabla de variables (desde la v2.6.0, **en prueba**). Avisos: aún no.
+- **Tabla de variables** (`Variables/<tabla>.json`), se importa antes que las pantallas:
+  ```json
+  { "$formato": "SIEMENS-XML-V20 Unified 1", "$tipo": "HmiTagTable", "$nombre": "Mi tabla",
+    "Tags": [ { "$tipo": "HmiTag", "$nombre": "Marcha", "Connection": "*", "PlcTag": "Mi_DB.Marcha" } ] }
+  ```
+  `"Connection": "*"` = la única conexión del HMI con un PLC. Las propiedades se escriben en el orden del JSON (`Connection` antes que `PlcTag`). Para otras propiedades, copia sus nombres de `Variables/<tabla>.json` de una exportación del panel entero (*Exportar selección* sobre el panel).
 - No uses faceplates ni imágenes que no estén ya en el proyecto (faceplates: pendiente, ROADMAP U5).
 - Sobrescribir una pantalla vacía sus objetos, dinamizaciones y eventos y los vuelve a crear; la pantalla se conserva (las referencias a ella siguen valiendo).
 - Clic derecho sobre una pantalla Unified: el menú *XML* sale vacío (TIA V20 no pasa las pantallas al Add-In). Se exporta con *Exportar pantallas Unified…* y se importa con *Importar ficheros*, las dos sobre **el panel**.
