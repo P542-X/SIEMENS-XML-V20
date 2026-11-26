@@ -1,5 +1,10 @@
 # Cambios
 
+## 2.6.2
+- **Capas en Unified (en prueba)**: al importar, `"Layer": n` de cada objeto y `"$capas"` de la pantalla (nombre de cada capa, por posición) se escriben con la API. Si una clave del JSON no es una propiedad .NET del objeto, se prueba como atributo de TIA (`SetAttribute`) antes de dar el aviso.
+- Exportar Unified: añade `Layer` de cada objeto y `$capas` de la pantalla, y deja `_atributos_unified.txt` con los atributos de escritura de cada tipo que no salen como propiedad, para ver qué más se puede exportar.
+- Guía 6.8: separar por capas lo que se genera.
+
 ## 2.6.1
 - Variables HMI: `Connection` se escribe la primera y en el momento. Tal como sale de *Exportar selección* (`{"$ref": "HMI_Connection_1"}`) se resolvía al final de la importación, después de `PlcTag`. Vale `"*"`, el nombre o `{"$ref": …}`; si la propiedad es un objeto se busca la conexión del HMI por nombre. `"<Internal tag>"` o vacío (variables internas) no se tocan.
 - Al sobrescribir, las tablas de variables existentes se copian antes en `Import_XML\copia_unified_<fecha>\Variables\`, como las pantallas.

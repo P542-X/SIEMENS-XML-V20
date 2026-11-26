@@ -239,6 +239,7 @@ namespace ExportarXml
                         ["$grupo"] = grupo
                     };
                     foreach (var kv in Objeto(pantalla, true, 0)) d[kv.Key] = kv.Value;
+                    try { List<object> capas = Capas(pantalla); if (capas.Count > 0) d["$capas"] = capas; } catch { }
                     string dir = Path.Combine(new[] { raiz, "Pantallas" }.Concat(Partes(grupo).Select(Limpio)).ToArray());
                     Directory.CreateDirectory(dir);
                     string f = Path.Combine(dir, Limpio(nombre) + ".json");
@@ -255,6 +256,14 @@ namespace ExportarXml
             }
             ok += n;
             if (n > 0) recuento["Pantallas"] = (recuento.TryGetValue("Pantallas", out int k) ? k : 0) + n;
+            if (n > 0 && AtributosPorTipo.Count > 0)
+                try
+                {
+                    // para saber qué atributos de TIA no salen como propiedad (capas y demás) y poder añadirlos a la exportación
+                    File.WriteAllLines(Path.Combine(raiz, "_atributos_unified.txt"),
+                        AtributosPorTipo.OrderBy(x => x.Key).Select(x => x.Key + ": " + string.Join(", ", x.Value)), new UTF8Encoding(false));
+                }
+                catch { }
 
             // Variables HMI: solo como referencia (nombres para las dinamizaciones); no se importan
             if (filtro == null && elegidas == null) try
@@ -413,7 +422,92 @@ namespace ExportarXml
                     if (l.Count > 0 && (p.CanWrite || v is IList)) d[p.Name] = l;
                 }
             }
+            if (o is IEngineeringObject eo)
+                foreach (string a in AtributosExtra(eo))
+                {
+                    if (d.ContainsKey(a)) continue;
+                    try
+                    {
+                        object v = eo.GetAttribute(a);
+                        if (v != null && EsEscalar(v.GetType())) d[a] = Escalar(v);
+                    }
+                    catch { }
+                }
             return d;
+        }
+
+        // Atributos de TIA que no son propiedades .NET (p. ej. la capa de cada objeto): se exportan los de esta lista.
+        // Los demás nombres se apuntan en _atributos_unified.txt para saber qué más hay.
+        private static readonly HashSet<string> Extra = new HashSet<string>(StringComparer.Ordinal) { "Layer" };
+        private static readonly Dictionary<string, List<string>> AtributosPorTipo = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+
+        /// <summary>Atributos de lectura y escritura del objeto que no son propiedades .NET (una vez por tipo).</summary>
+        private static List<string> AtributosExtra(IEngineeringObject eo)
+        {
+            string tipo = eo.GetType().Name;
+            if (!AtributosPorTipo.TryGetValue(tipo, out List<string> todos))
+            {
+                todos = new List<string>();
+                try
+                {
+                    HashSet<string> props = new HashSet<string>(eo.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(x => x.Name), StringComparer.Ordinal);
+                    foreach (EngineeringAttributeInfo ai in eo.GetAttributeInfos())
+                        if ((ai.AccessMode & EngineeringAttributeAccessMode.Write) != 0 && !props.Contains(ai.Name) && !Ignoradas.Contains(ai.Name))
+                            todos.Add(ai.Name);
+                }
+                catch { }
+                AtributosPorTipo[tipo] = todos;
+            }
+            return todos.Where(Extra.Contains).ToList();
+        }
+
+        /// <summary>Escribe un atributo de TIA que no es propiedad .NET (Layer…). false si el objeto no lo tiene.</summary>
+        private static bool EscribirAtributo(object o, string nombre, object valor)
+        {
+            if (!(o is IEngineeringObject eo)) return false;
+            EngineeringAttributeInfo ai;
+            try { ai = eo.GetAttributeInfos().FirstOrDefault(x => x.Name == nombre); } catch { return false; }
+            if (ai == null || (ai.AccessMode & EngineeringAttributeAccessMode.Write) == 0) return false;
+            object actual = null;
+            try { actual = eo.GetAttribute(nombre); } catch { }
+            eo.SetAttribute(nombre, actual == null ? valor : Convertir(valor, actual.GetType()));
+            return true;
+        }
+
+        /// <summary>Capas de la pantalla (nombre y visibilidad de cada una), si la API las da.</summary>
+        private static List<object> Capas(object pantalla)
+        {
+            List<object> l = new List<object>();
+            object capas = Prop(pantalla, "Layers");
+            if (capas == null && pantalla is IEngineeringObject eo) try { capas = eo.GetAttribute("Layers"); } catch { }
+            foreach (object x in Items(capas)) l.Add(Objeto(x, true, 1));
+            return l;
+        }
+
+        /// <summary>"$capas" del JSON → capas de la pantalla, por posición.</summary>
+        private static void EscribirCapas(object pantalla, List<object> capas, Contexto c, string ruta)
+        {
+            object comp = Prop(pantalla, "Layers");
+            if (comp == null && pantalla is IEngineeringObject eo) try { comp = eo.GetAttribute("Layers"); } catch { }
+            List<object> existentes = Items(comp);
+            if (existentes.Count == 0) { c.Aviso(ruta + ".$capas", "la API no da las capas de la pantalla"); return; }
+            for (int i = 0; i < capas.Count && i < existentes.Count; i++)
+            {
+                if (!(capas[i] is Dictionary<string, object> e)) continue;
+                string aqui = ruta + ".$capas[" + i + "]";
+                try
+                {
+                    string nombre = Cad(e, "$nombre");
+                    if (nombre != null)
+                    {
+                        PropertyInfo pn = Propiedad(existentes[i].GetType(), "Name");
+                        if (pn != null && pn.CanWrite) Asignar(existentes[i], pn, nombre);
+                        else if (!EscribirAtributo(existentes[i], "Name", nombre)) c.Aviso(aqui, "no se puede cambiar el nombre de la capa");
+                    }
+                    Rellenar(existentes[i], e, c, aqui);
+                }
+                catch (Exception ex) { c.Aviso(aqui, Mensaje(ex)); }
+            }
         }
 
         // ---------- Importar ----------
@@ -573,6 +667,7 @@ namespace ExportarXml
                         }
                         log.AppendLine("PANTALLA " + p.Nombre + (p.Grupo.Length > 0 ? "  (grupo " + p.Grupo + ")" : "") + "  <-  " + p.Ruta);
                         Rellenar(pantalla, p.D, c, p.Nombre);
+                        if (p.D.TryGetValue("$capas", out object capasJson) && capasJson is List<object> lc) EscribirCapas(pantalla, lc, c, p.Nombre);
                         importadas++;
                         log.AppendLine("OK       " + p.Nombre + (c.Avisos > avisosAntes ? "  (" + (c.Avisos - avisosAntes) + " aviso/s)" : ""));
                     }
@@ -793,7 +888,14 @@ namespace ExportarXml
                     string aqui = ruta + "." + kv.Key;
 
                     PropertyInfo p = Propiedad(o.GetType(), kv.Key);
-                    if (p == null) { c.Aviso(aqui, o.GetType().Name + " no tiene la propiedad " + kv.Key); continue; }
+                    if (p == null)
+                    {
+                        bool escrito = false;
+                        if (!(kv.Value is Dictionary<string, object>) && !(kv.Value is List<object>))
+                            try { escrito = EscribirAtributo(o, kv.Key, kv.Value); } catch (Exception ex) { c.Aviso(aqui, Mensaje(ex)); continue; }
+                        if (!escrito) c.Aviso(aqui, o.GetType().Name + " no tiene la propiedad " + kv.Key);
+                        continue;
+                    }
                     try
                     {
                         switch (kv.Value)
