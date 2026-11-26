@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.6.4
+- Diagnóstico de capas: `_atributos_unified.txt` lista ahora, por tipo, **todos** los atributos de TIA que no son propiedad .NET, con `(R)` o `(RW)`, y las propiedades .NET con *Layer* en el nombre. La 2.6.3 solo listaba los de escritura y salían vacíos: en V20 la capa de un objeto Unified no se puede escribir como atributo.
+
 ## 2.6.3
 - Importar Unified: si un `Create` de una composición crea un objeto de otro tipo que el `$tipo` del JSON, se borra y se prueba el siguiente. En las tablas de valores con `ConditionType` *Bitmask* salía `MappingTableEntryBitmaskList` en vez de `MappingTableEntryBitmask`: las entradas quedaban vacías y TIA daba *Duplicate entries are not allowed for property dynamization with a tag* al compilar.
 - `"Formula": ""` ya no se escribe (TIA no deja escribir la fórmula si está desactivada y daba un aviso por cada dinamización).

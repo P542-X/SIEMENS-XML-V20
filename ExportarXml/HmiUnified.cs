@@ -261,7 +261,7 @@ namespace ExportarXml
                 {
                     // para saber qué atributos de TIA no salen como propiedad (capas y demás) y poder añadirlos a la exportación
                     File.WriteAllLines(Path.Combine(raiz, "_atributos_unified.txt"),
-                        AtributosPorTipo.OrderBy(x => x.Key).Select(x => x.Key + ": " + string.Join(", ", x.Value)), new UTF8Encoding(false));
+                        AtributosDiag.OrderBy(x => x.Key).Select(x => x.Key + ": " + string.Join(", ", x.Value)), new UTF8Encoding(false));
                 }
                 catch { }
 
@@ -440,6 +440,7 @@ namespace ExportarXml
         // Los demás nombres se apuntan en _atributos_unified.txt para saber qué más hay.
         private static readonly HashSet<string> Extra = new HashSet<string>(StringComparer.Ordinal) { "Layer" };
         private static readonly Dictionary<string, List<string>> AtributosPorTipo = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+        private static readonly Dictionary<string, List<string>> AtributosDiag = new Dictionary<string, List<string>>(StringComparer.Ordinal);
 
         /// <summary>Atributos de lectura y escritura del objeto que no son propiedades .NET (una vez por tipo).</summary>
         private static List<string> AtributosExtra(IEngineeringObject eo)
@@ -451,9 +452,16 @@ namespace ExportarXml
                 try
                 {
                     HashSet<string> props = new HashSet<string>(eo.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Select(x => x.Name), StringComparer.Ordinal);
+                    List<string> diag = new List<string>();
                     foreach (EngineeringAttributeInfo ai in eo.GetAttributeInfos())
-                        if ((ai.AccessMode & EngineeringAttributeAccessMode.Write) != 0 && !props.Contains(ai.Name) && !Ignoradas.Contains(ai.Name))
-                            todos.Add(ai.Name);
+                    {
+                        bool escribe = (ai.AccessMode & EngineeringAttributeAccessMode.Write) != 0;
+                        if (!props.Contains(ai.Name)) diag.Add(ai.Name + (escribe ? " (RW)" : " (R)"));
+                        if (escribe && !props.Contains(ai.Name) && !Ignoradas.Contains(ai.Name)) todos.Add(ai.Name);
+                    }
+                    // propiedades .NET que hablan de capas (para encontrar cómo se asigna la capa de un objeto)
+                    foreach (string pn in props.Where(x => x.IndexOf("Layer", StringComparison.OrdinalIgnoreCase) >= 0)) diag.Add("propiedad ." + pn);
+                    AtributosDiag[tipo] = diag;
                 }
                 catch { }
                 AtributosPorTipo[tipo] = todos;
