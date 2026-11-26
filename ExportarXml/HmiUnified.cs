@@ -489,7 +489,7 @@ namespace ExportarXml
         {
             object comp = Prop(pantalla, "Layers");
             if (comp == null && pantalla is IEngineeringObject eo) try { comp = eo.GetAttribute("Layers"); } catch { }
-            List<object> existentes = Items(comp);
+            List<object> existentes = Items(comp).ToList();
             if (existentes.Count == 0) { c.Aviso(ruta + ".$capas", "la API no da las capas de la pantalla"); return; }
             for (int i = 0; i < capas.Count && i < existentes.Count; i++)
             {
