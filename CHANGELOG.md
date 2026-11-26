@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.6.0
+- **Importar variables HMI Unified (U2, en prueba)**: *Importar ficheros* sobre el panel Unified acepta también tablas de variables en JSON (`"$tipo": "HmiTagTable"`, con la lista `Tags`). Crea la tabla si no existe y en ella cada variable; las propiedades se escriben en el orden del JSON (`Connection` antes que `PlcTag`). `"Connection": "*"` = la única conexión del HMI. Si una variable ya existe, se actualiza solo si se elige sobrescribir (la misma pregunta que para las pantallas). Las tablas se importan antes que las pantallas, porque sus dinamizaciones y scripts las nombran. El resumen cuenta variables nuevas, actualizadas y con error.
+
 ## 2.5.15
 - El mensaje final de *Exportar* ya no bloquea TIA: el Add-In devuelve el control en cuanto termina y el mensaje sale aparte. Si quedaba detrás de la ventana de TIA, TIA parecía colgado esperándolo.
 

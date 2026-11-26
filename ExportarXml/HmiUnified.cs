@@ -441,8 +441,9 @@ namespace ExportarXml
             log.AppendLine(ExportarXml.Idiomas.Preparar(tia));
             log.AppendLine();
 
-            // Pantallas en JSON; lo demás se ignora
+            // Pantallas y tablas de variables en JSON; lo demás se ignora
             List<(string Ruta, string Nombre, string Grupo, Dictionary<string, object> D)> pantallas = new List<(string, string, string, Dictionary<string, object>)>();
+            List<(string Ruta, string Nombre, Dictionary<string, object> D)> tablas = new List<(string, string, Dictionary<string, object>)>();
             int ignorados = 0;
             foreach (string ruta in Importador.AbrirZipsPublico(tia, rutas, log))
             {
@@ -450,12 +451,18 @@ namespace ExportarXml
                 try
                 {
                     Dictionary<string, object> d = Json.Leer(File.ReadAllText(ruta, Encoding.UTF8)) as Dictionary<string, object>;
+                    if (d != null && Cad(d, "$tipo") == "HmiTagTable")
+                    {
+                        string nt = Cad(d, "$nombre");
+                        if (string.IsNullOrEmpty(nt)) throw new Exception("falta \"$nombre\" de la tabla de variables");
+                        tablas.Add((ruta, nt, d));
+                        continue;
+                    }
                     if (d == null || Cad(d, "$tipo") != "HmiScreen")
                     {
                         ignorados++;
-                        if (!Path.GetFileName(ruta).StartsWith("Variables_referencia", StringComparison.OrdinalIgnoreCase) &&
-                            (Cad(d, "$tipo") ?? "").IndexOf("TagTable", StringComparison.Ordinal) < 0) // tablas de variables: aún no se importan
-                            log.AppendLine("IGNORADO " + ruta + " (no es una pantalla Unified: falta \"$tipo\": \"HmiScreen\")");
+                        if (!Path.GetFileName(ruta).StartsWith("Variables_referencia", StringComparison.OrdinalIgnoreCase))
+                            log.AppendLine("IGNORADO " + ruta + " (no es una pantalla ni una tabla de variables Unified: falta \"$tipo\": \"HmiScreen\" o \"HmiTagTable\")");
                         continue;
                     }
                     string nombre = Cad(d, "$nombre");
@@ -467,19 +474,24 @@ namespace ExportarXml
                     log.AppendLine("ERROR    " + ruta + " -> " + Mensaje(ex));
                 }
             }
-            if (pantallas.Count == 0)
+            if (pantallas.Count == 0 && tablas.Count == 0)
             {
-                Dialogos.Informar("No hay pantallas WinCC Unified (.json con \"$tipo\": \"HmiScreen\") en lo elegido." + Environment.NewLine +
+                Dialogos.Informar("No hay pantallas ni tablas de variables WinCC Unified (.json con \"$tipo\": \"HmiScreen\" o \"HmiTagTable\") en lo elegido." + Environment.NewLine +
                                   "Detalle:" + Environment.NewLine + log, "Importar HMI Unified", true);
                 return;
             }
 
             var existentes = pantallas.Where(p => BuscarPantalla(sw, p.Nombre) != null).ToList();
+            HashSet<string> varsExistentes = new HashSet<string>(TodasLasVariables(sw).Select(Nombre), StringComparer.OrdinalIgnoreCase);
+            List<string> varsRepetidas = tablas.SelectMany(x => VariablesDe(x.D)).Select(x => Cad(x, "$nombre")).Where(n => n != null && varsExistentes.Contains(n)).ToList();
             bool sobrescribir = false;
-            if (existentes.Count > 0)
+            if (existentes.Count > 0 || varsRepetidas.Count > 0)
             {
-                Respuesta r = Dialogos.Preguntar(existentes.Count + " pantalla(s) ya existen (" +
-                                                 string.Join(", ", existentes.Take(6).Select(e => e.Nombre)) + (existentes.Count > 6 ? ", …" : "") + ")." +
+                List<string> nombres = existentes.Select(e => e.Nombre).Concat(varsRepetidas).ToList();
+                Respuesta r = Dialogos.Preguntar((existentes.Count > 0 ? existentes.Count + " pantalla(s)" : "") +
+                                                 (existentes.Count > 0 && varsRepetidas.Count > 0 ? " y " : "") +
+                                                 (varsRepetidas.Count > 0 ? varsRepetidas.Count + " variable(s) HMI" : "") + " ya existen (" +
+                                                 string.Join(", ", nombres.Take(6)) + (nombres.Count > 6 ? ", …" : "") + ")." +
                                                  Environment.NewLine + Environment.NewLine +
                                                  "Sí / Yes → sobrescribir (se vacían y se rellenan; la pantalla se mantiene y no se rompen las referencias a ella)" +
                                                  Environment.NewLine + "No → importar solo las nuevas" + Environment.NewLine + "Cancelar → no importar nada",
@@ -495,7 +507,7 @@ namespace ExportarXml
             string fecha = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             string dirImport = Path.Combine(proyecto.Path.DirectoryName, "Import_XML");
             string copia = Path.Combine(dirImport, "copia_unified_" + fecha);
-            int importadas = 0, conError = 0;
+            int importadas = 0, conError = 0, varsNuevas = 0, varsActualizadas = 0, varsError = 0;
             string compilacion = "no realizada";
 
             using (ExclusiveAccess ea = tia.ExclusiveAccess("Importando pantallas Unified..."))
@@ -518,6 +530,17 @@ namespace ExportarXml
                 }
                 if (Directory.Exists(copia)) log.AppendLine("Copia de lo sobrescrito (para volver atrás, importarla) en " + copia);
                 log.AppendLine();
+
+                // Variables HMI primero: las dinamizaciones y los scripts de las pantallas las nombran
+                foreach (var tb in tablas)
+                {
+                    if (ea.IsCancellationRequested) break;
+                    ea.Text = "Importando tabla de variables HMI " + tb.Nombre + "...";
+                    log.AppendLine("TABLA    " + tb.Nombre + "  <-  " + tb.Ruta);
+                    ImportarTabla(sw, tb.Nombre, tb.D, sobrescribir, c, ref varsNuevas, ref varsActualizadas, ref varsError);
+                    Liberar();
+                }
+                if (tablas.Count > 0) log.AppendLine();
 
                 foreach (var p in pendientes)
                 {
@@ -561,7 +584,7 @@ namespace ExportarXml
                 if (c.IdiomasQuitados.Count > 0)
                     log.AppendLine("Textos en " + string.Join(", ", c.IdiomasQuitados) + " no importados: el proyecto no tiene ese idioma.");
 
-                if (importadas > 0)
+                if (importadas > 0 || varsNuevas + varsActualizadas > 0)
                 {
                     try
                     {
@@ -582,13 +605,96 @@ namespace ExportarXml
 
             string resumen = "Pantallas importadas: " + importadas + "   Con error: " + conError + "   Avisos: " + c.Avisos +
                              "   Ignorados: " + ignorados + Environment.NewLine +
+                             (tablas.Count > 0 ? "Variables HMI: " + varsNuevas + " nuevas, " + varsActualizadas + " actualizadas, " + varsError + " con error (" +
+                                                 tablas.Count + " tabla/s)" + Environment.NewLine : "") +
                              "Compilación HMI: " + compilacion + Environment.NewLine +
                              "Volver atrás: deshacer en TIA no aplica; reimportar la copia de Import_XML\\copia_unified_<fecha> o recuperar el proyecto guardado.";
             Directory.CreateDirectory(dirImport);
             string fichero = Path.Combine(dirImport, "resumen_unified_" + fecha + ".txt");
             File.WriteAllText(fichero, resumen + Environment.NewLine + Environment.NewLine + log, Encoding.UTF8);
             Dialogos.Informar(resumen + Environment.NewLine + Environment.NewLine + "Detalle en:" + Environment.NewLine + fichero,
-                              "Importar HMI Unified", conError > 0);
+                              "Importar HMI Unified", conError + varsError > 0);
+        }
+
+        // ---------- Variables HMI (U2) ----------
+
+        /// <summary>Todas las variables HMI del software (las de Tags y, si no hay, las de cada tabla).</summary>
+        private static List<object> TodasLasVariables(object sw)
+        {
+            List<object> l = Items(Prop(sw, "Tags")).ToList();
+            if (l.Count == 0) foreach (object t in Items(Prop(sw, "TagTables"))) l.AddRange(Items(Prop(t, "Tags")));
+            return l;
+        }
+
+        private static List<Dictionary<string, object>> VariablesDe(Dictionary<string, object> tabla) =>
+            tabla.TryGetValue("Tags", out object v) && v is List<object> l ? l.OfType<Dictionary<string, object>>().ToList() : new List<Dictionary<string, object>>();
+
+        /// <summary>
+        /// Crea la tabla si no existe y, en ella, cada variable de "Tags". Una variable que ya existe (en cualquier
+        /// tabla) solo se actualiza si se ha elegido sobrescribir. Las propiedades se escriben en el orden del JSON:
+        /// para una variable de PLC, Connection antes que PlcTag (el tipo lo pone TIA desde la variable del PLC).
+        /// </summary>
+        private static void ImportarTabla(object sw, string nombre, Dictionary<string, object> d, bool sobrescribir, Contexto c,
+                                          ref int nuevas, ref int actualizadas, ref int errores)
+        {
+            object tabla = Items(Prop(sw, "TagTables")).FirstOrDefault(x => string.Equals(Nombre(x), nombre, StringComparison.OrdinalIgnoreCase));
+            if (tabla == null)
+            {
+                try { tabla = Llamar(Prop(sw, "TagTables"), "Create", nombre); c.Log.AppendLine("TABLA    " + nombre + " creada"); }
+                catch (Exception ex) { errores++; c.Log.AppendLine("ERROR    tabla " + nombre + " -> " + Mensaje(ex)); return; }
+            }
+            List<object> todas = TodasLasVariables(sw);
+            object conexionUnica = null;
+            try { List<object> cs = Items(Prop(sw, "Connections")).ToList(); if (cs.Count == 1) conexionUnica = cs[0]; } catch { }
+
+            foreach (Dictionary<string, object> e in VariablesDe(d))
+            {
+                string n = Cad(e, "$nombre");
+                string aqui = "Variable " + (n ?? "?");
+                if (string.IsNullOrEmpty(n)) { errores++; c.Log.AppendLine("ERROR    " + nombre + ": variable sin \"$nombre\""); continue; }
+                try
+                {
+                    object tag = todas.FirstOrDefault(x => string.Equals(Nombre(x), n, StringComparison.OrdinalIgnoreCase));
+                    bool nueva = tag == null;
+                    if (!nueva && !sobrescribir) continue;
+                    if (nueva) tag = CrearVariable(sw, tabla, nombre, n);
+                    // "Connection": "*" = la única conexión del HMI
+                    Dictionary<string, object> props = new Dictionary<string, object>();
+                    foreach (var kv in e)
+                    {
+                        if (kv.Key == "TagTable") continue;
+                        if (kv.Key == "Connection" && Convert.ToString(kv.Value, CultureInfo.InvariantCulture) == "*")
+                        {
+                            if (conexionUnica == null) { c.Aviso(aqui, "\"Connection\": \"*\" pero el HMI no tiene una sola conexión"); continue; }
+                            props[kv.Key] = Nombre(conexionUnica);
+                            continue;
+                        }
+                        props[kv.Key] = kv.Value;
+                    }
+                    int avisos = c.Avisos;
+                    Rellenar(tag, props, c, aqui);
+                    if (nueva) { nuevas++; todas.Add(tag); } else actualizadas++;
+                    c.Log.AppendLine((nueva ? "NUEVA    " : "ACTUAL.  ") + n + (c.Avisos > avisos ? "  (" + (c.Avisos - avisos) + " aviso/s)" : ""));
+                }
+                catch (Exception ex) { errores++; c.Log.AppendLine("ERROR    " + aqui + " -> " + Mensaje(ex)); }
+            }
+        }
+
+        /// <summary>Crea una variable HMI en la tabla: prueba Tags.Create(nombre) de la tabla y Tags.Create(nombre, tabla) del software.</summary>
+        private static object CrearVariable(object sw, object tabla, string nombreTabla, string nombre)
+        {
+            List<string> fallos = new List<string>();
+            foreach (Func<object> intento in new Func<object>[]
+            {
+                () => Llamar(Prop(tabla, "Tags"), "Create", nombre),
+                () => Llamar(Prop(sw, "Tags"), "Create", nombre, nombreTabla),
+                () => Llamar(Prop(sw, "Tags"), "Create", nombre)
+            })
+            {
+                try { object t = intento(); if (t != null) return t; }
+                catch (Exception ex) { fallos.Add(Mensaje(ex)); }
+            }
+            throw new Exception("no se puede crear la variable (" + string.Join(" | ", fallos) + ")");
         }
 
         /// <summary>
