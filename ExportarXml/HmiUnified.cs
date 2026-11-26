@@ -256,6 +256,8 @@ namespace ExportarXml
             }
             ok += n;
             if (n > 0) recuento["Pantallas"] = (recuento.TryGetValue("Pantallas", out int k) ? k : 0) + n;
+            if (n > 0)
+                try { File.WriteAllLines(Path.Combine(raiz, "_capas_api.txt"), BuscarCapasApi(), new UTF8Encoding(false)); } catch { }
             if (n > 0 && AtributosPorTipo.Count > 0)
                 try
                 {
@@ -467,6 +469,41 @@ namespace ExportarXml
                 AtributosPorTipo[tipo] = todos;
             }
             return todos.Where(Extra.Contains).ToList();
+        }
+
+        /// <summary>
+        /// Diagnóstico: todo lo que en la API de TIA (ensamblados Siemens.Engineering* cargados) tiene "Layer" en el nombre:
+        /// tipos, propiedades (también las de interfaces), métodos y valores de enumeraciones. Para encontrar cómo se asigna
+        /// la capa de un objeto Unified si la API lo permite por algún sitio.
+        /// </summary>
+        private static List<string> BuscarCapasApi()
+        {
+            List<string> l = new List<string>();
+            foreach (Assembly a in AppDomain.CurrentDomain.GetAssemblies().Where(x => x.GetName().Name.StartsWith("Siemens.Engineering", StringComparison.Ordinal)))
+            {
+                Type[] tipos;
+                try { tipos = a.GetTypes(); }
+                catch (ReflectionTypeLoadException ex) { tipos = ex.Types.Where(x => x != null).ToArray(); }
+                catch { continue; }
+                foreach (Type t in tipos)
+                {
+                    bool capa(string x) => x != null && x.IndexOf("Layer", StringComparison.OrdinalIgnoreCase) >= 0;
+                    string nt = t.FullName ?? t.Name;
+                    if (capa(t.Name)) l.Add("TIPO      " + nt + "  [" + a.GetName().Name + "]" + (t.IsEnum ? "  = " + string.Join(", ", Enum.GetNames(t)) : ""));
+                    const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+                    try
+                    {
+                        foreach (PropertyInfo pi in t.GetProperties(bf).Where(x => capa(x.Name)))
+                            l.Add("PROPIEDAD " + nt + "." + pi.Name + " : " + pi.PropertyType.Name + (pi.CanWrite ? " (RW)" : " (R)") + (pi.GetGetMethod() == null ? " no pública" : ""));
+                        foreach (MethodInfo mi in t.GetMethods(bf).Where(x => capa(x.Name) && !x.IsSpecialName))
+                            l.Add("METODO    " + nt + "." + mi.Name + "(" + string.Join(", ", mi.GetParameters().Select(x => x.ParameterType.Name + " " + x.Name)) + ") : " + mi.ReturnType.Name + (mi.IsPublic ? "" : " no público"));
+                    }
+                    catch { }
+                }
+            }
+            if (l.Count == 0) l.Add("Nada con \"Layer\" en los ensamblados Siemens.Engineering cargados.");
+            l.Sort(StringComparer.Ordinal);
+            return l;
         }
 
         /// <summary>Escribe un atributo de TIA que no es propiedad .NET (Layer…). false si el objeto no lo tiene.</summary>

@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.6.5
+- Diagnóstico de capas: al exportar pantallas Unified se deja `_capas_api.txt` con todo lo que en los ensamblados `Siemens.Engineering*` cargados tiene *Layer* en el nombre (tipos, enumeraciones, propiedades públicas o no, también de interfaces, y métodos). Para saber si la API de V20 permite asignar la capa por algún otro camino.
+
 ## 2.6.4
 - **Resultado**: en V20 la capa de un objeto Unified no es accesible por Openness (ni propiedad ni atributo, tampoco de solo lectura) y la pantalla no da sus capas. Las capas se asignan a mano en TIA. Guía 6.8 actualizada.
 - Diagnóstico de capas: `_atributos_unified.txt` lista ahora, por tipo, **todos** los atributos de TIA que no son propiedad .NET, con `(R)` o `(RW)`, y las propiedades .NET con *Layer* en el nombre. La 2.6.3 solo listaba los de escritura y salían vacíos: en V20 la capa de un objeto Unified no se puede escribir como atributo.
