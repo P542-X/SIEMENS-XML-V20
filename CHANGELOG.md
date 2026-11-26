@@ -1,5 +1,10 @@
 # Cambios
 
+## 2.6.1
+- Variables HMI: `Connection` se escribe la primera y en el momento. Tal como sale de *Exportar selección* (`{"$ref": "HMI_Connection_1"}`) se resolvía al final de la importación, después de `PlcTag`. Vale `"*"`, el nombre o `{"$ref": …}`; si la propiedad es un objeto se busca la conexión del HMI por nombre. `"<Internal tag>"` o vacío (variables internas) no se tocan.
+- Al sobrescribir, las tablas de variables existentes se copian antes en `Import_XML\copia_unified_<fecha>\Variables\`, como las pantallas.
+- README: la importación Unified ya admite tablas de variables.
+
 ## 2.6.0
 - **Importar variables HMI Unified (U2, en prueba)**: *Importar ficheros* sobre el panel Unified acepta también tablas de variables en JSON (`"$tipo": "HmiTagTable"`, con la lista `Tags`). Crea la tabla si no existe y en ella cada variable; las propiedades se escriben en el orden del JSON (`Connection` antes que `PlcTag`). `"Connection": "*"` = la única conexión del HMI. Si una variable ya existe, se actualiza solo si se elige sobrescribir (la misma pregunta que para las pantallas). Las tablas se importan antes que las pantallas, porque sus dinamizaciones y scripts las nombran. El resumen cuenta variables nuevas, actualizadas y con error.
 

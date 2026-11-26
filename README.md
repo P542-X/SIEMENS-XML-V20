@@ -83,7 +83,7 @@ Openness no exporta pantallas Unified en XML, así que el Add-In las lee objeto 
 - **Exportar selección** sobre el panel Unified exporta todas sus pantallas (y `Variables_referencia.json`, solo para consulta).
 - **Exportar pantallas Unified…** sobre el panel: eliges con casillas qué pantallas exportar. (TIA V20 no pasa al Add-In las pantallas seleccionadas en el árbol: sobre una pantalla el menú *XML* sale vacío.)
 - **Importar ficheros…** eligiendo el panel Unified como destino: pregunta si sobrescribir, guarda el proyecto, copia lo sobrescrito en `Import_XML\copia_unified_<fecha>\`, compila el HMI y deja `Import_XML\resumen_unified_<fecha>.txt`.
-- No crea variables, avisos ni faceplates: tienen que existir ya en el proyecto. Formato del JSON: `ExportarXml/IA/INSTRUCCIONES_IA.md` §6.8.
+- Importa también **tablas de variables HMI** (`Variables/<tabla>.json`, en prueba desde la v2.6.0), antes que las pantallas. No crea avisos ni faceplates: tienen que existir ya en el proyecto. Formato del JSON: `ExportarXml/IA/INSTRUCCIONES_IA.md` §6.8.
 
 ## Carpetas del repositorio
 

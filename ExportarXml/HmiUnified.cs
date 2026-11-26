@@ -528,6 +528,21 @@ namespace ExportarXml
                     }
                     catch (Exception ex) { log.AppendLine("Aviso: sin copia de " + p.Nombre + " (" + Mensaje(ex) + ")"); }
                 }
+                if (sobrescribir)
+                    foreach (var tb in tablas)
+                    {
+                        object actual = Items(Prop(sw, "TagTables")).FirstOrDefault(x => string.Equals(Nombre(x), tb.Nombre, StringComparison.OrdinalIgnoreCase));
+                        if (actual == null) continue;
+                        try
+                        {
+                            string dirV = Path.Combine(copia, "Variables");
+                            Directory.CreateDirectory(dirV);
+                            Dictionary<string, object> d = new Dictionary<string, object> { ["$formato"] = Formato };
+                            foreach (var kv in Objeto(actual, true, 0)) d[kv.Key] = kv.Value;
+                            File.WriteAllText(Path.Combine(dirV, Limpio(tb.Nombre) + ".json"), Json.Escribir(d), new UTF8Encoding(false));
+                        }
+                        catch (Exception ex) { log.AppendLine("Aviso: sin copia de la tabla " + tb.Nombre + " (" + Mensaje(ex) + ")"); }
+                    }
                 if (Directory.Exists(copia)) log.AppendLine("Copia de lo sobrescrito (para volver atrás, importarla) en " + copia);
                 log.AppendLine();
 
@@ -658,15 +673,21 @@ namespace ExportarXml
                     bool nueva = tag == null;
                     if (!nueva && !sobrescribir) continue;
                     if (nueva) tag = CrearVariable(sw, tabla, nombre, n);
-                    // "Connection": "*" = la única conexión del HMI
+                    // Connection va la primera y se escribe ya (no como referencia diferida, que se resolvería
+                    // después de PlcTag): "*" = la única conexión del HMI; vale el nombre o {"$ref": nombre}.
                     Dictionary<string, object> props = new Dictionary<string, object>();
                     foreach (var kv in e)
                     {
                         if (kv.Key == "TagTable") continue;
-                        if (kv.Key == "Connection" && Convert.ToString(kv.Value, CultureInfo.InvariantCulture) == "*")
+                        if (kv.Key == "Connection")
                         {
-                            if (conexionUnica == null) { c.Aviso(aqui, "\"Connection\": \"*\" pero el HMI no tiene una sola conexión"); continue; }
-                            props[kv.Key] = Nombre(conexionUnica);
+                            string cn = kv.Value is Dictionary<string, object> rc ? Cad(rc, "$ref") : Convert.ToString(kv.Value, CultureInfo.InvariantCulture);
+                            if (cn == "*")
+                            {
+                                if (conexionUnica == null) { c.Aviso(aqui, "\"Connection\": \"*\" pero el HMI no tiene una sola conexión"); continue; }
+                                cn = Nombre(conexionUnica);
+                            }
+                            EscribirConexion(sw, tag, cn, c, aqui + ".Connection");
                             continue;
                         }
                         props[kv.Key] = kv.Value;
@@ -678,6 +699,25 @@ namespace ExportarXml
                 }
                 catch (Exception ex) { errores++; c.Log.AppendLine("ERROR    " + aqui + " -> " + Mensaje(ex)); }
             }
+        }
+
+        /// <summary>
+        /// Conexión de una variable: si la propiedad es texto, el nombre; si es un objeto, la conexión del HMI con ese
+        /// nombre. Vacío o "&lt;Internal tag&gt;" (lo que exporta una variable interna) = no se toca.
+        /// </summary>
+        private static void EscribirConexion(object sw, object tag, string nombre, Contexto c, string aqui)
+        {
+            if (string.IsNullOrEmpty(nombre) || nombre.StartsWith("<", StringComparison.Ordinal)) return;
+            PropertyInfo p = Propiedad(tag.GetType(), "Connection");
+            if (p == null || !p.CanWrite) { c.Aviso(aqui, "la variable no tiene una propiedad Connection que se pueda escribir"); return; }
+            try
+            {
+                if (p.PropertyType == typeof(string)) { Asignar(tag, p, nombre); return; }
+                object con = Items(Prop(sw, "Connections")).FirstOrDefault(x => string.Equals(Nombre(x), nombre, StringComparison.OrdinalIgnoreCase));
+                if (con == null) { c.Aviso(aqui, "no existe la conexión " + nombre + " en el HMI"); return; }
+                Asignar(tag, p, con);
+            }
+            catch (Exception ex) { c.Aviso(aqui, Mensaje(ex)); }
         }
 
         /// <summary>Crea una variable HMI en la tabla: prueba Tags.Create(nombre) de la tabla y Tags.Create(nombre, tabla) del software.</summary>
