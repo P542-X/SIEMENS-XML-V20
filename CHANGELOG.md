@@ -1,5 +1,10 @@
 # Cambios
 
+## 2.6.3
+- Importar Unified: si un `Create` de una composición crea un objeto de otro tipo que el `$tipo` del JSON, se borra y se prueba el siguiente. En las tablas de valores con `ConditionType` *Bitmask* salía `MappingTableEntryBitmaskList` en vez de `MappingTableEntryBitmask`: las entradas quedaban vacías y TIA daba *Duplicate entries are not allowed for property dynamization with a tag* al compilar.
+- `"Formula": ""` ya no se escribe (TIA no deja escribir la fórmula si está desactivada y daba un aviso por cada dinamización).
+- Capas: las capas de la pantalla (`$capas`) se escriben bien; la capa de cada objeto todavía no (`Layer` no es propiedad ni atributo de los objetos en V20).
+
 ## 2.6.2
 - **Capas en Unified (en prueba)**: al importar, `"Layer": n` de cada objeto y `"$capas"` de la pantalla (nombre de cada capa, por posición) se escriben con la API. Si una clave del JSON no es una propiedad .NET del objeto, se prueba como atributo de TIA (`SetAttribute`) antes de dar el aviso.
 - Exportar Unified: añade `Layer` de cada objeto y `$capas` de la pantalla, y deja `_atributos_unified.txt` con los atributos de escritura de cada tipo que no salen como propiedad, para ver qué más se puede exportar.

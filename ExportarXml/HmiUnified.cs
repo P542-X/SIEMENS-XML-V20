@@ -922,6 +922,7 @@ namespace ExportarXml
                                 break;
                             default:
                                 if (!p.CanWrite) break; // clave de creación (EventType, PropertyName…) o de solo lectura
+                                if (kv.Key == "Formula" && string.IsNullOrEmpty(kv.Value as string)) break; // fórmula vacía: TIA no deja escribirla si está desactivada
                                 Asignar(o, p, Convertir(kv.Value, p.PropertyType));
                                 break;
                         }
@@ -998,9 +999,27 @@ namespace ExportarXml
             if (candidatos.Count == 0)
                 throw new Exception("no se puede crear " + (tipo ?? "el elemento") + " en " + comp.GetType().Name +
                                     (t == null && tipo != null ? " (tipo desconocido)" : " (ningún Create admite los datos del JSON)"));
-            var elegido = candidatos.OrderByDescending(x => x.Args.Length).ThenByDescending(x => x.M.IsGenericMethod).First();
-            try { return elegido.M.Invoke(comp, elegido.Args); }
-            catch (TargetInvocationException tie) { throw tie.InnerException ?? tie; }
+            // Algunas composiciones tienen varios Create y el que más parámetros admite crea otro tipo
+            // (en Entries de una tabla de valores salía MappingTableEntryBitmaskList en vez de MappingTableEntryBitmask):
+            // si el objeto creado no es del $tipo pedido, se borra y se prueba el siguiente Create.
+            object ultimo = null;
+            Exception error = null;
+            foreach (var cand in candidatos.OrderByDescending(x => x.Args.Length).ThenByDescending(x => x.M.IsGenericMethod))
+            {
+                object creado;
+                try { creado = cand.M.Invoke(comp, cand.Args); }
+                catch (TargetInvocationException tie) { error = tie.InnerException ?? tie; continue; }
+                if (creado == null) continue;
+                if (tipo == null || creado.GetType().Name == tipo)
+                {
+                    if (ultimo != null) try { Llamar(ultimo, "Delete"); } catch { }
+                    return creado;
+                }
+                if (ultimo == null) ultimo = creado;      // el primero que no es del tipo: se queda si no sale otro mejor
+                else try { Llamar(creado, "Delete"); } catch { }
+            }
+            if (ultimo != null) return ultimo;
+            throw error ?? new Exception("no se puede crear " + tipo);
         }
 
         /// <summary>Valor para un parámetro de Create(...), sacado del JSON del elemento.</summary>
