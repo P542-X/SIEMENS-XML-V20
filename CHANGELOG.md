@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.7.2
+- Nuevo menú **Exportar Unified sin pantallas (variables, alarmas, listas)** sobre el panel: exporta las tablas de variables HMI (`Variables/`), las alarmas y clases (`Alarmas/`) y las listas de textos y gráficos (`Listas/`) sin pasar por las pantallas, que es lo que más tarda.
+
 ## 2.7.1
 - **Listas de textos y de gráficos Unified (en prueba)**: *Exportar selección* sobre el panel deja también `Listas/TextLists.json` y `Listas/GraphicLists.json` (las composiciones del software que acaban en *Lists*). Se importan con el mismo mecanismo que las alarmas (`"$tipo": "HmiAlarmas"`, `"$nombre"` = la lista del software). Para cambiar textos con una variable sin un texto por valor con su visibilidad: dinamización `ResourceListDynamization` (`"ResourceList"`, `"Tag"`, `"PropertyName": "Text"`).
 

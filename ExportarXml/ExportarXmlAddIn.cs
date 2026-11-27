@@ -48,6 +48,7 @@ namespace ExportarXml
         {
             raizMenu.Items.AddActionItem<IEngineeringObject>("Exportar selección", OnExportar, OnEstado);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Exportar pantallas Unified...", OnExportarPantallas, OnEstadoPantallas);
+            raizMenu.Items.AddActionItem<IEngineeringObject>("Exportar Unified sin pantallas (variables, alarmas, listas)", OnExportarSinPantallas, OnEstadoPantallas);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar ficheros (xml, sd, fuentes, zip)...", OnImportarFicheros, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Importar carpeta...", OnImportarCarpeta, OnEstadoImportar);
             raizMenu.Items.AddActionItem<IEngineeringObject>("Deshacer última importación", OnDeshacer, OnEstadoImportar);
@@ -219,7 +220,22 @@ namespace ExportarXml
             }
         }
 
-        private void Exportar(IEngineeringObject[] objetos, ICollection<string> pantallasElegidas = null)
+        private void OnExportarSinPantallas(MenuSelectionProvider seleccion)
+        {
+            try
+            {
+                object sw = PanelUnified(seleccion);
+                if (sw == null) { Dialogos.Informar("Lo seleccionado no es un panel WinCC Unified.", "Exportar Unified sin pantallas", true); return; }
+                Exportar(seleccion.GetSelection().OfType<IEngineeringObject>().Where(o => o is Device || o is DeviceItem).Take(1).ToArray(),
+                         null, true);
+            }
+            catch (Exception ex)
+            {
+                Dialogos.Informar("Error inesperado al exportar:" + Environment.NewLine + ex.Message, "Exportar Unified sin pantallas", true);
+            }
+        }
+
+        private void Exportar(IEngineeringObject[] objetos, ICollection<string> pantallasElegidas = null, bool sinPantallas = false)
         {
             Project proyecto = _tia.Projects.FirstOrDefault();
             if (proyecto == null) return;
@@ -275,7 +291,7 @@ namespace ExportarXml
                         {
                             panelesUnified.Add(panel);
                             HmiUnified.Exportar(unified, Path.Combine(raiz, "HMI_Unified"), ea, logHmi, recuentoUnified, ref okHmi, ref errHmi,
-                                                null, pantallasElegidas, panel);
+                                                null, pantallasElegidas, panel, sinPantallas);
                         }
                     }
                 }

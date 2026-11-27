@@ -210,7 +210,8 @@ namespace ExportarXml
         /// filtro: una pantalla o un grupo de pantallas (solo eso), o null (todas).
         /// </summary>
         public static void Exportar(object sw, string carpeta, ExclusiveAccess ea, StringBuilder log, Dictionary<string, int> recuento,
-                                    ref int ok, ref int errores, object filtro = null, ICollection<string> elegidas = null, string panel = null)
+                                    ref int ok, ref int errores, object filtro = null, ICollection<string> elegidas = null, string panel = null,
+                                    bool sinPantallas = false)
         {
             if (string.IsNullOrEmpty(panel)) panel = Hmi.Panel(sw);
             string raiz = Path.Combine(carpeta, Limpio(Texto(sw, "Name")));
@@ -221,6 +222,7 @@ namespace ExportarXml
             string rutaFiltro = filtro != null && filtro.GetType().Name == "HmiScreenGroup" ? RutaGrupo(filtro) : null;
             foreach (var (pantalla, grupo) in Pantallas(sw))
             {
+                if (sinPantallas) break; // "Exportar Unified sin pantallas": solo variables, alarmas y listas
                 if (elegidas != null && !elegidas.Contains(Ruta(grupo, Texto(pantalla, "Name")))) continue;
                 if (filtro != null)
                 {

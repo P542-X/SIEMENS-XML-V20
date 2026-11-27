@@ -10,6 +10,7 @@ Clic derecho en el árbol del proyecto → **XML**. Opciones:
 |---|---|
 | **Exportar selección** | Exporta lo seleccionado (bloque, carpeta, *Bloques de programa*, UDT, tablas o el PLC entero) y deja **un .zip** listo para compartir. |
 | **Exportar pantallas Unified…** | Solo sobre un panel WinCC Unified: eliges qué pantallas exportar. |
+| **Exportar Unified sin pantallas (variables, alarmas, listas)** | Solo sobre un panel WinCC Unified: exporta las tablas de variables, las alarmas y las listas de textos/gráficos, sin las pantallas (mucho más rápido). |
 | **Importar ficheros (xml, sd, fuentes, zip)…** | Importa ficheros sueltos o el .zip de una exportación. |
 | **Importar carpeta…** | Importa todo lo importable de una carpeta y sus subcarpetas (sin los `.zip`: esos, con *Importar ficheros*). |
 | **Deshacer última importación** | Deja el PLC como estaba antes de la última importación. |
