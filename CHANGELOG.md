@@ -1,5 +1,9 @@
 # Cambios
 
+## 2.7.3
+- Listas de textos Unified: en la 2.7.2 solo salía el nombre de cada lista (`HmiTextLists.json`), sin sus entradas. Ahora, en alarmas y listas, también se exportan las composiciones de TIA que no son propiedad .NET (`GetCompositionInfos` / `GetComposition`), y al importar se rellenan por el mismo camino.
+- Diagnóstico: `_composiciones_unified.txt` (composiciones de TIA por tipo, marcando las que no tienen propiedad; incluye el software y la primera pantalla) y `_atributos_unified.txt` también al exportar sin pantallas, con todas las propiedades de los tipos de listas y entradas.
+
 ## 2.7.2
 - Nuevo menú **Exportar Unified sin pantallas (variables, alarmas, listas)** sobre el panel: exporta las tablas de variables HMI (`Variables/`), las alarmas y clases (`Alarmas/`) y las listas de textos y gráficos (`Listas/`) sin pasar por las pantallas, que es lo que más tarda.
 

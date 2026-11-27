@@ -260,12 +260,12 @@ namespace ExportarXml
             if (n > 0) recuento["Pantallas"] = (recuento.TryGetValue("Pantallas", out int k) ? k : 0) + n;
             if (n > 0)
                 try { File.WriteAllLines(Path.Combine(raiz, "_capas_api.txt"), BuscarCapasApi(), new UTF8Encoding(false)); } catch { }
-            if (n > 0 && AtributosPorTipo.Count > 0)
+            // composiciones de TIA del software y de la primera pantalla (¿capas?), aunque no se exporten pantallas
+            if (filtro == null && elegidas == null)
                 try
                 {
-                    // para saber qué atributos de TIA no salen como propiedad (capas y demás) y poder añadirlos a la exportación
-                    File.WriteAllLines(Path.Combine(raiz, "_atributos_unified.txt"),
-                        AtributosDiag.OrderBy(x => x.Key).Select(x => x.Key + ": " + string.Join(", ", x.Value)), new UTF8Encoding(false));
+                    ComposicionesExtra(sw);
+                    foreach (var (pantalla, _) in Pantallas(sw)) { ComposicionesExtra(pantalla); break; }
                 }
                 catch { }
 
@@ -327,6 +327,7 @@ namespace ExportarXml
 
             // Alarmas HMI (discretas, analógicas…), clases de alarma y listas de textos/gráficos: una lista por composición
             // del software cuyo nombre lleva "Alarm" o acaba en "Lists" (DiscreteAlarms, AlarmClasses, TextLists…).
+            ConComposicionesExtra = true;
             if (filtro == null && elegidas == null) try
             {
                 foreach (PropertyInfo pa in sw.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -351,6 +352,8 @@ namespace ExportarXml
                 }
             }
             catch (Exception ex) { log.AppendLine("Aviso: alarmas HMI sin exportar (" + Mensaje(ex) + ")"); }
+            finally { ConComposicionesExtra = false; }
+            EscribirDiagnostico(raiz);
         }
 
         /// <summary>
@@ -453,6 +456,14 @@ namespace ExportarXml
                     if (l.Count > 0 && (p.CanWrite || v is IList)) d[p.Name] = l;
                 }
             }
+            foreach (string nc in ComposicionesExtra(o))
+            {
+                if (!ConComposicionesExtra || d.ContainsKey(nc)) continue;
+                object v = Composicion(o, nc);
+                if (v == null) continue;
+                List<object> l = Items(v).Select(e => (object)Objeto(e, true, nivel + 1)).ToList();
+                if (l.Count > 0) d[nc] = l;
+            }
             if (o is IEngineeringObject eo)
                 foreach (string a in AtributosExtra(eo))
                 {
@@ -473,6 +484,81 @@ namespace ExportarXml
         private static readonly Dictionary<string, List<string>> AtributosPorTipo = new Dictionary<string, List<string>>(StringComparer.Ordinal);
         private static readonly Dictionary<string, List<string>> AtributosDiag = new Dictionary<string, List<string>>(StringComparer.Ordinal);
 
+        // Composiciones de TIA que no salen como propiedad .NET (GetCompositionInfos / GetComposition), por tipo.
+        // Las entradas de una lista de textos no salían en la 2.7.2: solo el nombre de cada lista.
+        private static readonly Dictionary<string, List<string>> ComposicionesPorTipo = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+        private static readonly Dictionary<string, List<string>> ComposicionesDiag = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+        /// <summary>Exportar también esas composiciones (alarmas y listas; en las pantallas todavía no).</summary>
+        private static bool ConComposicionesExtra;
+
+        /// <summary>Método público del objeto o de una de sus interfaces (las de Openness pueden estar implementadas de forma explícita).</summary>
+        private static MethodInfo Metodo(object o, string nombre, int parametros)
+        {
+            Type t = o.GetType();
+            return t.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                    .Concat(t.GetInterfaces().SelectMany(i => i.GetMethods()))
+                    .FirstOrDefault(m => m.Name == nombre && !m.IsGenericMethodDefinition && m.GetParameters().Length == parametros);
+        }
+
+        /// <summary>Nombres de las composiciones de TIA del objeto que no son propiedad .NET (una vez por tipo).</summary>
+        private static List<string> ComposicionesExtra(object o)
+        {
+            string tipo = o.GetType().Name;
+            if (ComposicionesPorTipo.TryGetValue(tipo, out List<string> l)) return l;
+            l = new List<string>();
+            List<string> diag = new List<string>();
+            try
+            {
+                MethodInfo m = Metodo(o, "GetCompositionInfos", 0);
+                if (m == null) diag.Add("(sin GetCompositionInfos)");
+                else
+                    foreach (object info in Items(m.Invoke(o, null)))
+                    {
+                        string n = Texto(info, "Name");
+                        if (n.Length == 0) continue;
+                        bool esProp = Propiedad(o.GetType(), n) != null;
+                        diag.Add(n + (esProp ? "" : " (sin propiedad)"));
+                        if (!esProp) l.Add(n);
+                    }
+            }
+            catch (Exception ex) { diag.Add("(error: " + Mensaje(ex) + ")"); }
+            ComposicionesPorTipo[tipo] = l;
+            ComposicionesDiag[tipo] = diag;
+            return l;
+        }
+
+        /// <summary>Composición de TIA por nombre (GetComposition), o null.</summary>
+        private static object Composicion(object o, string nombre)
+        {
+            try
+            {
+                MethodInfo m = Metodo(o, "GetComposition", 1);
+                return m?.Invoke(o, new object[] { nombre });
+            }
+            catch { return null; }
+        }
+
+        /// <summary>Diagnóstico: propiedades .NET de un tipo (nombre, tipo, si se escribe).</summary>
+        private static string PropiedadesDe(Type t) =>
+            string.Join(", ", t.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.GetIndexParameters().Length == 0)
+                               .Select(p => p.Name + ":" + p.PropertyType.Name + (p.CanWrite ? "(RW)" : "(R)")));
+
+        /// <summary>Escribe _atributos_unified.txt y _composiciones_unified.txt con lo visto en esta exportación.</summary>
+        private static void EscribirDiagnostico(string raiz)
+        {
+            try
+            {
+                Directory.CreateDirectory(raiz);
+                if (AtributosDiag.Count > 0)
+                    File.WriteAllLines(Path.Combine(raiz, "_atributos_unified.txt"),
+                        AtributosDiag.OrderBy(x => x.Key).Select(x => x.Key + ": " + string.Join(", ", x.Value)), new UTF8Encoding(false));
+                if (ComposicionesDiag.Count > 0)
+                    File.WriteAllLines(Path.Combine(raiz, "_composiciones_unified.txt"),
+                        ComposicionesDiag.OrderBy(x => x.Key).Select(x => x.Key + ": " + string.Join(", ", x.Value)), new UTF8Encoding(false));
+            }
+            catch { }
+        }
+
         /// <summary>Atributos de lectura y escritura del objeto que no son propiedades .NET (una vez por tipo).</summary>
         private static List<string> AtributosExtra(IEngineeringObject eo)
         {
@@ -492,6 +578,9 @@ namespace ExportarXml
                     }
                     // propiedades .NET que hablan de capas (para encontrar cómo se asigna la capa de un objeto)
                     foreach (string pn in props.Where(x => x.IndexOf("Layer", StringComparison.OrdinalIgnoreCase) >= 0)) diag.Add("propiedad ." + pn);
+                    // listas de textos y gráficos y sus entradas: todas sus propiedades, para ver cómo se leen
+                    if (tipo.IndexOf("List", StringComparison.Ordinal) >= 0 && tipo.IndexOf("Alarm", StringComparison.Ordinal) < 0)
+                        diag.Add("propiedades: " + PropiedadesDe(eo.GetType()));
                     AtributosDiag[tipo] = diag;
                 }
                 catch { }
@@ -1003,6 +1092,14 @@ namespace ExportarXml
                     string aqui = ruta + "." + kv.Key;
 
                     PropertyInfo p = Propiedad(o.GetType(), kv.Key);
+                    if (p == null && kv.Value is List<object> lx && fase == 2)
+                    {
+                        object compx = Composicion(o, kv.Key); // composición de TIA sin propiedad .NET (entradas de una lista de textos…)
+                        if (compx == null) c.Aviso(aqui, o.GetType().Name + " no tiene la propiedad " + kv.Key);
+                        else try { LlenarComposicion(compx, lx.OfType<Dictionary<string, object>>().ToList(), c, aqui); }
+                             catch (Exception ex) { c.Aviso(aqui, Mensaje(ex)); }
+                        continue;
+                    }
                     if (p == null)
                     {
                         bool escrito = false;
