@@ -323,12 +323,13 @@ namespace ExportarXml
             }
             catch (Exception ex) { log.AppendLine("Aviso: tablas de variables HMI sin exportar (" + Mensaje(ex) + ")"); }
 
-            // Alarmas HMI (discretas, analógicas…) y clases de alarma: una lista por composición del software
-            // cuyo nombre lleva "Alarm" (DiscreteAlarms, AnalogAlarms, AlarmClasses…), para importarlas igual.
+            // Alarmas HMI (discretas, analógicas…), clases de alarma y listas de textos/gráficos: una lista por composición
+            // del software cuyo nombre lleva "Alarm" o acaba en "Lists" (DiscreteAlarms, AlarmClasses, TextLists…).
             if (filtro == null && elegidas == null) try
             {
                 foreach (PropertyInfo pa in sw.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                              .Where(x => x.GetIndexParameters().Length == 0 && x.Name.IndexOf("Alarm", StringComparison.Ordinal) >= 0))
+                                              .Where(x => x.GetIndexParameters().Length == 0 &&
+                                                          (x.Name.IndexOf("Alarm", StringComparison.Ordinal) >= 0 || x.Name.EndsWith("Lists", StringComparison.Ordinal))))
                 {
                     if (ea.IsCancellationRequested) return;
                     object comp;
@@ -337,7 +338,8 @@ namespace ExportarXml
                     ea.Text = "Exportando " + pa.Name + "...";
                     List<object> l = Items(comp).Select(x => (object)Objeto(x, true, 0)).ToList();
                     Liberar();
-                    string dir = Path.Combine(raiz, "Alarmas");
+                    // listas de textos y de gráficos (TextLists, GraphicLists) en Listas/, alarmas en Alarmas/; se importan igual
+                    string dir = Path.Combine(raiz, pa.Name.EndsWith("Lists", StringComparison.Ordinal) ? "Listas" : "Alarmas");
                     Directory.CreateDirectory(dir);
                     File.WriteAllText(Path.Combine(dir, pa.Name + ".json"), Json.Escribir(new Dictionary<string, object>
                     {

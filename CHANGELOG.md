@@ -1,5 +1,8 @@
 # Cambios
 
+## 2.7.1
+- **Listas de textos y de gráficos Unified (en prueba)**: *Exportar selección* sobre el panel deja también `Listas/TextLists.json` y `Listas/GraphicLists.json` (las composiciones del software que acaban en *Lists*). Se importan con el mismo mecanismo que las alarmas (`"$tipo": "HmiAlarmas"`, `"$nombre"` = la lista del software). Para cambiar textos con una variable sin un texto por valor con su visibilidad: dinamización `ResourceListDynamization` (`"ResourceList"`, `"Tag"`, `"PropertyName": "Text"`).
+
 ## 2.7.0
 - **Alarmas HMI Unified (en prueba)**: *Exportar selección* sobre el panel deja `Alarmas/<lista>.json` por cada lista de alarmas del software (`DiscreteAlarms`, `AnalogAlarms`, `AlarmClasses`…, todas sus propiedades). *Importar ficheros* acepta esos JSON (`"$tipo": "HmiAlarmas"`, `"$nombre"` = la lista, `"Alarmas"` = los elementos): crea las que no existen y, si se elige sobrescribir, actualiza las que ya están. Se importan después de las variables y antes de las pantallas.
 
