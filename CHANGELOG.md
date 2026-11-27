@@ -1,6 +1,7 @@
 # Cambios
 
 ## 2.7.3
+- **Resultado** (exportación del usuario): en V20 `HmiTextList` solo tiene `Name` y `Parent`, sin composiciones ni atributos: las entradas de las listas de textos no son accesibles por Openness y hay que crearlas a mano; las pantallas las usan con `ResourceListDynamization`. `HmiScreen` tampoco tiene composición de capas. Guía 6.8 actualizada.
 - Listas de textos Unified: en la 2.7.2 solo salía el nombre de cada lista (`HmiTextLists.json`), sin sus entradas. Ahora, en alarmas y listas, también se exportan las composiciones de TIA que no son propiedad .NET (`GetCompositionInfos` / `GetComposition`), y al importar se rellenan por el mismo camino.
 - Diagnóstico: `_composiciones_unified.txt` (composiciones de TIA por tipo, marcando las que no tienen propiedad; incluye el software y la primera pantalla) y `_atributos_unified.txt` también al exportar sin pantallas, con todas las propiedades de los tipos de listas y entradas.
 
